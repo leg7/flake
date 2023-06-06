@@ -33,7 +33,6 @@
       fzf
       tree
       git
-      python39
       bottom
       brightnessctl
       shellcheck

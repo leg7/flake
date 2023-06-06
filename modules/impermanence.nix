@@ -1,4 +1,4 @@
-# Impermanence with root on tmpfs
+# Impermanence for FDE + LVM with root on tmpfs
 { ... }: {
   fileSystems = {
     "/boot" = {
