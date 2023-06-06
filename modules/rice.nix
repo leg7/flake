@@ -47,6 +47,7 @@
 
         isNormalUser = true;
         home = "/home/user";
+        initialPassword = "pass";
         description = "The main user account";
         shell = pkgs.fish;
         extraGroups = [ "wheel" ];
