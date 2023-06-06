@@ -46,7 +46,7 @@
         ];
 
         isNormalUser = true;
-        home = "/home/user";
+        home = "/nix/persistent/home/user";
         initialPassword = "pass";
         description = "The main user account";
         shell = pkgs.fish;

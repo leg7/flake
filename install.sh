@@ -61,9 +61,9 @@ swapon /dev/pool/swap
 mount -m -t tmpfs none /mnt
 mount -m -o compress_algorithm=zstd,compress_chksum,atgc,gc_merge,lazytime /dev/pool/nix /mnt/nix
 mount -m "$efiPartition" /mnt/boot
-mkdir -p /mnt/nix/persistent # for impermanence to work
+mkdir -p /mnt/nix/persistent/etc/ # for impermanence to work
 
 nixos-generate-config --root /mnt --no-filesystems
 nix-shell -p sbctl --run 'sbctl create-keys'
-cp -r /etc/secureboot /mnt/etc/secureboot
-alias nins='sudo nixos-install --no-root-passwd --flake /mnt/etc/nixos/#eleum --cores 0'
+cp -r /etc/secureboot /mnt/nix/persistent/etc/secureboot
+alias nins='sudo nixos-install --no-root-passwd --flake /mnt/etc/nixos/#eleum --cores 0 --root /mnt'
