@@ -66,4 +66,5 @@ mkdir -p /mnt/nix/persistent/etc/ # for impermanence to work
 nixos-generate-config --root /mnt --no-filesystems
 nix-shell -p sbctl --run 'sbctl create-keys'
 cp -r /etc/secureboot /mnt/nix/persistent/etc/secureboot
+cp -r /etc/secureboot /mnt/etc/
 alias nins='sudo nixos-install --no-root-passwd --flake /mnt/etc/nixos/#eleum --cores 0 --root /mnt'
