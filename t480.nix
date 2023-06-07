@@ -1,7 +1,12 @@
-{ pkgs, ... }: {
+{ pkgs, lib, config, ... }: {
   imports = [ ./modules/secure-boot.nix ./modules/impermanence.nix ./modules/rice.nix ];
 
-  system.stateVersion = "23.05";
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.kernelModules = [ "kvm-intel" ];
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  system.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;
   time.timeZone = "Europe/Paris";
 
