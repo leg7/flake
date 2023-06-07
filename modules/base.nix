@@ -12,6 +12,7 @@
       XDG_STATE_HOME  = "$HOME/.local/state";
       PATH = [ "$HOME/.local/bin" ];
 
+      HISTFILE              = "$XDG_STATE_HOME/bash/history";
       VIMINIT               = "set nocp | source $XDG_CONFIG_HOME/vim/vimrc";
       GNUPGHOME             = "$XDG_DATA_HOME/gnupg";
       WGETRC                = "$XDG_CONFIG_HOME/wget/wgetrc";
@@ -34,7 +35,6 @@
       tree
       git
       bottom
-      brightnessctl
       shellcheck
     ];
 
