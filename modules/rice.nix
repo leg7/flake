@@ -2,57 +2,37 @@
 { pkgs, ... }: {
   imports = [ ./base.nix ];
 
-  users = {
-    mutableUsers = false;
-
-    users = {
-      # Set a root password, consider using initialHashedPassword instead.
-      #
-      # To generate a hash to put in initialHashedPassword
-      # you can do this:
-      # $ nix-shell --run 'mkpasswd -m SHA-512 -s' -p mkpasswd
-      root.initialPassword = "pass";
-
-      user = {
-        packages = with pkgs; [ # mainly stuff for the wayland compositor
-          qmk
-          waydroid
-          transmission libtransmission tremc
-          swaybg eww-wayland socat jq
-          ncmpcpp pulsemixer pamixer easyeffects
-          imv zathura mpv
-          cowsay fortune
-          ffmpeg yt-dlp-light
-          firefox
-          foot
-          fnott libnotify
-          wlsunset
-          swaylock-effects
-          cinnamon.nemo
-          ydotool
-          wl-clipboard
-          newsboat
-          wofi
-          qrencode
-          signal-desktop
-          qalculate-gtk
-          emacs
-          gnome.gnome-calendar
-          fontconfig
-          osu-lazer-bin gamemode
-          jdk
-          libreoffice
-          brightnessctl
-        ];
-
-        isNormalUser = true;
-        home = "/nix/persistent/home/user";
-        initialPassword = "pass";
-        description = "The main user account";
-        shell = pkgs.fish;
-        extraGroups = [ "wheel" ];
-      };
-    };
+  users.users.user = {
+    packages = with pkgs; [ # mainly stuff for the wayland compositor
+      qmk
+      waydroid
+      transmission libtransmission tremc
+      swaybg eww-wayland socat jq
+      ncmpcpp pulsemixer pamixer easyeffects
+      imv zathura mpv
+      cowsay fortune
+      ffmpeg yt-dlp-light
+      firefox
+      foot
+      fnott libnotify
+      wlsunset
+      swaylock-effects
+      cinnamon.nemo
+      ydotool
+      wl-clipboard
+      newsboat
+      wofi
+      qrencode
+      signal-desktop
+      qalculate-gtk
+      emacs
+      gnome.gnome-calendar
+      fontconfig
+      osu-lazer-bin gamemode
+      jdk
+      libreoffice
+      brightnessctl
+    ];
   };
 
   fonts.fonts = with pkgs; [

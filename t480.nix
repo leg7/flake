@@ -1,7 +1,9 @@
 { pkgs, lib, config, ... }: {
-  imports = [ ./modules/secure-boot.nix ./modules/impermanence.nix ./modules/rice.nix ];
+imports = [ ./modules/secureboot.nix ./modules/rice.nix ./modules/fdeImpermanenceExtra.nix ];
 
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  system.stateVersion = "23.11";
+  nixpkgs.config.allowUnfree = true;
+  time.timeZone = "Europe/Paris";
 
   boot = {
     kernelModules = [ "kvm-intel" ];
@@ -9,26 +11,11 @@
     initrd = {
       availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
       kernelModules = [ "dm-snapshot" ];
-
-      luks.devices.cryptBackup = {
-        device = "/dev/disk/by-label/cryptBackup";
-        allowDiscards = true;
-      };
     };
   };
 
-  fileSystems."/nix/persistent/backup" = {
-      device = "/dev/disk/by-label/backup";
-      fsType = "f2fs";
-      options = [ "compress_algorithm=zstd" "compress_chksum" "atgc" "gc_merge" "lazytime" ];
-      neededForBoot = false;
-  };
-
-  system.stateVersion = "23.11";
-  nixpkgs.config.allowUnfree = true;
-  time.timeZone = "Europe/Paris";
-
   hardware = {
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     enableAllFirmware = true;
     bluetooth.enable = true;
     opentabletdriver.enable = true;

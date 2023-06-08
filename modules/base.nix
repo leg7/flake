@@ -1,5 +1,8 @@
 # Minimal base system with lan/wifi and shell utilites
+# The users.users.user.home attribute assumes you're using impermanence
 { pkgs, ... }: {
+  imports = [ ./fdeImpermanence.nix ];
+
   environment = {
     sessionVariables = rec {
       EDITOR = "vim";
@@ -30,6 +33,7 @@
       p7zip
       keyd
       vim
+      vimv
       wget
       fzf
       tree
@@ -43,6 +47,28 @@
 
   programs.fish.enable = true;
 
+  users = {
+    mutableUsers = false;
+
+    users = {
+      # Set a root password, consider using initialHashedPassword instead.
+      #
+      # To generate a hash to put in initialHashedPassword
+      # you can do this:
+      # $ nix-shell --run 'mkpasswd -m SHA-512 -s' -p mkpasswd
+      root.initialPassword = "pass";
+
+      user = {
+        isNormalUser = true;
+        home = "/nix/persistent/home/user";
+        initialPassword = "pass";
+        description = "The main user account";
+        shell = pkgs.fish;
+        extraGroups = [ "wheel" ];
+      };
+    };
+  };
+
   security = {
     doas = {
       enable = true;
@@ -51,8 +77,6 @@
 
     sudo.enable = false;
   };
-
-  # --- Networking ---
 
   systemd.network = {
     enable = true;

@@ -1,5 +1,12 @@
 # Impermanence for FDE + LVM with root on tmpfs
 { ... }: {
+  boot.initrd.luks.devices.cryptLvm = {
+    device = "/dev/disk/by-label/cryptLvm";
+    allowDiscards = true;
+  };
+
+  swapDevices = [ { device = "/dev/pool/swap"; } ];
+
   fileSystems = {
     "/boot" = {
       device = "/dev/disk/by-label/ESP";
@@ -9,7 +16,7 @@
     "/" = {
       device = "tmpfs";
       fsType = "tmpfs";
-      options = [ "defaults" "size=128M" "mode=755" ];
+      options = [ "defaults" "size=256M" "mode=755" ];
     };
 
     "/nix" = {
@@ -18,8 +25,6 @@
       options = [ "compress_algorithm=zstd" "compress_chksum" "atgc" "gc_merge" "lazytime" ];
     };
   };
-
-  swapDevices = [ { device = "/dev/pool/swap"; } ];
 
   environment = {
     variables.NIX_REMOTE = "daemon";
