@@ -39,7 +39,6 @@
       ];
 
       files = [
-        "/etc/keyd/default.conf"
         "/etc/machine-id"
         "/etc/ssh/ssh_host_ed25519_key.pub"
         "/etc/ssh/ssh_host_ed25519_key"
