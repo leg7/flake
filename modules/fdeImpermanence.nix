@@ -16,7 +16,7 @@
     "/" = {
       device = "tmpfs";
       fsType = "tmpfs";
-      options = [ "defaults" "size=256M" "mode=755" ];
+      options = [ "defaults" "mode=755" ];
     };
 
     "/nix" = {
@@ -27,8 +27,6 @@
   };
 
   environment = {
-    variables.NIX_REMOTE = "daemon";
-
     persistence."/nix/persistent" = {
       hideMounts = true;
 
@@ -46,11 +44,5 @@
         "/etc/ssh/ssh_host_rsa_key"
       ];
     };
-  };
-
-  # Places /tmp in var so that we don't run out of space when compiling stuff
-  systemd.services.nix-daemon = {
-    environment.TMPDIR = "/var/cache/nix";
-    serviceConfig.CacheDirectory = "nix";
   };
 }
