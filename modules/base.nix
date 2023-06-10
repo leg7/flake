@@ -3,6 +3,9 @@
 { pkgs, ... }: {
   imports = [ ./fdeImpermanence.nix ];
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+  nix.settings.auto-optimise-store = true;
+
   users = {
     mutableUsers = false;
 
