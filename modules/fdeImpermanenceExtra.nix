@@ -8,6 +8,6 @@
   fileSystems."/nix/persistent/backup" = {
       device = "/dev/disk/by-label/backup";
       fsType = "f2fs";
-      options = [ "compress_algorithm=zstd" "compress_chksum" "atgc" "gc_merge" "lazytime" ];
+      options = [ "noauto" "compress_algorithm=zstd" "compress_chksum" "atgc" "gc_merge" "lazytime" ];
   };
 }
