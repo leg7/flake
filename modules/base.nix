@@ -1,7 +1,7 @@
 # Minimal base system with lan/wifi and shell utilites
 # The users.users.user.home attribute assumes you're using impermanence
 { pkgs, ... }: {
-  imports = [ ./fdeImpermanence.nix ];
+  imports = [ ./fdeImpermanence.nix ./hardened.nix];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" "repl-flake" ];
   nix.settings.auto-optimise-store = true;
@@ -26,15 +26,6 @@
         extraGroups = [ "wheel" ];
       };
     };
-  };
-
-  security = {
-    doas = {
-      enable = true;
-      extraRules = [ { persist = true; keepEnv = true; groups = ["wheel"]; } ];
-    };
-
-    sudo.enable = false;
   };
 
   environment = {
@@ -108,13 +99,12 @@
     wireless.iwd = {
       enable = true;
       settings = {
-        General.EnableNetworkConfiguration = true; # This replaces dhcpcd
+        General.EnableNetworkConfiguration = true; # Use resolved instead of dhcpcd
         Network.NameResolvingService = "systemd";
       };
     };
 
     hostName = "eleum";
-    enableIPv6 = false;
     dhcpcd.enable = false;
   };
 

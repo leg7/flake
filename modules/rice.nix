@@ -1,6 +1,10 @@
 # Wayland hyprland config
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   imports = [ ./base.nix ];
+
+  # These settings cause firefox to crash or not open so we revert them
+  boot.kernelPackages = lib.mkOverride 50 pkgs.linuxPackages;
+  environment.memoryAllocator.provider = lib.mkOverride 50 "libc";
 
   users.users.user = {
     packages = with pkgs; [ # mainly stuff for the wayland compositor
@@ -12,7 +16,6 @@
       imv zathura mpv
       cowsay fortune
       ffmpeg yt-dlp-light
-      firefox
       foot
       fnott libnotify
       wlsunset
@@ -23,15 +26,12 @@
       newsboat
       wofi
       qrencode
-      signal-desktop
       qalculate-gtk
       emacs
-      gnome.gnome-calendar
       fontconfig
-      osu-lazer-bin gamemode
       jdk
-      libreoffice
       brightnessctl
+      signal-desktop
     ];
   };
 
@@ -41,6 +41,12 @@
     noto-fonts-emoji
     nerdfonts
   ];
+
+  programs.firejail.wrappedBinaries.firefox = {
+      executable = "${pkgs.lib.getBin pkgs.firefox}/bin/firefox";
+      profile = "${pkgs.firejail}/etc/firejail/firefox.profile";
+      extraArgs = [ "--private=~/.local/share/firefox" ];
+  };
 
   programs.hyprland = {
     enable = true;
@@ -75,7 +81,7 @@
             name "My PipeWire Output"
           }
         '';
-      };
+    };
 
     # -- Programmer dvorak layout
     keyd = {
