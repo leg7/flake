@@ -1,5 +1,5 @@
 { pkgs, lib, config, ... }: {
-imports = [ ./modules/storage/main.nix ./modules/boot/secureboot.nix ./modules/hyprland.nix ];
+imports = [ ./modules/boot/secureboot.nix ./modules/hyprland.nix ];
 
   system.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;
