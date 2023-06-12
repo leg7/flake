@@ -18,7 +18,7 @@
     impermanence.url = "github:nix-community/impermanence";
   };
 
-  outputs = { self, nixpkgs, lanzaboote, impermanence, ... }: {
+  outputs = { nixpkgs, lanzaboote, impermanence, ... }: {
     nixosConfigurations = {
       "eleum" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -28,6 +28,14 @@
           ./t480.nix
         ];
       };
+
+      # "majula" = nixpkgs.lib.nixosSystem {
+      #   system = "aarch64-linux";
+      #   modules = [
+      #     impermanence.nixosModules.impermanence
+      #     ./rpi4.nix
+      #   ];
+      # };
     };
   };
 }

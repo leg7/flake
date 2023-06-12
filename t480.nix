@@ -1,5 +1,5 @@
 { pkgs, lib, config, ... }: {
-imports = [ ./modules/secureboot.nix ./modules/rice.nix ./modules/fdeImpermanenceExtra.nix ];
+imports = [ ./modules/storage/main.nix ./modules/boot/secureboot.nix ./modules/hyprland.nix ];
 
   system.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;
@@ -59,10 +59,12 @@ imports = [ ./modules/secureboot.nix ./modules/rice.nix ./modules/fdeImpermanenc
       fans = [ { type = "tpacpi"; query = "/proc/acpi/ibm/fan"; } ];
       levels =  [[0 0 55]
                  [1 55 60]
-                 [2 60 65]
-                 [3 65 70]
-                 [4 70 75]
-                 [5 75 80]
+                 [2 60 63]
+                 [3 63 66]
+                 [4 66 70]
+                 [5 70 72]
+                 [6 72 75]
+                 [7 75 80]
                  ["level auto" 80 255]];
     };
 
@@ -80,8 +82,16 @@ imports = [ ./modules/secureboot.nix ./modules/rice.nix ./modules/fdeImpermanenc
         DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE="bluetooth";
       };
     };
+
+    undervolt = {
+      enable = true;
+      coreOffset = -100;
+      uncoreOffset = -100;
+      gpuOffset = -100; # Seems to have to effect
+    };
   };
 
   # Workaround for thinkfan being buggy
-  systemd.services.thinkfan.preStart = "/run/current-system/sw/bin/modprobe -r thinkpad_acpi && /run/current-system/sw/bin/modprobe thinkpad_acpi";
+  # This fix doesn't work with the hardended config
+  # systemd.services.thinkfan.preStart = "/run/current-system/sw/bin/modprobe -r thinkpad_acpi && /run/current-system/sw/bin/modprobe thinkpad_acpi";
 }
