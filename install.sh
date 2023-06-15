@@ -38,8 +38,8 @@ parted "$disk" mklabel gpt
 parted "$disk" mkpart primary fat32 0% 512MiB set 1 esp on
 parted "$disk" mkpart primary 512MiB 100%
 
-# Encrypt disk
-cryptsetup luksFormat --type luks2 --pbkdf argon2id -i 5000 --hash sha512 "$sysPartition"
+# Encrypt disk (you might need to adjust the memory needed)
+cryptsetup luksFormat --type luks2 -i 5000 --pbkdf argon2id --pbkdf-memory 4000000 --hash sha512 "$sysPartition"
 cryptsetup open "$sysPartition" cryptLvm
 cryptsetup config "$sysPartition" --label cryptLvm
 
