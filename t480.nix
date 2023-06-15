@@ -1,5 +1,5 @@
 { pkgs, lib, config, ... }: {
-imports = [ ./modules/boot/secureboot.nix ./modules/hyprland.nix ];
+imports = [ ./modules/boot/secureboot.nix ./modules/hyprland.nix ./modules/storage/backups.nix ];
 
   system.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;
@@ -85,9 +85,9 @@ imports = [ ./modules/boot/secureboot.nix ./modules/hyprland.nix ];
 
     undervolt = {
       enable = true;
-      coreOffset = -100;
-      uncoreOffset = -100;
-      gpuOffset = -100; # Seems to have to effect
+      coreOffset = -95;
+      uncoreOffset = -95;
+      gpuOffset = -95; # Seems to have to effect
     };
   };
 
