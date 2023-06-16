@@ -6,8 +6,8 @@
   boot.kernelPackages = lib.mkOverride 50 pkgs.linuxPackages;
   environment.memoryAllocator.provider = lib.mkOverride 50 "libc";
 
-  users.users.user = {
-    packages = with pkgs; [ # mainly stuff for the wayland compositor
+  # mainly stuff for the wayland compositor
+  users.users.user.packages = with pkgs; [
       qmk
       waydroid
       transmission libtransmission tremc
@@ -32,8 +32,7 @@
       jdk
       brightnessctl
       signal-desktop
-    ];
-  };
+  ];
 
   fonts.fonts = with pkgs; [
     noto-fonts
