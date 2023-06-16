@@ -34,6 +34,7 @@
         "/home"
         "/var"
         "/etc/secureboot"
+        "/etc/opt/ivpn/mutable"
       ];
 
       files = [
