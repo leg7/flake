@@ -53,6 +53,9 @@
     xwayland.enable = true;
   };
 
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "user" ];
+
   services = {
     ivpn.enable = true;
     getty.autologinUser = "user";
