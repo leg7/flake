@@ -83,9 +83,11 @@ elif [ "$1" = "grub" ]; then
     fs
 
     # Move the key
+    mkdir -p /mnt/nix/persistent/etc/secrets/initrd/
     mkdir -p /mnt/etc/secrets/initrd/
-    mv keyfile.bin /mnt/etc/secrets/initrd/
-    chmod 000 /mnt/etc/secrets/initrd/keyfile.bin
+    cp keyfile.bin /mnt/etc/secrets/initrd/
+    cp keyfile.bin /mnt/nix/persistent/etc/secrets/initrd/
+    chmod 000 /mnt/nix/persistent/etc/secrets/initrd/keyfile.bin
 fi
 
 nixos-generate-config --root /mnt
