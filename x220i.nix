@@ -5,7 +5,8 @@
   nixpkgs.config.allowUnfree = true;
   time.timeZone = "Europe/Paris";
 
-  # boot.initrd.luks.devices.cryptLvm.device = lib.mkOverride 50 "";
+  # Use cryptsetup luksUUID to find the uuid of the device
+  # boot.initrd.luks.devices.cryptLvm.device = lib.mkOverride 50 "/dev/disk/by-uuid/";
 
   hardware = {
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

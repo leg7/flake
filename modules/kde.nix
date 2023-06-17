@@ -12,6 +12,10 @@
     nerdfonts
   ];
 
+  users.users.user.packages = with pkgs; [
+    gnome.simple-scan
+  ];
+
   programs.firejail.wrappedBinaries.firefox = {
       executable = "${pkgs.lib.getBin pkgs.firefox}/bin/firefox";
       profile = "${pkgs.firejail}/etc/firejail/firefox.profile";
@@ -19,6 +23,9 @@
   };
 
   programs.dconf.enable = true;
+
+  hardware.sane.enable = true;
+  users.users.user.extraGroups = [ "scanner" "lp" ];
 
   services = {
     xserver = {

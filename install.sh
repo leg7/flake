@@ -88,5 +88,5 @@ elif [ "$1" = "grub" ]; then
     chmod 000 /mnt/etc/secrets/initrd/keyfile.bin
 fi
 
-nixos-generate-config --root /mnt --no-filesystems
+nixos-generate-config --root /mnt
 alias nins='sudo nixos-install --no-root-passwd --flake /mnt/etc/nixos/#eleum --cores 0 --root /mnt'
