@@ -37,7 +37,7 @@
       #   ];
       # };
 
-      x220 = nixpkgs.lib.nixosSystem {
+      x220i = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           impermanence.nixosModules.impermanence

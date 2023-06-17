@@ -5,6 +5,8 @@
   nixpkgs.config.allowUnfree = true;
   time.timeZone = "Europe/Paris";
 
+  # boot.initrd.luks.devices.cryptLvm.device = lib.mkOverride 50 "";
+
   hardware = {
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     enableAllFirmware = true;
