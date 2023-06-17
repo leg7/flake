@@ -63,7 +63,7 @@ parted "$disk" mklabel gpt
 parted "$disk" mkpart primary fat32 0% 512MiB set 1 esp on
 parted "$disk" mkpart primary 512MiB 100%
 
-if [ $1 = "secureboot" ]; then
+if [ "$1" = "secureboot" ]; then
     # Encrypt disk (you might need to adjust the memory needed)
     cryptsetup luksFormat --type luks2 -i 5000 --pbkdf argon2id --pbkdf-memory 4000000 --hash sha512 "$sysPartition"
     cryptsetup open "$sysPartition" cryptLvm
@@ -74,11 +74,11 @@ if [ $1 = "secureboot" ]; then
     nix-shell -p sbctl --run 'sbctl create-keys'
     cp -r /etc/secureboot /mnt/nix/persistent/etc/secureboot
     cp -r /etc/secureboot /mnt/etc/
-elif [ $1 = "grub" ]; then
+elif [ "$1" = "grub" ]; then
     cryptsetup luksFormat --type luks1 -i 5000 --hash sha512 "$sysPartition"
     dd if=/dev/urandom of=./keyfile.bin bs=1024 count=4
-    cryptsetup luksAddKey "$systemPartition" keyfile.bin
-    cryptsetup open "$systemPartition" cryptLvm -d keyfile.bin
+    cryptsetup luksAddKey "$sysPartition" keyfile.bin
+    cryptsetup open "$sysPartition" cryptLvm -d keyfile.bin
 
     fs
 
@@ -86,7 +86,7 @@ elif [ $1 = "grub" ]; then
     mkdir -p /mnt/etc/secrets/initrd/
     mv keyfile.bin /mnt/etc/secrets/initrd/
     chmod 000 /mnt/etc/secrets/initrd/keyfile.bin
-if
+fi
 
 nixos-generate-config --root /mnt --no-filesystems
 alias nins='sudo nixos-install --no-root-passwd --flake /mnt/etc/nixos/#eleum --cores 0 --root /mnt'
