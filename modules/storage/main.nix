@@ -1,7 +1,7 @@
 # Impermanence for FDE + LVM with root on tmpfs
-{ ... }: {
+{ lib, ... }: {
   boot.initrd.luks.devices.cryptLvm = {
-    device = "/dev/disk/by-label/cryptLvm";
+    device = lib.mkDefault "/dev/disk/by-label/cryptLvm";
     allowDiscards = true;
   };
 
@@ -26,24 +26,23 @@
     };
   };
 
-  environment = {
-    persistence."/nix/persistent" = {
-      hideMounts = true;
+  environment.persistence."/nix/persistent" = {
+    hideMounts = true;
 
-      directories = [
-        "/home"
-        "/var"
-        "/etc/secureboot"
-        "/etc/opt/ivpn/mutable"
-      ];
+    directories = [
+      "/home"
+      "/var"
+      "/etc/secureboot"
+      "/etc/secrets/initrd"
+      "/etc/opt/ivpn/mutable"
+    ];
 
-      files = [
-        "/etc/machine-id"
-        "/etc/ssh/ssh_host_ed25519_key.pub"
-        "/etc/ssh/ssh_host_ed25519_key"
-        "/etc/ssh/ssh_host_rsa_key.pub"
-        "/etc/ssh/ssh_host_rsa_key"
-      ];
-    };
+    files = [
+      "/etc/machine-id"
+      "/etc/ssh/ssh_host_ed25519_key.pub"
+      "/etc/ssh/ssh_host_ed25519_key"
+      "/etc/ssh/ssh_host_rsa_key.pub"
+      "/etc/ssh/ssh_host_rsa_key"
+    ];
   };
 }

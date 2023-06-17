@@ -20,7 +20,7 @@
 
   outputs = { nixpkgs, lanzaboote, impermanence, ... }: {
     nixosConfigurations = {
-      "eleum" = nixpkgs.lib.nixosSystem {
+      eleum = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           lanzaboote.nixosModules.lanzaboote
@@ -29,13 +29,21 @@
         ];
       };
 
-      # "majula" = nixpkgs.lib.nixosSystem {
+      # majula = nixpkgs.lib.nixosSystem {
       #   system = "aarch64-linux";
       #   modules = [
       #     impermanence.nixosModules.impermanence
       #     ./rpi4.nix
       #   ];
       # };
+
+      x220 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          impermanence.nixosModules.impermanence
+          ./x220i.nix
+        ];
+      };
     };
   };
 }
