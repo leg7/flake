@@ -52,7 +52,7 @@ fs()
     swapon /dev/pool/swap
 
     # Mount
-    mount -m -t tmpfs none /mnt
+    mount -m -o size=10G -t tmpfs none /mnt
     mount -m -o compress_algorithm=zstd,compress_chksum,atgc,gc_merge,lazytime /dev/pool/nix /mnt/nix
     mount -m "$efiPartition" /mnt/boot
     mkdir -p /mnt/nix/persistent/etc/ # for impermanence to work
