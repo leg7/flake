@@ -1,5 +1,5 @@
 { pkgs, lib, config, ... }: {
-  imports = [ ./modules/boot/uefi/secureboot.nix ./modules/hyprland.nix ./modules/storage/backups.nix ];
+  imports = [ ./modules/boot/secureboot.nix ./modules/systems/hyprland.nix ./modules/backups.nix ];
 
   system.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;

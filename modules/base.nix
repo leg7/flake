@@ -1,34 +1,44 @@
 # Minimal hardened base system with lan/wifi and shell utilites
-# The users.users.user.home attribute assumes you're using impermanence
+# This config uses impermanence
 { pkgs, lib, config, ... }: {
-  imports = [ ./storage/main.nix ];
-
   nix.settings.experimental-features = [ "nix-command" "flakes" "repl-flake" ];
   nix.settings.auto-optimise-store = true;
 
-  users = {
-    mutableUsers = false;
+  # The boot partiton is defined in the boot module
+  swapDevices = [ { device = "/dev/pool/swap"; } ];
+  fileSystems = {
+    "/" = {
+      device = "tmpfs";
+      fsType = "tmpfs";
+      options = [ "defaults" "mode=755" ];
+    };
 
-    users = {
-      # Set a root password, consider using initialHashedPassword instead.
-      #
-      # To generate a hash to put in initialHashedPassword
-      # you can do this:
-      # $ nix-shell --run 'mkpasswd -m SHA-512 -s' -p mkpasswd
-      root.initialPassword = "pass";
-
-      user = {
-        isNormalUser = true;
-        home = "/nix/persistent/home/user";
-        initialPassword = "pass";
-        description = "The main user account";
-        shell = pkgs.fish;
-        extraGroups = [ "wheel" ];
-      };
+    "/nix" = {
+      device = "/dev/pool/nix";
+      fsType = "f2fs";
+      options = [ "compress_algorithm=zstd" "compress_chksum" "atgc" "gc_merge" "lazytime" ];
     };
   };
 
   environment = {
+    persistence."/nix/persistent" = {
+      hideMounts = true;
+
+      directories = [
+        "/home"
+        "/var"
+        "/etc/opt/ivpn/mutable"
+      ];
+
+      files = [
+        "/etc/machine-id"
+        "/etc/ssh/ssh_host_ed25519_key.pub"
+        "/etc/ssh/ssh_host_ed25519_key"
+        "/etc/ssh/ssh_host_rsa_key.pub"
+        "/etc/ssh/ssh_host_rsa_key"
+      ];
+    };
+
     sessionVariables = rec {
       EDITOR = "vim";
       PAGER = "less";
@@ -67,6 +77,28 @@
     binsh = "${pkgs.dash}/bin/dash";
   };
 
+  users = {
+    mutableUsers = false;
+
+    users = {
+      # Set a root password, consider using initialHashedPassword instead.
+      #
+      # To generate a hash to put in initialHashedPassword
+      # you can do this:
+      # $ nix-shell --run 'mkpasswd -m SHA-512 -s' -p mkpasswd
+      root.initialPassword = "pass";
+
+      user = {
+        isNormalUser = true;
+        home = "/nix/persistent/home/user";
+        initialPassword = "pass";
+        description = "The main user account";
+        shell = pkgs.fish;
+        extraGroups = [ "wheel" ];
+      };
+    };
+  };
+
   programs = {
     fish.enable = true;
 
@@ -77,9 +109,7 @@
 
     git = {
       enable = true;
-      config.init = {
-          defaultBranch = "main";
-      };
+      config.init.defaultBranch = "main";
     };
   };
 

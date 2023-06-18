@@ -1,5 +1,5 @@
 { pkgs, lib, config, ... }: {
-  imports = [ ./modules/boot/uefi/grub.nix ./modules/kde.nix ./modules/storage/backups.nix ];
+  imports = [ ./modules/boot/grub.nix ./modules/systems/kde.nix ./modules/backups.nix ];
 
   system.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;
