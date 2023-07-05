@@ -5,6 +5,8 @@
   boot.kernelPackages = lib.mkOverride 50 pkgs.linuxPackages;
   environment.memoryAllocator.provider = lib.mkOverride 50 "libc";
 
+  security.lockKernelModules = lib.mkOverride 50 false;
+
   fonts.fonts = with pkgs; [
     noto-fonts
     noto-fonts-cjk

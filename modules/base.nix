@@ -161,7 +161,7 @@
   environment.memoryAllocator.provider = lib.mkDefault "graphene-hardened";
 
   security = {
-    lockKernelModules = true;
+    lockKernelModules = lib.mkDefault true; # This is anoying for dynamic systems like a laptop you dock, turn it off if some of your devices don't connect
     protectKernelImage = true;
     forcePageTableIsolation = true;
 
@@ -189,8 +189,6 @@
   # and also slow down the system when something crashes
   systemd.coredump.enable = false;
 
-  # enable antivirus clamav and
-  # keep the signatures' database updated
   services.clamav = {
     daemon.enable = true;
     updater.enable = true;

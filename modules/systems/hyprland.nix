@@ -6,6 +6,8 @@
   boot.kernelPackages = lib.mkOverride 50 pkgs.linuxPackages;
   environment.memoryAllocator.provider = lib.mkOverride 50 "libc";
 
+  security.lockKernelModules = lib.mkOverride 50 false;
+
   # mainly stuff for the wayland compositor
   users.users.user.packages = with pkgs; [
       qmk
