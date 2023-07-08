@@ -185,10 +185,6 @@
     chromiumSuidSandbox.enable = true;
   };
 
-  # disable coredump that could be exploited later
-  # and also slow down the system when something crashes
-  systemd.coredump.enable = false;
-
   services.clamav = {
     daemon.enable = true;
     updater.enable = true;
