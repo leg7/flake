@@ -10,6 +10,7 @@
         device = lib.mkDefault "/dev/disk/by-uuid/TODO";
         allowDiscards = true;
         keyFile = "/keyfile.bin";
+		preLVM = true;
       };
     };
 
