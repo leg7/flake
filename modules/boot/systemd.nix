@@ -1,7 +1,7 @@
 { ... }: {
   boot.loader.systemd-boot.enable = true;
 
-  initrd.luks.devices.cryptLvm = {
+  boot.initrd.luks.devices.cryptLvm = {
    device = "/dev/disk/by-label/cryptLvm";
    allowDiscards = true;
   };
