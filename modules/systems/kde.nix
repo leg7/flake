@@ -16,13 +16,8 @@
 
   users.users.user.packages = with pkgs; [
     gnome.simple-scan
+	firefox
   ];
-
-  programs.firejail.wrappedBinaries.firefox = {
-      executable = "${pkgs.lib.getBin pkgs.firefox}/bin/firefox";
-      profile = "${pkgs.firejail}/etc/firejail/firefox.profile";
-      extraArgs = [ "--private=~/.local/share/firefox" ];
-  };
 
   programs.dconf.enable = true;
 

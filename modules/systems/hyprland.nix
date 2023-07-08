@@ -34,6 +34,7 @@
       jdk
       brightnessctl
       signal-desktop
+	  firefox
   ];
 
   fonts.fonts = with pkgs; [
@@ -42,12 +43,6 @@
     noto-fonts-emoji
     nerdfonts
   ];
-
-  programs.firejail.wrappedBinaries.firefox = {
-      executable = "${pkgs.lib.getBin pkgs.firefox}/bin/firefox";
-      profile = "${pkgs.firejail}/etc/firejail/firefox.profile";
-      extraArgs = [ "--private=~/.local/share/firefox" ];
-  };
 
   programs.hyprland = {
     enable = true;

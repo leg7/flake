@@ -190,8 +190,6 @@
     updater.enable = true;
   };
 
-  programs.firejail.enable = true;
-
   boot = {
     kernelPackages = lib.mkDefault pkgs.linuxPackages_hardened;
 
