@@ -155,7 +155,7 @@
       '';
   };
 
-  # some hardening taken from the hardened profile
+  # -------- some hardening taken from the hardened profile --------
   nix.settings.allowed-users = [ "@users" ];
 
   environment.memoryAllocator.provider = lib.mkDefault "graphene-hardened";
@@ -202,6 +202,9 @@
 
       # Enable page allocator randomization
       "page_alloc.shuffle=1"
+
+	  # Go into s3 sleep, not actually hardening
+	  "mem_sleep_default=deep"
     ];
 
     blacklistedKernelModules = [
