@@ -87,7 +87,7 @@
       enable = true;
       coreOffset = -95;
       uncoreOffset = -95;
-      gpuOffset = -95; # Seems to have to effect
+      gpuOffset = -95; # Seems to have no effect
     };
   };
 
