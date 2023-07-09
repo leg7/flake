@@ -38,8 +38,8 @@ if [ "$1" = "--bios" ]; then
 	fi
 
 	parted "$disk" mklabel gpt
-	parted "$disk" mkpart primary 0% 1MiB set 1 bios_grub on
-	parted "$disk" mkpart primary fat32 1MiB 128MiB set 2 esp on
+	parted "$disk" mkpart primary 0% 2MiB set 1 bios_grub on
+	parted "$disk" mkpart primary fat32 2MiB 128MiB set 2 esp on
 	parted "$disk" mkpart primary 128MiB 100%
 
 	# Use luks1
