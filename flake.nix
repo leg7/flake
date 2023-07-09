@@ -25,7 +25,7 @@
         modules = [
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
-          ./t480.nix
+          ./computers/t480.nix
         ];
       };
 
@@ -41,7 +41,7 @@
         system = "x86_64-linux";
         modules = [
           impermanence.nixosModules.impermanence
-          ./x220i.nix
+          ./computers/x220i.nix
         ];
       };
     };

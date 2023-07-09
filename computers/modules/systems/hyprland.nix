@@ -1,6 +1,6 @@
 # Wayland hyprland config
 { pkgs, lib, ... }: {
-  imports = [ ../base.nix ];
+  imports = [ ./base.nix ];
 
   # These settings cause firefox to crash or not open so we revert them
   boot.kernelPackages = lib.mkOverride 50 pkgs.linuxPackages;
