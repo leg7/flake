@@ -1,0 +1,210 @@
+[1mdiff --git a/install.sh b/install.sh[m
+[1mindex f8b12e5..ab54b12 100755[m
+[1m--- a/install.sh[m
+[1m+++ b/install.sh[m
+[36m@@ -1,6 +1,6 @@[m
+ #!/bin/sh[m
+[31m-# $1 can either be --secureboot, --grub or --legacy[m
+[31m-[ -z "$1" ] && exit[m
+[32m+[m[32m# $1 can either be --secureboot or --bios[m
+[32m+[m[32m# if you want to install for a normal uefi system don't use any arguments[m
+ [m
+ diskGood()[m
+ {[m
+[36m@@ -27,27 +27,28 @@[m [mreadDisk()[m
+ [m
+ disk=$(readDisk)[m
+ [m
+[31m-if echo "$disk" | grep -q nvme; then[m
+[31m-	efiPartition="$disk"p1[m
+[31m-	sysPartition="$disk"p2[m
+[31m-else[m
+[31m-	efiPartition="$disk"1[m
+[31m-	sysPartition="$disk"2[m
+[31m-fi[m
+[32m+[m[32mif [ "$1" = "--bios" ]; then[m
+[32m+[m	[32m# This is because you need a 1mb partition for the bios boot partition[m
+[32m+[m	[32mif echo "$disk" | grep -q nvme; then[m
+[32m+[m		[32mefiPartition="$disk"p2[m
+[32m+[m		[32msysPartition="$disk"p3[m
+[32m+[m	[32melse[m
+[32m+[m		[32mefiPartition="$disk"2[m
+[32m+[m		[32msysPartition="$disk"3[m
+[32m+[m	[32mfi[m
+ [m
+[31m-[m
+[31m-if [ "$1" = "secureboot" ]; then[m
+[31m-	# Partition disks[m
+ 	parted "$disk" mklabel gpt[m
+[31m-	parted "$disk" mkpart primary fat32 0% 512MiB set 1 esp on[m
+[31m-	parted "$disk" mkpart primary 512MiB 100%[m
+[32m+[m	[32mparted "$disk" mkpart primary 0% 1MiB set 1 bios_grub on[m
+[32m+[m	[32mparted "$disk" mkpart primary fat32 1MiB 128MiB set 2 esp on[m
+[32m+[m	[32mparted "$disk" mkpart primary 128MiB 100%[m
+ [m
+[31m-    # Encrypt disk (you might need to adjust the memory needed)[m
+[31m-    cryptsetup luksFormat --type luks2 -i 5000 --pbkdf argon2id --pbkdf-memory 4000000 --hash sha512 "$sysPartition"[m
+[31m-    cryptsetup open "$sysPartition" cryptLvm[m
+[31m-    cryptsetup config "$sysPartition" --label cryptLvm[m
+[32m+[m	[32m# Use luks1[m
+[32m+[m[32m    cryptsetup luksFormat --type luks1 -i 5000 --hash sha512 "$sysPartition"[m
+[32m+[m[32m    # dd if=/dev/urandom of=./keyfile.bin bs=1024 count=4[m
+[32m+[m[32m    # cryptsetup luksAddKey "$sysPartition" keyfile.bin[m
+[32m+[m[32m    # cryptsetup open "$sysPartition" cryptLvm -d keyfile.bin[m
+[32m+[m	[32mcryptsetup open "$sysPartition" cryptLvm[m
+ [m
+[31m-    # LVM[m
+     pvcreate /dev/mapper/cryptLvm[m
+     vgcreate pool /dev/mapper/cryptLvm[m
+ [m
+[36m@@ -55,32 +56,39 @@[m [mif [ "$1" = "secureboot" ]; then[m
+     lvcreate -L "$size"G -n swap pool[m
+     lvcreate -l 100%FREE -n nix pool[m
+ [m
+[31m-    # Make filesystems[m
+     mkfs.fat -n ESP -F32 "$efiPartition"[m
+     mkfs.f2fs -l nix -O extra_attr,inode_checksum,sb_checksum,compression /dev/pool/nix[m
+     mkswap /dev/pool/swap[m
+     swapon /dev/pool/swap[m
+ [m
+[31m-    # Mount[m
+     mount -m -o size=10G -t tmpfs none /mnt[m
+     mount -m -o compress_algorithm=zstd,compress_chksum,atgc,gc_merge,lazytime /dev/pool/nix /mnt/nix[m
+     mount -m "$efiPartition" /mnt/boot[m
+[31m-    mkdir -p /mnt/nix/persistent/etc/ # for impermanence to work[m
+[32m+[m[32m    mkdir -p /mnt/nix/persistent/etc/[m
+[32m+[m
+[32m+[m[32m    # Move the key[m
+[32m+[m[32m    # mkdir -p /mnt/nix/persistent/etc/secrets/initrd/[m
+[32m+[m[32m    # mkdir -p /mnt/etc/secrets/initrd/[m
+[32m+[m[32m    # cp keyfile.bin /mnt/etc/secrets/initrd/[m
+[32m+[m[32m    # cp keyfile.bin /mnt/nix/persistent/etc/secrets/initrd/[m
+[32m+[m[32m    # chmod 000 /mnt/nix/persistent/etc/secrets/initrd/keyfile.bin[m
+[32m+[m[32melse[m
+[32m+[m	[32m# With uefi we obviously don't need a bios boot partition[m
+[32m+[m	[32mif echo "$disk" | grep -q nvme; then[m
+[32m+[m		[32mefiPartition="$disk"p1[m
+[32m+[m		[32msysPartition="$disk"p2[m
+[32m+[m	[32melse[m
+[32m+[m		[32mefiPartition="$disk"1[m
+[32m+[m		[32msysPartition="$disk"2[m
+[32m+[m	[32mfi[m
+ [m
+[31m-    nix-shell -p sbctl --run 'sbctl create-keys'[m
+[31m-    cp -r /etc/secureboot /mnt/nix/persistent/etc/secureboot[m
+[31m-    cp -r /etc/secureboot /mnt/etc/[m
+[31m-elif [ "$1" = "grub" ]; then[m
+[31m-	# Use a smaller boot partition[m
+ 	parted "$disk" mklabel gpt[m
+[31m-	parted "$disk" mkpart primary fat32 0% 128MiB set 1 esp on[m
+[31m-	parted "$disk" mkpart primary 128MiB 100%[m
+[32m+[m	[32mparted "$disk" mkpart primary fat32 0% 512MiB set 1 esp on[m
+[32m+[m	[32mparted "$disk" mkpart primary 512MiB 100%[m
+ [m
+[31m-	# Use luks1 and a keyfile[m
+[31m-    cryptsetup luksFormat --type luks1 -i 5000 --hash sha512 "$sysPartition"[m
+[31m-    dd if=/dev/urandom of=./keyfile.bin bs=1024 count=4[m
+[31m-    cryptsetup luksAddKey "$sysPartition" keyfile.bin[m
+[31m-    cryptsetup open "$sysPartition" cryptLvm -d keyfile.bin[m
+[32m+[m[32m    cryptsetup luksFormat --type luks2 -i 5000 --pbkdf argon2id --pbkdf-memory 4000000 --hash sha512 "$sysPartition"[m
+[32m+[m[32m    cryptsetup open "$sysPartition" cryptLvm[m
+[32m+[m[32m    cryptsetup config "$sysPartition" --label cryptLvm[m
+ [m
+     pvcreate /dev/mapper/cryptLvm[m
+     vgcreate pool /dev/mapper/cryptLvm[m
+[36m@@ -96,15 +104,14 @@[m [melif [ "$1" = "grub" ]; then[m
+ [m
+     mount -m -o size=10G -t tmpfs none /mnt[m
+     mount -m -o compress_algorithm=zstd,compress_chksum,atgc,gc_merge,lazytime /dev/pool/nix /mnt/nix[m
+[31m-    mount -m "$efiPartition" /mnt/boot/efi # Mount to boot/efi[m
+[31m-    mkdir -p /mnt/nix/persistent/etc/[m
+[32m+[m[32m    mount -m "$efiPartition" /mnt/boot[m
+[32m+[m[32m    mkdir -p /mnt/nix/persistent/etc/ # for impermanence to work[m
+ [m
+[31m-    # Move the key[m
+[31m-    mkdir -p /mnt/nix/persistent/etc/secrets/initrd/[m
+[31m-    mkdir -p /mnt/etc/secrets/initrd/[m
+[31m-    cp keyfile.bin /mnt/etc/secrets/initrd/[m
+[31m-    cp keyfile.bin /mnt/nix/persistent/etc/secrets/initrd/[m
+[31m-    chmod 000 /mnt/nix/persistent/etc/secrets/initrd/keyfile.bin[m
+[32m+[m	[32mif [ "$1" = "--secureboot" ]; then[m
+[32m+[m		[32mnix-shell -p sbctl --run 'sbctl create-keys'[m
+[32m+[m		[32mcp -r /etc/secureboot /mnt/nix/persistent/etc/secureboot[m
+[32m+[m		[32mcp -r /etc/secureboot /mnt/etc/[m
+[32m+[m	[32mfi[m
+ fi[m
+ [m
+ nixos-generate-config --root /mnt[m
+[1mdiff --git a/modules/boot/grub.nix b/modules/boot/grub.nix[m
+[1mindex f75e858..6e906db 100644[m
+[1m--- a/modules/boot/grub.nix[m
+[1m+++ b/modules/boot/grub.nix[m
+[36m@@ -1,37 +1,24 @@[m
+ { lib, ... }: {[m
+   boot = {[m
+[31m-    initrd = {[m
+[31m-      secrets."keyfile.bin" = "/etc/secrets/initrd/keyfile.bin";[m
+[31m-[m
+[31m-      luks.devices.cryptLvm = {[m
+[31m-        # You need to overwrite boot.initrd.luks.devices.cryptLvm.device because grub[m
+[31m-        # doesn't support luks2 and luks1 doesn't support disk labels[m
+[31m-        # overwrite the uuid in your host module[m
+[31m-        device = lib.mkDefault "/dev/disk/by-uuid/TODO";[m
+[31m-        allowDiscards = true;[m
+[31m-        keyFile = "/keyfile.bin";[m
+[31m-		preLVM = true;[m
+[31m-      };[m
+[32m+[m[32m    initrd.luks.devices.cryptLvm = {[m
+[32m+[m[32m      # You need to overwrite boot.initrd.luks.devices.cryptLvm.device because grub[m
+[32m+[m[32m      # doesn't support luks2 and luks1 doesn't support disk labels[m
+[32m+[m[32m      # overwrite the uuid in your host module[m
+[32m+[m[32m      device = lib.mkDefault "/dev/disk/by-uuid/TODO";[m
+[32m+[m[32m      allowDiscards = true;[m
+[32m+[m[32m      preLVM = true;[m
+     };[m
+ [m
+[31m-    loader = {[m
+[31m-      efi = {[m
+[31m-        canTouchEfiVariables = true;[m
+[31m-        efiSysMountPoint = "/boot/efi";[m
+[31m-      };[m
+[31m-[m
+[31m-      grub = {[m
+[31m-        efiSupport = true;[m
+[31m-        device = "nodev";[m
+[32m+[m[32m    loader.grub = {[m
+[32m+[m		[32m# You also need to overwrite this to the disk you're installing grub to[m
+[32m+[m		[32m# for example /dev/sda[m
+[32m+[m[32m        device = lib.mkDefault "/dev/disk/by-uuid/TODO";[m
+         enableCryptodisk = true;[m
+[31m-      };[m
+     };[m
+   };[m
+ [m
+[31m-  fileSystems."/boot/efi" = {[m
+[32m+[m[32m  fileSystems."/boot" = {[m
+       device = "/dev/disk/by-label/ESP";[m
+       fsType = "vfat";[m
+   };[m
+[31m-[m
+[31m-  environment.persistence."/nix/persistent".directories = [ "/etc/secrets/initrd" "/boot" ];[m
+ }[m
+[1mdiff --git a/x220i.nix b/x220i.nix[m
+[1mindex 98b301e..223c374 100644[m
+[1m--- a/x220i.nix[m
+[1m+++ b/x220i.nix[m
+[36m@@ -1,5 +1,5 @@[m
+ { pkgs, lib, config, ... }: {[m
+[31m-  imports = [ ./modules/boot/systemd.nix ./modules/systems/gnome.nix ];[m
+[32m+[m[32m  imports = [ ./modules/boot/grub.nix ./modules/systems/gnome.nix ];[m
+ [m
+   system.stateVersion = "23.11";[m
+   nixpkgs.config.allowUnfree = true;[m
+[36m@@ -7,6 +7,7 @@[m
+ [m
+   # Use cryptsetup luksUUID to find the uuid of the device[m
+   # boot.initrd.luks.devices.cryptLvm.device = lib.mkOverride 50 "/dev/disk/by-uuid/";[m
+[32m+[m[32m  # boot.loader.grub.device = lib.mkOverride 50 "/dev/disk/by-uuid";[m
+ [m
+   hardware = {[m
+     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;[m
