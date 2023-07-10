@@ -1,6 +1,38 @@
 #!/bin/sh
-# $1 can either be --secureboot or --bios
-# if you want to install for a normal uefi system don't use any arguments
+
+usage()
+{
+	printf "This program partitions and encrypts your disk to install my
+nixos flake.
+
+	-b sets up the disk for a bios system
+	-u sets up the disk for a uefi system
+	-s generates secureboot keys for a uefi system"
+	exit 1
+}
+
+[ "$#" -eq 0 ] && usage
+
+secureboot=false
+uefi=false
+bios=false
+
+while getopts "sub" arg; do
+	case "$arg" in
+		s) secureboot=true;;
+		u) uefi=true;;
+		b) bios=true;;
+		*) usage;;
+	esac
+done
+
+if $uefi && $bios; then
+	printf "Wrong options, can't setup disk for bios and uefi at the same time\n"
+	usage
+elif $bios && $secureboot; then
+	printf "Bios does not support secureboot\n"
+	usage
+fi
 
 diskGood()
 {
@@ -27,7 +59,7 @@ readDisk()
 
 disk=$(readDisk)
 
-if [ "$1" = "--bios" ]; then
+if $bios; then
 	# This is because you need a 1mb partition for the bios boot partition
 	if echo "$disk" | grep -q nvme; then
 		efiPartition="$disk"p2
@@ -72,7 +104,9 @@ if [ "$1" = "--bios" ]; then
     # cp keyfile.bin /mnt/etc/secrets/initrd/
     # cp keyfile.bin /mnt/nix/persistent/etc/secrets/initrd/
     # chmod 000 /mnt/nix/persistent/etc/secrets/initrd/keyfile.bin
-else
+
+	nixos-generate-config --root /mnt
+elif $uefi; then
 	# With uefi we obviously don't need a bios boot partition
 	if echo "$disk" | grep -q nvme; then
 		efiPartition="$disk"p1
@@ -107,12 +141,13 @@ else
     mount -m "$efiPartition" /mnt/boot
     mkdir -p /mnt/nix/persistent/etc/ # for impermanence to work
 
-	if [ "$1" = "--secureboot" ]; then
-		nix-shell -p sbctl --run 'sbctl create-keys'
-		cp -r /etc/secureboot /mnt/nix/persistent/etc/secureboot
-		cp -r /etc/secureboot /mnt/etc/
-	fi
+	nixos-generate-config --root /mnt
 fi
 
-nixos-generate-config --root /mnt
+if $secureboot; then
+	nix-shell -p sbctl --run 'sbctl create-keys'
+	cp -r /etc/secureboot /mnt/nix/persistent/etc/secureboot
+	cp -r /etc/secureboot /mnt/etc/
+fi
+
 alias nins='sudo nixos-install --no-root-passwd --flake /mnt/etc/nixos/#eleum --cores 0 --root /mnt'
