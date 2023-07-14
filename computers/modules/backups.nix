@@ -18,8 +18,8 @@
 	    home=/nix/persistent/home/user
 
 	    ${pkgs.util-linux}/bin/mount "$backupDir"
-		${pkgs.gnutar}/bin/tar cvf "$backupDir"/"$(date +"%F_%H-%M-%S")".tar $home/books $home/documents $home/pics $home/vids $home/audio &&
 		${pkgs.findutils}/bin/find "$backupDir" -mtime +5 -delete
+		${pkgs.gnutar}/bin/tar cvf "$backupDir"/"$(date +"%F_%H-%M-%S")".tar $home/books $home/documents $home/pics $home/vids $home/audio
 	    ${pkgs.util-linux}/bin/umount "$backupDir"
 	  '';
 	  serviceConfig = {
