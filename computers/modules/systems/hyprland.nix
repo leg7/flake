@@ -10,6 +10,7 @@
 
   # mainly stuff for the wayland compositor
   users.users.user.packages = with pkgs; [
+      ghc
       qmk
       waydroid
       transmission libtransmission tremc
