@@ -39,8 +39,7 @@
       ];
     };
 
-    sessionVariables = rec {
-      EDITOR = "vim";
+    sessionVariables = {
       PAGER = "less";
       BROWSER = "firefox";
 
@@ -65,13 +64,14 @@
 
     systemPackages = with pkgs; [
       xdg-utils xdg-user-dirs xdg-ninja
-      p7zip
+      p7zip unzip
       vim
       vimv
       wget
       tree
       bottom
       shellcheck
+      any-nix-shell
     ];
 
     binsh = "${pkgs.dash}/bin/dash";
@@ -100,7 +100,10 @@
   };
 
   programs = {
-    fish.enable = true;
+    fish = {
+      enable = true;
+      promptInit = "any-nix-shell fish --info-right | source";
+    };
 
     fzf = {
       fuzzyCompletion = true;
@@ -111,6 +114,8 @@
       enable = true;
       config.init.defaultBranch = "main";
     };
+
+    neovim.enable = true;
   };
 
   # networking
