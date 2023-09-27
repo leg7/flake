@@ -35,9 +35,7 @@
     };
   };
 
-  programs.hyprland = {
-    nvidiaPatches = true;
-  };
+  programs.hyprland.enableNvidiaPatches = true;
 
   services = {
     xserver.videoDrivers = [ "nvidia" ];

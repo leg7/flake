@@ -7,7 +7,7 @@
 
   security.lockKernelModules = lib.mkOverride 50 false;
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
