@@ -10,7 +10,7 @@
 
   # mainly stuff for the wayland compositor
   users.users.user.packages = with pkgs; [
-    ghc jdk python3Full clang-tools clang gcc glibc ocaml deno nodejs_20
+    ghc jdk python311Full clang-tools clang gcc glibc ocaml deno nodejs_20
     rnix-lsp
     qmk
     waydroid
