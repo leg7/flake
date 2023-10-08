@@ -64,7 +64,7 @@
     systemPackages = with pkgs; [
       xdg-utils xdg-user-dirs xdg-ninja
       p7zip unzip
-      vim
+      vim-full
       vimv
       wget
       tree
