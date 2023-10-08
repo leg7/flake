@@ -7,11 +7,6 @@
   environment.memoryAllocator.provider = lib.mkOverride 50 "libc";
 
   security.lockKernelModules = lib.mkOverride 50 false;
-  security.pam.services.swaylock.text = ''
-    # PAM configuration file for the swaylock screen locker. By default, it includes
-    # the 'login' configuration file (see /etc/pam.d/login)
-    auth include login
-  '';
 
   # mainly stuff for the wayland compositor
   users.users.user.packages = with pkgs; [
@@ -28,7 +23,6 @@
     foot
     fnott libnotify
     wlsunset
-    swaylock-effects
     cinnamon.nemo
     ydotool
     wl-clipboard
@@ -39,7 +33,7 @@
     brightnessctl
     signal-desktop
     firefox
-j ];
+  ];
 
   fonts = {
     enableDefaultPackages = true;
