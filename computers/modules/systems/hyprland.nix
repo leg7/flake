@@ -183,4 +183,8 @@
   systemd.services.mpd.environment = {
     XDG_RUNTIME_DIR = "/run/user/1000";
   };
+
+  # Turn this service off because it's just been failing on every rebuild for 6 months
+  systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
+  systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;
 }
