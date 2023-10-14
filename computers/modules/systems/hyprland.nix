@@ -33,6 +33,7 @@
     brightnessctl
     signal-desktop
     firefox
+    gnome.gnome-calendar
   ];
 
   fonts = {
