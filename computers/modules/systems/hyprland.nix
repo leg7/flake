@@ -10,10 +10,15 @@
 
   # mainly stuff for the wayland compositor
   users.users.user.packages = with pkgs; [
-    ghc jdk python311Full clang-tools clang gcc glibc ocaml deno nodejs_20
-    rnix-lsp
+    cargo
+    nodejs
+    python311Full
+    haskell.compiler.ghc947 haskell-language-server cabal-install
+    qtcreator
+    gnumake cmake clang-tools clang gcc glibc
+    ocaml ocamlPackages.merlin opam
+    appimage-run vial
     qmk
-    waydroid
     transmission libtransmission tremc
     swaybg eww-wayland socat jq
     ncmpcpp pulsemixer pamixer easyeffects
