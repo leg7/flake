@@ -50,7 +50,7 @@
     fontconfig.defaultFonts = {
       serif = [ "Noto Serif" ];
       sansSerif = [ "Noto Sans" ];
-      monospace = [ "Fira Code Retina" ];
+      monospace = [ "Monoid Nerd Font" ];
       emoji = [ "Noto Color Emoji" "Symbols Nerd Font" ];
     };
   };
