@@ -59,6 +59,8 @@
       STACK_ROOT            = "$XDG_DATA_HOME/stack";
       NPM_CONFIG_USERCONFIG = "$XDG_CONFIG_HOME/npm/npmrc";
       NUGET_PACKAGES        = "$XDG_CACHE_HOME/NuGetPackages";
+      OPAMROOT              = "$XDG_DATA_HOME/opam";
+      GHCUP_USE_XDG_DIRS    = "true";
     };
 
     systemPackages = with pkgs; [
