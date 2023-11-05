@@ -137,6 +137,7 @@
   networking = {
     hostName = "eleum";
     dhcpcd.enable = false;
+    useNetworkd = true;
 
     wireless.iwd = {
       enable = true;
