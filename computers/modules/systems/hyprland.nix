@@ -34,6 +34,7 @@
     signal-desktop
     firefox
     gnome.gnome-calendar
+    gnome.adwaita-icon-theme
   ];
 
   fonts = {
