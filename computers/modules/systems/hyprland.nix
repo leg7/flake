@@ -55,8 +55,8 @@
     fontconfig.defaultFonts = {
       serif = [ "Noto Serif" ];
       sansSerif = [ "Noto Sans" ];
-      monospace = [ "Monoid Nerd Font" ];
-      emoji = [ "Noto Color Emoji" "Symbols Nerd Font" ];
+      monospace = [ "Monoid Nerd Font Mono" "Symbols Nerd Font" ];
+      emoji = [ "Noto Color Emoji" ];
     };
   };
 
