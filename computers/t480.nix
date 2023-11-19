@@ -89,8 +89,4 @@
       gpuOffset = -95; # Seems to have no effect
     };
   };
-
-  # Workaround for thinkfan being buggy
-  # This fix doesn't work with the hardended config
-  # systemd.services.thinkfan.preStart = "/run/current-system/sw/bin/modprobe -r thinkpad_acpi && /run/current-system/sw/bin/modprobe thinkpad_acpi";
 }
