@@ -61,6 +61,8 @@
       NUGET_PACKAGES        = "$XDG_CACHE_HOME/NuGetPackages";
       OPAMROOT              = "$XDG_DATA_HOME/opam";
       GHCUP_USE_XDG_DIRS    = "true";
+
+      FZF_DEFAULT_OPTS = "--layout reverse --color fg:-1,fg+:-1,bg:-1,bg+:-1,hl:-1,hl+:-1,query:-1,gutter:-1";
     };
 
     systemPackages = with pkgs; [
