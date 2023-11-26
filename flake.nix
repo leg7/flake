@@ -8,7 +8,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs";
 
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
