@@ -13,9 +13,10 @@
     cargo
     nodejs
     python311Full
-    haskell.compiler.ghc947 haskell-language-server cabal-install
+    ghc haskell-language-server cabal-install
     qtcreator
-    gnumake cmake clang-tools clang gcc glibc
+    gcc gnumake cmake gdb
+    clang-tools clang cling lldb valgrind
     ocaml ocamlPackages.merlin opam
     # keyboard
     appimage-run vial
