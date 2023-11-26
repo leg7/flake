@@ -8,8 +8,8 @@
 
   security.lockKernelModules = lib.mkOverride 50 false;
 
-  # mainly stuff for the wayland compositor
   users.users.user.packages = with pkgs; [
+    # dev tools
     cargo
     nodejs
     python311Full
@@ -17,8 +17,10 @@
     qtcreator
     gnumake cmake clang-tools clang gcc glibc
     ocaml ocamlPackages.merlin opam
+    # keyboard
     appimage-run vial
     qmk
+    # other
     transmission libtransmission tremc
     swaybg eww-wayland socat jq
     ncmpcpp pulsemixer pamixer easyeffects
