@@ -197,7 +197,7 @@
     packages = [
       pkgs.spleen
     ];
-    font = "spleen-8x16";
+    font = "spleen-12x24";
   };
 
   # -------- some hardening taken from the hardened profile --------
