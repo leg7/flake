@@ -14,9 +14,9 @@
     nodejs
     python311Full
     ghc haskell-language-server cabal-install
-    qtcreator
-    gcc gnumake cmake gdb
-    clang-tools clang cling lldb valgrind
+    qt5Full qtcreator
+    gcc gnumake cmake gdb gf valgrind
+    clang-tools clang cling
     ocaml ocamlPackages.merlin opam
     # keyboard
     appimage-run vial
