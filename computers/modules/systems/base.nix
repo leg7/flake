@@ -167,6 +167,13 @@
       '';
   };
 
+  console = {
+    packages = [
+      pkgs.spleen
+    ];
+    font = "spleen-8x16";
+  };
+
   # -------- some hardening taken from the hardened profile --------
   nix.settings.allowed-users = [ "@users" ];
 
