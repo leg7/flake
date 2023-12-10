@@ -1,6 +1,7 @@
 { pkgs, lib, config, ... }: {
   imports = [ ./modules/boot/secureboot.nix ./modules/systems/hyprland.nix ./modules/backups.nix ];
 
+  networking.hostname = "eleum";
   system.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;
   time.timeZone = "Europe/Paris";

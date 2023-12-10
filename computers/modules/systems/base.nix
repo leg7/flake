@@ -146,7 +146,7 @@
   };
 
   networking = {
-    hostName = "eleum";
+    hostName = "defaultHostName";
     dhcpcd.enable = false;
     useNetworkd = true;
 
