@@ -146,7 +146,6 @@
   };
 
   networking = {
-    hostName = "defaultHostName";
     dhcpcd.enable = false;
     useNetworkd = true;
 
@@ -176,6 +175,24 @@
       '';
   };
 
+  services.openssh = {
+   enable = true;
+   ports = [ 727 ];
+   allowSFTP = false; # Don't set this if you need sftp
+   settings = {
+     PasswordAuthentication = false;
+     KbdInteractiveAuthentication = false;
+     challengeResponseAuthentication = false;
+   };
+   extraConfig = ''
+     AllowTcpForwarding yes
+     X11Forwarding no
+     AllowAgentForwarding no
+     AllowStreamLocalForwarding no
+     AuthenticationMethods publickey
+   '';
+  };
+
   console = {
     packages = [
       pkgs.spleen
@@ -184,7 +201,7 @@
   };
 
   # -------- some hardening taken from the hardened profile --------
-  nix.settings.allowed-users = [ "@users" ];
+  nix.settings.allowed-users = [ "@wheel" ];
 
   environment.memoryAllocator.provider = lib.mkDefault "graphene-hardened";
 
@@ -219,7 +236,7 @@
   };
 
   boot = {
-    kernelPackages = lib.mkDefault pkgs.linuxPackages_hardened;
+    kernelPackages = lib.mkOverride 950 pkgs.linuxPackages_hardened;
 
     kernelParams = [
       # Slab/slub sanity checks, redzoning, and poisoning

@@ -35,13 +35,14 @@
         ];
       };
 
-      # majula = nixpkgs.lib.nixosSystem {
-      #   system = "aarch64-linux";
-      #   modules = [
-      #     impermanence.nixosModules.impermanence
-      #     ./rpi4.nix
-      #   ];
-      # };
+      majula = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        modules = [
+          nixos-hardware.nixosModules.raspberry-pi-4
+          impermanence.nixosModules.impermanence
+          ./computers/rpi4.nix
+        ];
+      };
 
       x200 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
