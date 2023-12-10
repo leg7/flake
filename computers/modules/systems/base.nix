@@ -1,8 +1,17 @@
 # Minimal hardened base system with lan/wifi and shell utilites
 # This config uses impermanence
 { pkgs, lib, config, ... }: {
-  nix.settings.experimental-features = [ "nix-command" "flakes" "repl-flake" ];
-  nix.settings.auto-optimise-store = true;
+  nix = {
+    settings = {
+      experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+      auto-optimise-store = true;
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "-d";
+    };
+  };
 
   # The boot partiton is defined in the boot module
   swapDevices = [ { device = "/dev/pool/swap"; } ];
