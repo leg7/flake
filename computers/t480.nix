@@ -84,9 +84,9 @@
 
     undervolt = {
       enable = true;
-      coreOffset = -95;
-      uncoreOffset = -95;
-      gpuOffset = -95; # Seems to have no effect
+      coreOffset = -90;
+      uncoreOffset = -90;
+      gpuOffset = -90; # Seems to have no effect
     };
   };
 }

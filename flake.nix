@@ -8,7 +8,9 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
@@ -20,11 +22,12 @@
     emacs-overlay.url = "github:nix-community/emacs-overlay";
   };
 
-  outputs = inputs@{ nixpkgs, lanzaboote, impermanence, emacs-overlay, ... }: {
+  outputs = inputs@{ nixpkgs, nixos-hardware, lanzaboote, impermanence, emacs-overlay, ... }: {
     nixosConfigurations = {
       eleum = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
+          nixos-hardware.nixosModules.lenovo-thinkpad-t480
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
           ({pkgs, ...}: { nixpkgs.overlays = [ emacs-overlay.overlay ]; })
