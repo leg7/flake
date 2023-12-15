@@ -18,6 +18,7 @@
     gcc gnumake cmake gdb gf valgrind
     clang-tools clang cling
     ocaml ocamlPackages.merlin opam
+    swiPrologWithGui
     # keyboard
     appimage-run vial
     qmk
