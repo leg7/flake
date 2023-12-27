@@ -152,7 +152,10 @@
     wireless.iwd = {
       enable = true;
       settings = {
-        General.EnableNetworkConfiguration = true; # Use resolved instead of dhcpcd
+        General = {
+          EnableNetworkConfiguration = true; # Use systemd instead of dhcpcd
+          AddressRandomization = "network";
+        };
         Network.NameResolvingService = "systemd";
       };
     };
