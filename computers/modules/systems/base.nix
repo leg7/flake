@@ -198,9 +198,8 @@
   };
 
   console = {
-    packages = [
-      pkgs.spleen
-    ];
+    earlySetup = true;
+    packages = [ pkgs.spleen ];
     font = "spleen-12x24";
   };
 
