@@ -2,6 +2,10 @@
 { pkgs, lib, ... }: {
   imports = [ ./base.nix ];
 
+  networking.hosts = {
+    "0.0.0.0" = [ "youtube.com" "www.youtube.com" ];
+  };
+
   # These settings cause firefox to crash or not open so we revert them
   boot.kernelPackages = lib.mkOverride 50 pkgs.linuxPackages;
   environment.memoryAllocator.provider = lib.mkOverride 50 "libc";

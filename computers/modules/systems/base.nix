@@ -167,9 +167,10 @@
 
   services.resolved = {
     enable = true;
+    # I have to set this because I'm in a uni dorm and the wifi connection portal won't open
     extraConfig = ''
         LLMNR=no
-        ReadEtcHosts=no
+        ReadEtcHosts=yes
         DNSSEC=no
         ResolveUnicastSingleLabel=yes
       '';
