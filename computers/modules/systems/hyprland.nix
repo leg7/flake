@@ -3,7 +3,7 @@
   imports = [ ./base.nix ];
 
   networking.hosts = {
-    "0.0.0.0" = [ "youtube.com" "www.youtube.com" ];
+    "0.0.0.0" = [ "youtube.com" "www.youtube.com" "piped.adminforge.de" ];
   };
 
   # These settings cause firefox to crash or not open so we revert them
