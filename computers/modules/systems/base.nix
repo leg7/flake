@@ -9,7 +9,7 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "-d";
+      options = "--delete-older-than 1w";
     };
   };
 
