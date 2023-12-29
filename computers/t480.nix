@@ -4,14 +4,16 @@
   networking.hostName = "eleum";
   system.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.nvidia.acceptLicense = true;
   time.timeZone = "Europe/Paris";
 
   boot = {
-    kernelModules = [ "kvm-intel" ];
+    kernelModules = [ "nvidia" ];
+    blacklistedKernelModules = [ "nouveau" "i915" ];
 
     initrd = {
-      availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
-      kernelModules = [ "dm-snapshot" ];
+      availableKernelModules = [ "usbhid" "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
+      kernelModules = [ "nvidia" "dm-snapshot" ];
     };
   };
 
@@ -23,16 +25,20 @@
 
     nvidia = {
       modesetting.enable = true;
+      nvidiaSettings = true;
       prime = {
         offload.enable = true;
+        offload.enableOffloadCmd = true;
         nvidiaBusId = "PCI:1:0:0";
         intelBusId = "PCI:0:2:0";
       };
     };
 
     opengl = {
+      driSupport = true;
+      driSupport32Bit = true;
       enable = true;
-      extraPackages = with pkgs; [ vaapiIntel vaapiVdpau libvdpau-va-gl ];
+      extraPackages = with pkgs; [ intel-media-driver ];
     };
   };
 

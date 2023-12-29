@@ -27,7 +27,6 @@
       eleum = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          nixos-hardware.nixosModules.lenovo-thinkpad-t480
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
           ({pkgs, ...}: { nixpkgs.overlays = [ emacs-overlay.overlay ]; })

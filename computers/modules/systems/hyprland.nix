@@ -13,6 +13,16 @@
   security.lockKernelModules = lib.mkOverride 50 false;
 
   users.users.user.packages = with pkgs; [
+    osu-lazer
+    gamescope
+    gamemode
+    inxi
+    mangohud
+    wineWowPackages.waylandFull
+    openmw
+    zeroad
+    libva-utils
+    glxinfo
     # dev tools
     cargo
     nodejs
