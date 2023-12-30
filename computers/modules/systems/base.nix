@@ -58,7 +58,6 @@
       XDG_STATE_HOME  = "$HOME/.local/state";
       PATH = [ "$HOME/.local/bin" ];
 
-      WINEPREFIX            = "$XDG_DATA_HOME/wineprefixes/default";
       HISTFILE              = "$XDG_STATE_HOME/bash/history";
       GNUPGHOME             = "$XDG_DATA_HOME/gnupg";
       WGETRC                = "$XDG_CONFIG_HOME/wget/wgetrc";
