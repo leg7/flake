@@ -45,6 +45,7 @@
   programs.hyprland.enableNvidiaPatches = true;
 
   services = {
+    acpid.logEvents = true;
     xserver.videoDrivers = [ "nvidia" ];
     fstrim.enable = true;
     fwupd.enable = true;
