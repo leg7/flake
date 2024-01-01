@@ -147,23 +147,22 @@ elif $uefi; then
 
 	nixos-generate-config --root /mnt
 elif $rpi4; then
-	if echo "$disk" | grep -q "nvme|mmcblk"; then
-		firmwarePartition="$disk"p1  # 16mb partition for rpi4 firmware
-		efiPartition="$disk"p2
-		sysPartition="$disk"p3
+	if echo "$disk" | grep -Eq "nvme|mmcblk"; then
+		efiPartition="$disk"p1
+		sysPartition="$disk"p2
 	else
-		firmwarePartition="$disk"1
 		efiPartition="$disk"1
 		sysPartition="$disk"2
 	fi
 
-	mount -m "$firmwarePartition" tmp
+	mount -m "$efiPartition" tmp
 	mkdir -p backup
 	mv tmp/* backup
+	umount tmp
 
 	parted "$disk" mklabel gpt
-	parted "$disk" mkpart primary fat32 16MB 512MB set 1 esp on
-	parted "$disk" mkpart primary 512MB 100%
+	parted "$disk" mkpart primary fat32 0% 512MiB set 1 esp on
+	parted "$disk" mkpart primary 512MiB 100%
 
 	cryptsetup luksFormat --type luks2 -i 5000 --pbkdf argon2id --pbkdf-memory 4000000 --hash sha512 "$sysPartition"
 	cryptsetup open "$sysPartition" cryptLvm
