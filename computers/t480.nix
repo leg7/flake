@@ -24,11 +24,11 @@
     opentabletdriver.enable = true;
 
     nvidia = {
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
       modesetting.enable = true;
       nvidiaSettings = true;
       prime = {
-        offload.enable = true;
-        offload.enableOffloadCmd = true;
+        sync.enable = true;
         nvidiaBusId = "PCI:1:0:0";
         intelBusId = "PCI:0:2:0";
       };
