@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  imports = [ ./modules/boot/grub.nix ./modules/systems/hyprland.nix ];
+  imports = [ ./modules/systems/hyprland.nix ];
 
   system.stateVersion = "23.11";
   time.timeZone = "Europe/Paris";
