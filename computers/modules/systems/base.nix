@@ -18,24 +18,8 @@
 
   documentation.dev.enable = true;
 
-  # The boot partiton is defined in the boot module
-  swapDevices = [ { device = "/dev/pool/swap"; } ];
-  fileSystems = {
-    "/" = {
-      device = "tmpfs";
-      fsType = "tmpfs";
-      options = [ "defaults" "mode=755" ];
-    };
-
-    "/nix" = {
-      device = "/dev/pool/nix";
-      fsType = "f2fs";
-      options = [ "compress_algorithm=zstd" "compress_chksum" "atgc" "gc_merge" "lazytime" ];
-    };
-  };
-
   environment = {
-    persistence."/nix/persistent" = {
+    persistence."/persistent" = {
       hideMounts = true;
 
       directories = [
