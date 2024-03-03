@@ -2,10 +2,6 @@
 { pkgs, lib, ... }: {
   imports = [ ./base.nix ];
 
-  networking.hosts = {
-    "0.0.0.0" = [ "youtube.com" "www.youtube.com" "piped.adminforge.de" ];
-  };
-
   # These settings cause firefox to crash or not open so we revert them
   boot.kernelPackages = lib.mkOverride 50 pkgs.linuxPackages;
   environment.memoryAllocator.provider = lib.mkOverride 50 "libc";
@@ -13,7 +9,14 @@
   security.lockKernelModules = lib.mkOverride 50 false;
 
   users.users.user.packages = with pkgs; [
+    steam
     osu-lazer
+    prismlauncher
+    libGLU
+    freeglut
+    jdk17
+    jre17_minimal
+    glfw-wayland-minecraft
     gamescope
     gamemode
     inxi
@@ -24,13 +27,15 @@
     libva-utils
     glxinfo
     # dev tools
+    nasm
+    raylib
     cargo
     nodejs
     python311Full
     ghc haskell-language-server cabal-install
     qt5Full qtcreator
-    gcc gnumake cmake gdb gf valgrind
-    clang-tools clang cling
+    gcc_multi gnumake cmake gdb gf valgrind
+    clang-tools pkgsi686Linux.clang cling
     ocaml ocamlPackages.merlin opam
     swiPrologWithGui
     # keyboard

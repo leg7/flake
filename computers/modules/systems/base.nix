@@ -1,6 +1,9 @@
 # Minimal hardened base system with lan/wifi and shell utilites
 # This config uses impermanence
 { pkgs, lib, config, ... }: {
+
+  imports = [ ../web-filter.nix ];
+
   nix = {
     settings = {
       experimental-features = [ "nix-command" "flakes" "repl-flake" ];
@@ -12,6 +15,8 @@
       options = "--delete-older-than 1w";
     };
   };
+
+  documentation.dev.enable = true;
 
   # The boot partiton is defined in the boot module
   swapDevices = [ { device = "/dev/pool/swap"; } ];
@@ -71,6 +76,7 @@
       OPAMROOT              = "$XDG_DATA_HOME/opam";
       GHCUP_USE_XDG_DIRS    = "true";
 
+      ASAN_OPTIONS          = "halt_on_error=0";
       FZF_DEFAULT_OPTS = "--layout reverse --color fg:-1,fg+:-1,bg:-1,bg+:-1,hl:-1,hl+:-1,query:-1,gutter:-1";
     };
 
