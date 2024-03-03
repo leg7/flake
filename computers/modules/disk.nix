@@ -61,7 +61,7 @@
 
         lvs = {
           swap = {
-            size = "20G";
+            size = "1G";
             content = {
               type = "swap";
               resumeDevice = true;
@@ -69,7 +69,7 @@
           };
 
           nix = {
-            size = "80G";
+            size = "10%FREE";
             content = {
               type = "filesystem";
               format = "ext4";
@@ -90,5 +90,11 @@
       };
     };
 
+  };
+
+   fileSystems = {
+    "/".neededForBoot = true;
+    "/nix".neededForBoot = true;
+    "/persistent".neededForBoot = true;
   };
 }

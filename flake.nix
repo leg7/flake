@@ -41,6 +41,18 @@
         ];
       };
 
+      testing = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          lanzaboote.nixosModules.lanzaboote
+          impermanence.nixosModules.impermanence
+          ./computers/modules/systems/base.nix
+          ./computers/modules/boot/secureboot.nix
+          disko.nixosModules.disko
+          ./computers/modules/disk.nix
+        ];
+      };
+
       majula = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
         modules = [
