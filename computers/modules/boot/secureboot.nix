@@ -5,9 +5,9 @@
 
     lanzaboote = {
       enable = true;
-      pkiBundle = "/etc/secureboot";
+      pkiBundle = "/persist/etc/secureboot";
     };
   };
 
-  environment.persistence."/nix/persistent".directories = [ "/etc/secureboot" ];
+  environment.persistence."/persistent".directories = [ "/etc/secureboot" ];
 }
