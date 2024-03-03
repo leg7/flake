@@ -3,7 +3,7 @@
     disk = {
       vdb = {
         type = "disk";
-        device = disk-name;
+        device = "/dev/sda";
         content = {
           type = "gpt";
           partitions = {
@@ -83,7 +83,7 @@
             content = {
               type = "filesystem";
               format = "ext4";
-              mountpoint = "/home";
+              mountpoint = "/persistent";
             };
           };
         };
