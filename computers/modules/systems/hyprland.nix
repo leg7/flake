@@ -27,6 +27,7 @@
     libva-utils
     glxinfo
     # dev tools
+    virtualbox
     nasm
     raylib
     cargo
