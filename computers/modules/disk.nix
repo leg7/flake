@@ -8,6 +8,8 @@
           type = "gpt";
           partitions = {
             ESP = {
+              label = "ESP";
+              name = "ESP";
               size = "500M";
               type = "EF00";
               content = {
@@ -38,9 +40,10 @@
                   vg = "pool";
                 };
 
-                settings. allowDiscards = true;
+                settings.allowDiscards = true;
               };
 
+              label = "luks";
               size = "100%";
             };
           };
@@ -48,11 +51,9 @@
       };
     };
 
-    nodev = {
-      "/" = {
+    nodev."/" = {
         fsType = "tmpfs";
-        mountOptions = [ "size=10G" ];
-      };
+        mountOptions = [ "defaults" "mode=755" "size=10G" ];
     };
 
     lvm_vg = {
@@ -92,9 +93,14 @@
 
   };
 
-   fileSystems = {
+  fileSystems = {
     "/".neededForBoot = true;
     "/nix".neededForBoot = true;
     "/persistent".neededForBoot = true;
+  };
+
+  boot = {
+    supportedFilesystems = ["ext4"];
+    loader.systemd-boot.enable = true;
   };
 }
