@@ -35,7 +35,6 @@
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
           disko.nixosModules.disko
-          ./computers/modules/disk.nix
           ({pkgs, ...}: { nixpkgs.overlays = [ emacs-overlay.overlay ]; })
           ./computers/t480.nix
         ];

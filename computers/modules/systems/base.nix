@@ -2,7 +2,7 @@
 # This config uses impermanence
 { pkgs, lib, config, ... }: {
 
-  imports = [ ../web-filter.nix ];
+  imports = [ ../webFilter.nix ];
 
   nix = {
     settings = {
