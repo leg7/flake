@@ -1,12 +1,13 @@
 { pkgs, lib, config, ... }: {
   imports = [
-    ./modules/boot/secureboot.nix
+    ./modules/secureboot.nix
     ./modules/systems/hyprland.nix
     ./modules/mainDisk.nix
     ./modules/backups.nix
   ];
 
   mainDisk.name = "/dev/nvme0n1";
+  secureboot.enable = true;
 
   networking.hostName = "eleum";
   system.stateVersion = "23.11";
