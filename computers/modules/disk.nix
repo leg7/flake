@@ -1,106 +1,123 @@
-{ disk-name ? "/dev/sda" , ... } : {
-  disko.devices = {
-    disk = {
-      vdb = {
-        type = "disk";
-        device = "/dev/sda";
-        content = {
-          type = "gpt";
-          partitions = {
-            ESP = {
-              label = "ESP";
-              name = "ESP";
-              size = "500M";
-              type = "EF00";
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/boot";
-                mountOptions = [ "defaults" ];
+{ lib, config, ... }:
+with lib;
+let
+  cfg = config.mainDisk;
+  hostname = config.networking.hostName;
+in {
+  options.mainDisk = {
+    name = mkOption {
+      type = types.str;
+      example = "/dev/sda";
+      description = "The drive you want to format and partition as your main disk or the computer";
+    };
+  };
+
+  config = {
+    disko.devices = {
+      disk = {
+        vdb = {
+          type = "disk";
+          device = "${cfg.name}";
+
+          content = {
+            type = "gpt";
+
+            partitions = {
+              ESP = {
+                label = "${hostname}_ESP";
+                name = "${hostname}_ESP";
+                size = "500M";
+                type = "EF00";
+                content = {
+                  type = "filesystem";
+                  format = "vfat";
+                  mountpoint = "/boot";
+                  mountOptions = [ "defaults" ];
+                };
               };
-            };
 
-            luks = {
-              content = {
-                type = "luks";
-                name = "crypted";
-                initrdUnlock = true;
-                askPassword = true;
-
-                extraFormatArgs = [
-                  "--type luks2"
-                  "-i 5000"
-                  "--pbkdf argon2id"
-                  "--pbkdf-memory 4000000"
-                  "--hash sha512"
-                ];
+              luks = {
+                label = "${hostname}_mainDisk_luks";
+                size = "100%";
 
                 content = {
-                  type = "lvm_pv";
-                  vg = "pool";
-                };
+                  type = "luks";
+                  name = "${hostname}_mainDisk_luks";
+                  initrdUnlock = true;
+                  askPassword = true;
 
-                settings.allowDiscards = true;
+                  extraFormatArgs = [
+                    "--type luks2"
+                    "-i 5000"
+                    "--pbkdf argon2id"
+                    "--pbkdf-memory 4000000"
+                    "--hash sha512"
+                  ];
+
+                  content = {
+                    type = "lvm_pv";
+                    vg = "pool";
+                  };
+
+                  settings.allowDiscards = true;
+                };
+              };
+            };
+          };
+        };
+      };
+
+      nodev."/" = {
+          fsType = "tmpfs";
+          mountOptions = [ "defaults" "size=10G" ];
+      };
+
+      lvm_vg = {
+        pool = {
+          lvs = {
+            swap = {
+              content = {
+                type = "swap";
+                resumeDevice = true;
               };
 
-              label = "luks";
-              size = "100%";
+              size = "1G";
+            };
+
+            nix = {
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/nix";
+                mountOptions = [ "defaults" ];
+              };
+
+              size = "10%FREE";
+            };
+
+            persistent = {
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/persistent";
+              };
+
+              size = "100%FREE";
             };
           };
+
+          type = "lvm_vg";
         };
       };
+
     };
 
-    nodev."/" = {
-        fsType = "tmpfs";
-        mountOptions = [ "defaults" "mode=755" "size=10G" ];
+    fileSystems = {
+      "/".neededForBoot = true;
+      "/nix".neededForBoot = true;
+      "/persistent".neededForBoot = true;
     };
 
-    lvm_vg = {
-      pool = {
-        type = "lvm_vg";
-
-        lvs = {
-          swap = {
-            size = "1G";
-            content = {
-              type = "swap";
-              resumeDevice = true;
-            };
-          };
-
-          nix = {
-            size = "10%FREE";
-            content = {
-              type = "filesystem";
-              format = "ext4";
-              mountpoint = "/nix";
-              mountOptions = [ "defaults" ];
-            };
-          };
-
-          persistent = {
-            size = "100%FREE";
-            content = {
-              type = "filesystem";
-              format = "ext4";
-              mountpoint = "/persistent";
-            };
-          };
-        };
-      };
-    };
-
-  };
-
-  fileSystems = {
-    "/".neededForBoot = true;
-    "/nix".neededForBoot = true;
-    "/persistent".neededForBoot = true;
-  };
-
-  boot = {
-    supportedFilesystems = ["ext4"];
-    loader.systemd-boot.enable = true;
+    boot.supportedFilesystems = ["ext4"];
   };
 }

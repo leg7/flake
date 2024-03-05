@@ -46,10 +46,8 @@
         modules = [
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
-          ./computers/modules/systems/base.nix
-          ./computers/modules/boot/secureboot.nix
           disko.nixosModules.disko
-          ./computers/modules/disk.nix
+          ./computers/testing.nix
         ];
       };
 
