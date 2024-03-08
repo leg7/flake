@@ -50,5 +50,5 @@
     };
   };
 
-  environment.persistence."/nix/persistent".directories = [ "/etc/NetworkManager/system-connections" ];
+  environment.persistence."/persistent".directories = [ "/etc/NetworkManager/system-connections" ];
 }
