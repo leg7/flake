@@ -5,6 +5,7 @@
       "youtube.com" "www.youtube.com"
       "piped.adminforge.de" "https://github.com/TeamPiped/Piped/wiki/Instances"
       "invidious.fdn.fr" "yewtu.be" "https://docs.invidious.io/instances/"
+      "https://api.invidious.io/"
 
       "api.opencandy.com"
       "api.recommendedsw.com"
