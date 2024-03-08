@@ -135,6 +135,21 @@
         extraConfig = builtins.readFile ./config/newsboat/config;
       };
 
+      wofi = {
+        settings = {
+          width = "30%";
+
+          key_up = "Control_R-p";
+          key_down = "Control_R-n";
+          key_right = "Control_L-l";
+          key_left = "Control_L-h";
+
+          parse_search = "true";
+        };
+
+        style = builtins.readFile ./config/wofi/style.css;
+      };
+
       emacs = {
         enable = true;
         extraConfig = builtins.readFile ./config/emacs/init.el;
