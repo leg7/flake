@@ -77,13 +77,11 @@
       qmk
       # other
       transmission libtransmission tremc
-      swaybg eww-wayland socat jq
+      swaybg socat jq
       ncmpcpp pulsemixer pamixer easyeffects
       imv zathura
       cowsay fortune
       ffmpeg yt-dlp-light
-      foot
-      fnott libnotify
       wlsunset
       cinnamon.nemo
       ydotool
@@ -131,6 +129,12 @@
     };
 
     programs = {
+      newsboat = {
+        # TODO: Use module correctly
+        enable = true;
+        extraConfig = builtins.readFile ./config/newsboat/config;
+      };
+
       emacs = {
         enable = true;
         extraConfig = builtins.readFile ./config/emacs/init.el;
