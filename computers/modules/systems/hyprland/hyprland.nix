@@ -79,8 +79,7 @@
       transmission libtransmission tremc
       swaybg socat jq
       ncmpcpp pulsemixer pamixer easyeffects
-      imv zathura
-      cowsay fortune
+      imv cowsay fortune
       ffmpeg yt-dlp-light
       wlsunset
       cinnamon.nemo
@@ -133,6 +132,33 @@
         # TODO: Use module correctly
         enable = true;
         extraConfig = builtins.readFile ./config/newsboat/config;
+      };
+
+      zathura = {
+        enable = true;
+
+        options = {
+          sandbox = "none";
+          statusbar-h-padding = 0;
+          statusbar-v-padding = 0;
+          page-padding = 1;
+          selection-clipboard = "clipboard";
+          recolor-lightcolor = "#262626";
+          recolor-darkcolor = "#b2b3b3";
+        };
+
+        mappings = {
+          u = "scroll half-up";
+          d = "scroll half-down";
+          D = "toggle_page_mode";
+          r = "reload";
+          R = "rotate";
+          K = "zoom in";
+          J = "zoom out";
+          i = "recolor";
+          p = "print";
+          g = "goto top";
+        };
       };
 
       wofi = {
