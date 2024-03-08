@@ -1,0 +1,54 @@
+$background: #1f2228;
+$foreground: #cfcfcf;
+$selection: #2f333c;
+$red: #b34d4d;
+$green: #72a758;
+$yellow: #ac9d53;
+
+* {
+	all:         unset;
+        font-family: monospace;
+        font-size: 9pt;
+}
+
+.bar, .calendar {
+	margin: 0px;
+	padding: 6px;
+	background-color: rgba($background, 0.95);
+}
+
+.widget, .workspace-focused, .widget-red, .widget-yellow, .calendar, tooltip {
+	color: $foreground;
+
+	border: 0px none;
+	border-radius: 7px;
+
+	padding: 0px 7px 0px 7px;
+}
+
+.workspace-focused {
+        background-color: $green;
+}
+
+.widget-red {
+	background-color: $red;
+}
+
+.widget-yellow {
+	background-color: $yellow;
+	color: $selection;
+}
+
+// In case the song title is too big or your screen is too small
+.workspaces {
+	margin: 0pt 100pt 0pt 100pt;
+}
+
+.calendar {
+	border-style: hidden;
+}
+
+tooltip {
+	background-color: $foreground;
+	color:            $selection;
+}

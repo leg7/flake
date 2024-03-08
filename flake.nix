@@ -9,25 +9,31 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    impermanence.url = "github:nix-community/impermanence";
 
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    impermanence.url = "github:nix-community/impermanence";
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-23.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ nixpkgs, disko, nixos-hardware, lanzaboote, impermanence, emacs-overlay, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, disko, nixos-hardware, lanzaboote, impermanence, emacs-overlay, ... }: {
     nixosConfigurations = {
       eleum = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -37,6 +43,11 @@
           disko.nixosModules.disko
           ({pkgs, ...}: { nixpkgs.overlays = [ emacs-overlay.overlay ]; })
           ./computers/t480.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
         ];
       };
 

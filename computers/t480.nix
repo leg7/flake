@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }: {
   imports = [
     ./modules/secureboot.nix
-    ./modules/systems/hyprland.nix
+    ./modules/systems/hyprland/hyprland.nix
     ./modules/mainDisk.nix
     ./modules/backups.nix
   ];

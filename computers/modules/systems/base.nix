@@ -67,8 +67,6 @@
     systemPackages = with pkgs; [
       xdg-utils xdg-user-dirs xdg-ninja
       p7zip unzip
-      vim-full
-      vimv
       wget
       tree
       bottom
@@ -95,7 +93,6 @@
         home = "/persistent/home/user";
         initialPassword = "pass";
         description = "The main user account";
-        shell = pkgs.fish;
         extraGroups = [ "wheel" ];
       };
     };
@@ -110,16 +107,6 @@
     fzf = {
       fuzzyCompletion = true;
       keybindings = true;
-    };
-
-    git = {
-      enable = true;
-      config.init.defaultBranch = "main";
-    };
-
-    neovim = {
-      enable = true;
-      defaultEditor = true;
     };
   };
 
