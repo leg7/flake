@@ -55,25 +55,26 @@
         modules = [
           nixos-hardware.nixosModules.raspberry-pi-4
           impermanence.nixosModules.impermanence
+          disko.nixosModules.disko
           ./computers/rpi4.nix
         ];
       };
 
-      x200 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          impermanence.nixosModules.impermanence
-          ./computers/x200.nix
-        ];
-      };
-
-      x220i = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          impermanence.nixosModules.impermanence
-          ./computers/x220i.nix
-        ];
-      };
+      # x200 = nixpkgs.lib.nixosSystem {
+      #   system = "x86_64-linux";
+      #   modules = [
+      #     impermanence.nixosModules.impermanence
+      #     ./computers/x200.nix
+      #   ];
+      # };
+      #
+      # x220i = nixpkgs.lib.nixosSystem {
+      #   system = "x86_64-linux";
+      #   modules = [
+      #     impermanence.nixosModules.impermanence
+      #     ./computers/x220i.nix
+      #   ];
+      # };
     };
   };
 }
