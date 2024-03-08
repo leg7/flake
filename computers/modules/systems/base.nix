@@ -92,7 +92,7 @@
 
       user = {
         isNormalUser = true;
-        home = "/nix/persistent/home/user";
+        home = "/persistent/home/user";
         initialPassword = "pass";
         description = "The main user account";
         shell = pkgs.fish;
