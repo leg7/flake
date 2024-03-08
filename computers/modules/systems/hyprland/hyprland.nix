@@ -131,6 +131,11 @@
     };
 
     programs = {
+      emacs = {
+        enable = true;
+        extraConfig = builtins.readFile ./config/emacs/init.el;
+      };
+
       eww = {
         enable = true;
         configDir = ./config/eww;
