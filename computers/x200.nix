@@ -6,10 +6,10 @@
 
   hardware = {
     bluetooth.enable = true;
-	opengl = {
-	  enable = true;
-	  extraPackages = [ pkgs.vaapiIntel ];
-	};
+    opengl = {
+      enable = true;
+      extraPackages = [ pkgs.vaapiIntel ];
+    };
   };
 
   services.fstrim.enable = true;
