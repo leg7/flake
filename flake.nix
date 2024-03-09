@@ -58,6 +58,11 @@
           impermanence.nixosModules.impermanence
           disko.nixosModules.disko
           ./computers/testing.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
         ];
       };
 
