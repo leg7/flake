@@ -57,6 +57,7 @@
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
           disko.nixosModules.disko
+          ({pkgs, ...}: { nixpkgs.overlays = [ emacs-overlay.overlay ]; })
           ./computers/testing.nix
           home-manager.nixosModules.home-manager
           {
