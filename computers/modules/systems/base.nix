@@ -92,6 +92,7 @@
         isNormalUser = true;
         home = "${config.mainDisk.persistentDataPath}/home/user";
         initialPassword = "pass";
+        shell = pkgs.fish;
         description = "The main user account";
         extraGroups = [ "wheel" ];
       };
