@@ -47,8 +47,8 @@
       prismlauncher
       libGLU
       freeglut
-      jdk17
-      jre17_minimal
+      # jdk17
+      # jre17_minimal
       glfw-wayland-minecraft
       gamescope
       gamemode
@@ -68,15 +68,15 @@
       python311Full
       ghc haskell-language-server cabal-install
       qt5Full qtcreator
-      gcc_multi gnumake cmake gdb gf valgrind
-      clang-tools pkgsi686Linux.clang cling
+      # gcc_multi gnumake cmake gdb gf valgrind
+      # clang-tools pkgsi686Linux.clang cling
       ocaml ocamlPackages.merlin opam
       swiPrologWithGui
       # keyboard
       appimage-run vial
       qmk
       # other
-      transmission libtransmission tremc
+      # transmission libtransmission tremc
       swaybg socat jq
       ncmpcpp pulsemixer pamixer easyeffects
       imv cowsay fortune
