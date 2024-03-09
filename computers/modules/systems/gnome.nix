@@ -50,5 +50,5 @@
     };
   };
 
-  environment.persistence."/persistent".directories = [ "/etc/NetworkManager/system-connections" ];
+  environment.persistence."${config.mainDisk.persistentDataPath}".directories = [ "/etc/NetworkManager/system-connections" ];
 }

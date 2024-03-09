@@ -19,7 +19,7 @@
   documentation.dev.enable = true;
 
   environment = {
-    persistence."/persistent" = {
+    persistence."${config.mainDisk.persistentDataPath}" = {
       hideMounts = true;
 
       directories = [
@@ -90,7 +90,7 @@
 
       user = {
         isNormalUser = true;
-        home = "/persistent/home/user";
+        home = "${config.mainDisk.persistentDataPath}/home/user";
         initialPassword = "pass";
         description = "The main user account";
         extraGroups = [ "wheel" ];

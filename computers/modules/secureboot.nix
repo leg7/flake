@@ -15,10 +15,10 @@ with lib;
 
       lanzaboote = {
         enable = true;
-        pkiBundle = "/persistent/etc/secureboot";
+        pkiBundle = "${config.mainDisk.persistentDataPath}/etc/secureboot";
       };
     };
 
-    environment.persistence."/persistent".directories = [ "/etc/secureboot" ];
+    environment.persistence."${config.mainDisk.persistentDataPath}".directories = [ "/etc/secureboot" ];
   };
 }

@@ -10,6 +10,13 @@ in {
       example = "/dev/sda";
       description = "The drive you want to format and partition as your main disk or the computer";
     };
+
+    persistentDataPath = mkOption {
+      type = types.str;
+      example = "/persistent";
+      default = "/persistent";
+      description = "The path where user persitent data partition will be mounted (note do not mount in /nix)";
+    };
   };
 
   config = {
@@ -17,7 +24,7 @@ in {
       disk = {
         vdb = {
           type = "disk";
-          device = "${cfg.name}";
+          device = cfg.name;
 
           content = {
             type = "gpt";
@@ -99,7 +106,7 @@ in {
               content = {
                 type = "filesystem";
                 format = "ext4";
-                mountpoint = "/persistent";
+                mountpoint = cfg.persistentDataPath;
               };
 
               size = "100%FREE";
@@ -115,7 +122,7 @@ in {
     fileSystems = {
       "/".neededForBoot = true;
       "/nix".neededForBoot = true;
-      "/persistent".neededForBoot = true;
+      "${cfg.persistentDataPath}".neededForBoot = true;
     };
 
     boot.supportedFilesystems = ["ext4"];
