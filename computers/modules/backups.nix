@@ -5,7 +5,7 @@
     allowDiscards = true;
   };
 
-  fileSystems."/nix/persistent/backup" = {
+  fileSystems."/persistent/backup" = {
       device = "/dev/disk/by-label/backup";
       fsType = "f2fs";
       options = [ "noauto" "compress_algorithm=zstd" "compress_chksum" "atgc" "gc_merge" "lazytime" ];
@@ -14,8 +14,8 @@
   systemd = {
     services."backup" = {
 	  script = ''
-	    backupDir=/nix/persistent/backup
-	    home=/nix/persistent/home/user
+	    backupDir=/persistent/backup
+	    home=/persistent/home/user
 
 	    ${pkgs.util-linux}/bin/mount "$backupDir"
 		${pkgs.findutils}/bin/find "$backupDir" -mtime +5 -delete
