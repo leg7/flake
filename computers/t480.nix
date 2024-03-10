@@ -6,7 +6,14 @@
     ./modules/backups.nix
   ];
 
-  mainDisk.name = "/dev/nvme0n1";
+  mainDisk = {
+    name = "/dev/nvme0n1";
+    sizes = {
+      swap = "20G";
+      nix = "90G";
+    };
+  };
+
   secureboot.enable = true;
 
   networking.hostName = "eleum";

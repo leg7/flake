@@ -10,6 +10,13 @@
   system.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;
 
-  mainDisk.name = "/dev/sda";
+  mainDisk = {
+    name = "/dev/sda";
+    sizes = {
+      nix = "10G";
+      swap = "2G";
+    };
+  };
+
   secureboot.enable = true;
 }

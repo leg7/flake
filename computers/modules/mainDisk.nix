@@ -11,6 +11,20 @@ in {
       description = "The drive you want to format and partition as your main disk or the computer";
     };
 
+    sizes = {
+      nix = mkOption {
+        type = types.str;
+        example = "10G";
+        description = "The size of the lvm volume used to save the nix store";
+      };
+
+      swap = mkOption {
+        type = types.str;
+        example = "6G";
+        description = "The size of your swap partition (should be 150% of your ram)";
+      };
+    };
+
     persistentDataPath = mkOption {
       type = types.str;
       example = "/persistent";
@@ -88,7 +102,7 @@ in {
                 resumeDevice = true;
               };
 
-              size = "1G";
+              size = "${cfg.sizes.swap}";
             };
 
             nix = {
@@ -99,7 +113,7 @@ in {
                 mountOptions = [ "defaults" ];
               };
 
-              size = "10%FREE";
+              size = "${cfg.sizes.nix}";
             };
 
             persistent = {
