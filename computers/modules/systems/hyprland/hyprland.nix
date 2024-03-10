@@ -349,6 +349,8 @@
 
       git = {
         enable = true;
+        userEmail = "dev@leonardgomez.xyz";
+        userName = "leg7";
         extraConfig.init.defaultBranch = "main";
       };
 
