@@ -67,9 +67,10 @@
       nodejs
       python311Full
       ghc haskell-language-server cabal-install
+      opam
       qt5Full qtcreator
-      # gcc_multi gnumake cmake gdb gf valgrind
-      # clang-tools pkgsi686Linux.clang cling
+      gnumake cmake gdb gf valgrind
+      clang_multi clang-tools cling
       ocaml ocamlPackages.merlin opam
       swiPrologWithGui
       # keyboard
@@ -78,7 +79,7 @@
       # other
       # transmission libtransmission tremc
       swaybg socat jq
-      ncmpcpp pulsemixer pamixer easyeffects
+      ncmpcpp pavucontrol helvum pulsemixer pamixer easyeffects
       imv cowsay fortune
       ffmpeg yt-dlp-light
       wlsunset
@@ -94,6 +95,7 @@
       firefox
       gnome.gnome-calendar
       gnome.adwaita-icon-theme
+      libnotify
     ];
 
     wayland.windowManager.hyprland = {
@@ -114,10 +116,10 @@
         '';
       };
 
-      emacs = {
-        enable = true;
-        package = pkgs.emacs29-pgtk;
-      };
+      #emacs = {
+      #  enable = true;
+      #  package = pkgs.emacs29-pgtk;
+      #};
 
       fnott = {
         enable = true;
@@ -128,6 +130,17 @@
     };
 
     programs = {
+      obs-studio = {
+        enable = true;
+        plugins = with pkgs.obs-studio-plugins; [
+          wlrobs
+          obs-gstreamer
+          obs-vaapi
+          obs-nvfbc
+          obs-vkcapture
+        ];
+      };
+
       newsboat = {
         # TODO: Use module correctly
         enable = true;
@@ -176,10 +189,10 @@
         style = builtins.readFile ./config/wofi/style.css;
       };
 
-      emacs = {
-        enable = true;
-        extraConfig = builtins.readFile ./config/emacs/init.el;
-      };
+      #emacs = {
+      #  enable = true;
+      #  extraConfig = builtins.readFile ./config/emacs/init.el;
+      #};
 
       eww = {
         enable = true;
@@ -360,7 +373,7 @@
 
         set -U fish_greeting ""
 
-        set -U fuzzy_exclude \( -name '.wine' -o -name '.mozilla' -o -name 'qmk_firmware' -o -name 'Signal' -o -name '.nix-defexpr' -o -regex '.*\(c\|C\)ache.*' -o -name '.git' -o -name 'share' -o -name 'state' \) -prune -o
+        set -U fuzzy_exclude \( -name '.wine' -o -name '.steam' -o -name '.mozilla' -o -name 'qmk_firmware' -o -name 'Signal' -o -name '.nix-defexpr' -o -regex '.*\(c\|C\)ache.*' -o -name '.git' -o -name 'share' -o -name 'state' \) -prune -o
 
         fish_vi_key_bindings
         # This should be equivalent to fish_vi_cursor
