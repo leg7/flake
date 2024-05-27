@@ -9,6 +9,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     impermanence.url = "github:nix-community/impermanence";
 
@@ -33,15 +34,21 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, disko, nixos-hardware, lanzaboote, impermanence, emacs-overlay, ... }: {
+  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, disko, nixos-hardware, lanzaboote, impermanence, emacs-overlay, ... }:
+  let
+    overlay-unstable = final: prev: {
+      unstable = nixpkgs-unstable.legacyPackages.${prev.system};
+    };
+  in {
     nixosConfigurations = {
       eleum = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+
         modules = [
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
           disko.nixosModules.disko
-          ({pkgs, ...}: { nixpkgs.overlays = [ emacs-overlay.overlay ]; })
+          ({pkgs, config, ...}: { nixpkgs.overlays = [ overlay-unstable emacs-overlay.overlay ]; })
           ./computers/t480.nix
           home-manager.nixosModules.home-manager
           {

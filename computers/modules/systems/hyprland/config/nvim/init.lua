@@ -138,12 +138,13 @@ require('lazy').setup({
 			local lsp_zero = require('lsp-zero')
 
 			lsp_zero.on_attach(function(client, bufnr)
-				lsp_zero.default_keymaps({buffer = bufnr})
+				lsp_zero.default_keymaps({buffer = bufnr, exclude = 'gl'})
 			end)
 
 			lsp_zero.setup_servers({
+				'zls',
 				'hls',
-
+				'asm_lsp',
 				'bashls',
 				'ocamllsp',
 				'clangd',
@@ -186,17 +187,18 @@ require('lazy').setup({
 
 		ft = {
 			'haskell',
-
+			'asm',
 			'sh',
 			'ocaml',
 			'c', 'cpp',
 			'nix',
 			'lua',
 			'html', 'js', 'php',
+			'zig',
 		},
 
 		keys = {
-			{ '<leader>f', mode = 'n', function() vim.lsp.buf.format() end, },
+			{ '<leader>i', mode = 'n', function() vim.diagnostic.open_float() end, },
 		}
 	},
 	{
@@ -355,8 +357,8 @@ require('lazy').setup({
 			vim.g.lion_squeeze_spaces = 1
 		end,
 		keys = {
-			{ 'ga', mode = { 'n', 'x' } },
-			{ 'gA', mode = { 'n', 'x' } }
+			{ 'gl', mode = { 'n', 'x' } },
+			{ 'gL', mode = { 'n', 'x' } }
 		},
 	},
 	{
@@ -523,6 +525,10 @@ require('lazy').setup({
 		priority = 1000,
 		lazy = false,
 	},
+	{
+		'itchyny/vim-cursorword',
+		lazy = false,
+	},
 },
 {
 	defaults = {
@@ -650,10 +656,10 @@ vim.keymap.set('n', '<c-j>', '<c-w>j')
 vim.keymap.set('n', '<c-k>', '<c-w>k')
 vim.keymap.set('n', '<c-l>', '<c-w>l')
 -- resize
-vim.keymap.set('n', '<c-m-h>', '5<c-w><')
+vim.keymap.set('n', '<c-m-h>', '5<c-w>>')
 vim.keymap.set('n', '<c-m-j>', '5<c-w>-')
 vim.keymap.set('n', '<c-m-k>', '5<c-w>+')
-vim.keymap.set('n', '<c-m-l>', '5<c-w>>')
+vim.keymap.set('n', '<c-m-l>', '5<c-w><')
 vim.keymap.set('n', '<c-m-e>', '5<c-w>=')
 -- close/open
 vim.keymap.set('n', '<c-x>', ':bd<cr>') -- X out of here

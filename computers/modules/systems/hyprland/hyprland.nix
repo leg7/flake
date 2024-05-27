@@ -14,7 +14,7 @@
     fontconfig.defaultFonts = {
       serif = [ "Noto Serif" ];
       sansSerif = [ "Noto Sans" ];
-      monospace = [ "Monoid Nerd Font Mono" "Symbols Nerd Font" ];
+      monospace = [ "Iosevka Nerd Font Mono" "Symbols Nerd Font" ];
       emoji = [ "Noto Color Emoji" ];
     };
   };
@@ -61,8 +61,7 @@
       glxinfo
       # dev tools
       virtualbox
-      nasm
-      raylib
+      nasm asm-lsp
       cargo
       nodejs
       python311Full
@@ -96,6 +95,9 @@
       gnome.gnome-calendar
       gnome.adwaita-icon-theme
       libnotify
+      unstable.halloy
+      # dependencies for hyprland screensharing
+      grim slurp
     ];
 
     wayland.windowManager.hyprland = {
@@ -236,7 +238,7 @@
             app-id = "foot";
             title = "foot";
             locked-title = "no";
-            font = "monospace:size=9";
+            font = "monospace:size=13";
             dpi-aware = "no";
             pad = "3x2 center";
             # font-bold=<bold variant of regular font>
@@ -365,6 +367,7 @@
         userEmail = "dev@leonardgomez.xyz";
         userName = "leg7";
         extraConfig.init.defaultBranch = "main";
+        extraConfig.push.autoSetupRemote = "true";
       };
 
       fish = {
@@ -539,7 +542,7 @@
 
           p = {
             description = "Pretty print current directory";
-            body = "ls -hAsv --color=auto --group-directories-first $argv";
+            body = "ls -1hAsv --color=auto --group-directories-first $argv";
           };
 
           c = {
