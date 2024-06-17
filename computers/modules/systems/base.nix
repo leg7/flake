@@ -115,18 +115,7 @@
     };
   };
 
-  # networking
-  systemd.network = {
-    enable = true;
-
-    networks."10-wired" = {
-      matchConfig.Type = "ether";
-      networkConfig.DHCP = "ipv4";
-      dhcpV4Config = { UseDomains = true; };
-      linkConfig.RequiredForOnline = "no";
-    };
-  };
-
+  systemd.network.enable = true;
   networking = {
     dhcpcd.enable = false;
     useNetworkd = true;

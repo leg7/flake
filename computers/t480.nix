@@ -57,6 +57,16 @@
     };
   };
 
+  # this is required to be able to use ethernet thourgh thunderbolt and though the rj45 port
+  systemd.network = {
+    networks."10-wired" = {
+      matchConfig.Type = "ether";
+      networkConfig.DHCP = "ipv4";
+      dhcpV4Config = { UseDomains = true; };
+      linkConfig.RequiredForOnline = "no";
+    };
+  };
+
   services = {
     xserver.videoDrivers = [ "nvidia" ];
     fstrim.enable = true;
