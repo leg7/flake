@@ -151,6 +151,7 @@ require('lazy').setup({
 				'rnix',
 				'lua_ls',
 				'emmet_ls',
+				'rust_analyzer',
 			})
 
 
@@ -165,11 +166,11 @@ require('lazy').setup({
 			require('mason-lspconfig').setup({
 				ensure_installed = {
 					'bashls',
-					'ocamllsp',
 					'clangd',
 					'rnix',
 					'lua_ls',
 					'emmet_ls',
+					'rust_analyzer',
 				},
 				handlers = { lsp_zero.default_setup },
 				automatic_installation = true,
@@ -195,6 +196,7 @@ require('lazy').setup({
 			'lua',
 			'html', 'js', 'php',
 			'zig',
+			'rust',
 		},
 
 		keys = {
@@ -233,6 +235,8 @@ require('lazy').setup({
 					'ocaml',
 					'haskell',
 					'r',
+					'rust',
+					'zig',
 					-- web
 					'html',
 					'javascript', 'jsdoc', 'json',
@@ -417,7 +421,7 @@ require('lazy').setup({
 		'folke/zen-mode.nvim',
 		opts = {},
 		keys = {
-			{ '<leader>z', mode = 'n', function() require('zen-mode').toggle({window = {width = .35}}) end},
+			{ '<leader>z', mode = 'n', function() require('zen-mode').toggle({window = {width = 120}, plugins = {options = {laststatus = 3}} }) end},
 		},
 	},
 	{
@@ -549,7 +553,7 @@ vim.opt.lazyredraw = true
 vim.opt.scrolloff = 4
 
 vim.opt.termguicolors = true
--- vim.cmd('hi Normal guibg=NONE ctermbg=NONE') -- idk how to do this in lua the documentation is so bad
+vim.cmd('hi Normal guibg=NONE ctermbg=NONE') -- idk how to do this in lua the documentation is so bad
 vim.opt.cursorline = true
 vim.opt.fillchars = { eob = ' ' }
 vim.opt.wrap = true
@@ -635,12 +639,7 @@ vim.keymap.set('x', '<leader>y', ":'<,'>w !wl-copy<cr><cr>", { silent = true, no
 vim.keymap.set('n', '<leader>p', '<cmd>r !wl-paste<cr>', { silent = true, noremap = true })
 vim.keymap.set({ 'n', 'x' }, '<leader>d', '"_d')
 
--- Better mnemonics
--- alternative function for i(ncrement) and d(ecrement)
-vim.keymap.set('n', '<m-i>', '<c-a>')
-vim.keymap.set('n', '<m-d>', '<c-x>')
-vim.keymap.set('n', '<c-a>', 'ggVG')
--- vim.keymap.set('n', '<a-u>', '<c-r>')
+vim.keymap.set('n', '<a-a>', 'ggVG')
 vim.keymap.set('n', '<c-w>', ':w<cr>')
 
 -- Center cursor
@@ -656,11 +655,11 @@ vim.keymap.set('n', '<c-j>', '<c-w>j')
 vim.keymap.set('n', '<c-k>', '<c-w>k')
 vim.keymap.set('n', '<c-l>', '<c-w>l')
 -- resize
-vim.keymap.set('n', '<c-m-h>', '5<c-w>>')
-vim.keymap.set('n', '<c-m-j>', '5<c-w>-')
-vim.keymap.set('n', '<c-m-k>', '5<c-w>+')
-vim.keymap.set('n', '<c-m-l>', '5<c-w><')
-vim.keymap.set('n', '<c-m-e>', '5<c-w>=')
+vim.keymap.set('n', '<c-s-h>', '5<c-w>>')
+vim.keymap.set('n', '<c-s-j>', '5<c-w>-')
+vim.keymap.set('n', '<c-s-k>', '5<c-w>+')
+vim.keymap.set('n', '<c-s-l>', '5<c-w><')
+vim.keymap.set('n', '<c-s-e>', '5<c-w>=')
 -- close/open
 vim.keymap.set('n', '<c-x>', ':bd<cr>') -- X out of here
 vim.keymap.set('n', '<c-s>', ':vs<cr>')

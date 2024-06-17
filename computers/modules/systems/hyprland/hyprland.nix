@@ -251,33 +251,35 @@
 
           colors = {
             alpha = "0.95";
-            background = "1f2228";
-            foreground = "cfcfcf";
+            background = "1D2330";
+            foreground = "ff99bb";
 
             # black, red, green, yellow, blue, magenta, cyan, white
             regular0 = "1f2228";
-            regular1 = "b34d4d";
-            regular2 = "72a758";
-            regular3 = "ac9d53";
-            regular4 = "5587aa";
-            regular5 = "b36f4d";
-            regular6 = "008787";
-            regular7 = "cfcfcf";
+            regular1 = "ff4766";
+            regular2 = "a6c18b";
+            regular3 = "fb8950";
+            regular4 = "88a4dd";
+
+            regular5 = "e83430";
+            regular6 = "88a4dd";
+
+            regular7 = "ff99bb";
 
             # Bright colors (color palette 8-15)
-            bright0 = "262a31";
-            bright1 = "b75757";
-            bright2 = "7bac62";
-            bright3 = "b1a35d";
-            bright4 = "608eaf";
-            bright5 = "b77757";
+            bright0 = "1f2228";
+            bright1 = "ff4766";
+            bright2 = "a6c18b";
+            bright3 = "fb8950";
+            bright4 = "88a4dd";
 
-            # not set
-            bright6 = "00afaf";
-            bright7 = "d9d9d9";
+            bright5 = "e83430";
+            bright6 = "88a4dd";
 
-            selection-foreground = "d9d9d9";
-            selection-background = "2f333c";
+            bright7 = "ff99bb";
+
+            selection-foreground = "ff99bb";
+            selection-background = "303A50";
             # jump-labels=<regular0> <regular3>          # black-on-yellow
             # scrollback-indicator=<regular0> <bright4>  # black-on-bright-blue
             # search-box-no-match=<regular0> <regular1>  # black-on-red
