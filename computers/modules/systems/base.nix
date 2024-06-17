@@ -157,7 +157,7 @@
   services.openssh = {
    enable = true;
    ports = [ 727 ];
-   allowSFTP = false; # Don't set this if you need sftp
+   allowSFTP = false;
    settings = {
      PasswordAuthentication = false;
      KbdInteractiveAuthentication = false;
