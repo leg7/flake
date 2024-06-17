@@ -38,6 +38,8 @@
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "user" ];
 
+  nixpkgs.config.allowUnfree = true;
+
   home-manager.users.user = {
     home.stateVersion = config.system.stateVersion;
 
@@ -45,33 +47,16 @@
       steam
       osu-lazer
       prismlauncher
-      libGLU
-      freeglut
-      # jdk17
-      # jre17_minimal
       glfw-wayland-minecraft
       gamescope
       gamemode
       inxi
       mangohud
-      wineWowPackages.waylandFull
       openmw
-      zeroad
-      libva-utils
-      glxinfo
+      wineWowPackages.waylandFull
       # dev tools
-      virtualbox
-      nasm asm-lsp
-      cargo
-      nodejs
-      python311Full
-      ghc haskell-language-server cabal-install
-      opam
-      qt5Full qtcreator
-      gnumake cmake gdb gf valgrind
-      clang_multi clang-tools cling
-      ocaml ocamlPackages.merlin opam
-      swiPrologWithGui
+      zig # This serves as CC
+      ocaml ocamlPackages.merlin opam nodejs_22 # For neovim mason lsp install
       # keyboard
       appimage-run vial
       qmk
@@ -79,7 +64,7 @@
       # transmission libtransmission tremc
       swaybg socat jq
       ncmpcpp pavucontrol helvum pulsemixer pamixer easyeffects
-      imv cowsay fortune
+      imv
       ffmpeg yt-dlp-light
       wlsunset
       cinnamon.nemo
@@ -96,8 +81,10 @@
       gnome.adwaita-icon-theme
       libnotify
       unstable.halloy
+      logseq
       # dependencies for hyprland screensharing
       grim slurp
+      satty
     ];
 
     wayland.windowManager.hyprland = {
@@ -118,10 +105,10 @@
         '';
       };
 
-      #emacs = {
-      #  enable = true;
-      #  package = pkgs.emacs29-pgtk;
-      #};
+      emacs = {
+       enable = true;
+       package = pkgs.emacs29-pgtk;
+      };
 
       fnott = {
         enable = true;
@@ -191,15 +178,14 @@
         style = builtins.readFile ./config/wofi/style.css;
       };
 
-      #emacs = {
-      #  enable = true;
-      #  extraConfig = builtins.readFile ./config/emacs/init.el;
-      #};
+      emacs = {
+       enable = true;
+       extraConfig = builtins.readFile ./config/emacs/init.el;
+      };
 
       eww = {
         enable = true;
         configDir = ./config/eww;
-        package = pkgs.eww-wayland;
       };
 
       mpv = {
@@ -238,7 +224,7 @@
             app-id = "foot";
             title = "foot";
             locked-title = "no";
-            font = "monospace:size=13";
+            font = "monospace:size=12";
             dpi-aware = "no";
             pad = "3x2 center";
             # font-bold=<bold variant of regular font>

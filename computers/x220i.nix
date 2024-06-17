@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }: {
   imports = [ ./modules/boot/systemd.nix ./modules/systems/gnome.nix ];
 
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.05";
   nixpkgs.config.allowUnfree = true;
   time.timeZone = "Europe/Paris";
   i18n.defaultLocale = "fr_FR.UTF-8";

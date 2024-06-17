@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   imports = [ ./modules/systems/hyprland.nix ];
 
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.05";
   time.timeZone = "Europe/Paris";
 
   hardware = {

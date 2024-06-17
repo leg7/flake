@@ -139,6 +139,7 @@ in {
       "${cfg.persistentDataPath}".neededForBoot = true;
     };
 
-    boot.supportedFilesystems = ["ext4"];
+    boot.supportedFilesystems = [ "ext4" ];
+    boot.initrd.kernelModules = [ "dm-snapshot" ];
   };
 }

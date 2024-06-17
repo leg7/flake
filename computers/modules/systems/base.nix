@@ -61,7 +61,7 @@
       GHCUP_USE_XDG_DIRS    = "true";
 
       ASAN_OPTIONS          = "halt_on_error=0";
-      FZF_DEFAULT_OPTS = "--layout reverse --color fg:-1,fg+:-1,bg:-1,bg+:-1,hl:-1,hl+:-1,query:-1,gutter:-1";
+      FZF_DEFAULT_OPTS      = "--layout reverse --color fg:-1,fg+:-1,bg:-1,bg+:-1,hl:-1,hl+:-1,query:-1,gutter:-1";
     };
 
     systemPackages = with pkgs; [
@@ -79,6 +79,7 @@
 
   users = {
     mutableUsers = false;
+    groups.users = {};
 
     users = {
       # Set a root password, consider using initialHashedPassword instead.
@@ -90,6 +91,7 @@
 
       user = {
         isNormalUser = true;
+        group = "users";
         home = "${config.mainDisk.persistentDataPath}/home/user";
         initialPassword = "pass";
         shell = pkgs.fish;
@@ -147,6 +149,8 @@
     firewall.allowedTCPPorts = [];
     firewall.allowedUDPPorts = [];
   };
+
+  services.timesyncd.enable = true;
 
   services.resolved = {
     enable = true;

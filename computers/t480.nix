@@ -17,7 +17,7 @@
   secureboot.enable = true;
 
   networking.hostName = "eleum";
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.05";
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.nvidia.acceptLicense = true;
   time.timeZone = "Europe/Paris";
@@ -56,8 +56,6 @@
       extraPackages = with pkgs; [ intel-media-driver ];
     };
   };
-
-  programs.hyprland.enableNvidiaPatches = true;
 
   services = {
     xserver.videoDrivers = [ "nvidia" ];

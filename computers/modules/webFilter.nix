@@ -2,8 +2,6 @@
   networking.hosts = {
     "0.0.0.0" = [
 
-      "youtube.com" "www.youtube.com"
-      "reddit.com" "www.reddit.com"
       "piped.adminforge.de" "https://github.com/TeamPiped/Piped/wiki/Instances"
       "invidious.fdn.fr" "yewtu.be" "https://docs.invidious.io/instances/"
       "https://api.invidious.io/"
