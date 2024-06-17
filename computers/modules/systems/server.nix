@@ -2,7 +2,8 @@
   imports = [ ./base.nix ];
 
   networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 727 ];
+      enable = true;
+      allowedUDPPorts = [];
+      allowedTCPPorts = [ 727 ];
   };
 }

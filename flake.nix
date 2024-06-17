@@ -58,26 +58,11 @@
         ];
       };
 
-      testing = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          lanzaboote.nixosModules.lanzaboote
-          impermanence.nixosModules.impermanence
-          disko.nixosModules.disko
-          ({pkgs, ...}: { nixpkgs.overlays = [ emacs-overlay.overlay ]; })
-          ./computers/testing.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-          }
-        ];
-      };
-
       majula = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
         modules = [
           nixos-hardware.nixosModules.raspberry-pi-4
+          lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
           disko.nixosModules.disko
           ./computers/rpi4.nix

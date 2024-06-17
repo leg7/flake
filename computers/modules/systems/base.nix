@@ -145,9 +145,11 @@
     # I haven't reseached IPv6 security & privacy implications so I disable it
     enableIPv6 = false;
 
-    firewall.enable = true;
-    firewall.allowedTCPPorts = [];
-    firewall.allowedUDPPorts = [];
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [];
+      allowedUDPPorts = [];
+    };
   };
 
   services.timesyncd.enable = true;

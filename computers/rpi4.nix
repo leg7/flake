@@ -1,11 +1,16 @@
-{ lib, ... }: {
+{ config, lib, pkgs, ... }: {
   imports = [
-    ./modules/systems/server.nix
     ./modules/mainDisk.nix
+    ./modules/secureboot.nix
+    ./modules/systems/server.nix
   ];
+  boot.loader.generic-extlinux-compatible.enable = lib.mkForce false;
+  boot.loader.efi.canTouchEfiVariables = true; # needed to install uefi
+  boot.kernelPackages = pkgs.linuxPackages_latest; # needed to boot
+  secureboot.enable = true;
 
   mainDisk = {
-    name = "/dev/sda";
+    name = "/dev/mmcblk1";
     sizes = {
       nix = "15G";
       swap = "6G";
