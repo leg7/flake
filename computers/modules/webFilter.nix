@@ -1,11 +1,6 @@
 { ... }: {
   networking.hosts = {
     "0.0.0.0" = [
-
-      "piped.adminforge.de" "https://github.com/TeamPiped/Piped/wiki/Instances"
-      "invidious.fdn.fr" "yewtu.be" "https://docs.invidious.io/instances/"
-      "https://api.invidious.io/"
-
       "api.opencandy.com"
       "api.recommendedsw.com"
       "cdn.appround.biz"
@@ -558,7 +553,6 @@
       "6b8a953b2bf7788063d5-6e453f33ecbb90f11a62a5c376375af3.r71.cf5.rackcdn.com"
       "7.hidemyass.com"
       "77search.com"
-      "7979-69504_159.c.adprotect.net"
       "7metasearch.com"
       "7search.com"
       "7softwaredreams.com"
@@ -1193,7 +1187,6 @@
       "fkooaee.angelcities.com"
       "flashcasino.com"
       "flashdem.fr"
-      "flashplayer_macro.kit.net"
       "flowtec.com.br"
       "fmcurling.org"
       "foreclousure.com"
@@ -2762,7 +2755,6 @@
       "www.fixio-pc-cleaner.com"
       "www.flashcasino.com"
       "www.flashdem.fr"
-      "www.flashplayer_macro.kit.net"
       "www.flowtec.com.br"
       "www.fmcurling.org"
       "www.foreclousure.com"
@@ -5777,7 +5769,6 @@
       "ktopodgladfejs.5v.pl"
       "worldsport.pro"
       "rekrutacja.zafriko.pl"
-      "zgarniij_vouchher.skroc.pl"
       "sexcleo.lnfo.pl"
       "vip.eeu.pl"
       "zgarnijjsamsungi.eeu.pl"
@@ -26829,7 +26820,6 @@
       "static.uk.addynamo.com"
       "www.adexit.com"
       "s.adexpert.cz"
-      "222-33544_999.pub.adfirmative.com"
       "c.adfirmative.com"
       "www.adfirmative.com"
       "adfocus.ru"
@@ -32339,7 +32329,6 @@
       "bestjobs.hit.gemius.pl"
       "bg.hit.gemius.pl"
       "blitzadbg.hit.gemius.pl"
-      "ghm_bulgaria.hit.gemius.pl"
       "centrumcz.hit.gemius.pl"
       "ua.cnt.gemius.pl"
       "corm.hit.gemius.pl"
@@ -38723,7 +38712,6 @@
       "overthelimit.us.intellitxt.com"
       "pal-item.us.intellitxt.com"
       "perezhilton.us.intellitxt.com"
-      "philadelphia_cbslocal.us.intellitxt.com"
       "phonearena.us.intellitxt.com"
       "pickmeupnews.us.intellitxt.com"
       "pinkisthenewblog.us.intellitxt.com"
@@ -38942,7 +38930,6 @@
 
 
       "c.mystat-in.net"
-      "___id___.c.mystat-in.net"
       "011707160008.c.mystat-in.net"
       "121807150325.c.mystat-in.net"
       "122907224924.c.mystat-in.net"
@@ -43110,7 +43097,6 @@
       "forcedorgasmdomination.tumblr.com"
       "foreqew.angelfire.com"
       "forgotten-angels.de"
-      "forgotten_dark_angel.tripod.com"
       "forum.adultdvdtalk.com"
       "forum.oneclickchicks.com"
       "forum.phun.org"
@@ -45877,7 +45863,6 @@
       "topheavywebcams.com"
       "tophomevideos.com"
       "toplistwebcams.com"
-      "topmodel_virginie.cmonbook.com"
       "topmomvideos.com"
       "topnotchwebcams.com"
       "toppornblogs.com"
