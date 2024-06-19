@@ -16,7 +16,13 @@
 
   secureboot.enable = true;
 
-  networking.hostName = "eleum";
+  networking = {
+    hostName = "eleum";
+    hosts = {
+      "82.66.68.221" = [ "majula" ];
+    };
+  };
+
   system.stateVersion = "24.05";
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.nvidia.acceptLicense = true;

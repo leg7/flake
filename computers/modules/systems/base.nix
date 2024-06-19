@@ -120,6 +120,15 @@
     dhcpcd.enable = false;
     useNetworkd = true;
 
+    # I haven't reseached IPv6 security & privacy implications so I disable it
+    enableIPv6 = false;
+
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [];
+      allowedUDPPorts = [];
+    };
+
     wireless.iwd = {
       enable = true;
       settings = {
@@ -130,46 +139,39 @@
         Network.NameResolvingService = "systemd";
       };
     };
+  };
 
-    # I haven't reseached IPv6 security & privacy implications so I disable it
-    enableIPv6 = false;
+  services = {
+    timesyncd.enable = true;
 
-    firewall = {
+    resolved = {
       enable = true;
-      allowedTCPPorts = [];
-      allowedUDPPorts = [];
+      # I have to set this because I'm in a uni dorm and the wifi connection portal won't open
+      extraConfig = ''
+          LLMNR=no
+          ReadEtcHosts=yes
+          DNSSEC=no
+          ResolveUnicastSingleLabel=yes
+        '';
     };
-  };
 
-  services.timesyncd.enable = true;
-
-  services.resolved = {
-    enable = true;
-    # I have to set this because I'm in a uni dorm and the wifi connection portal won't open
-    extraConfig = ''
-        LLMNR=no
-        ReadEtcHosts=yes
-        DNSSEC=no
-        ResolveUnicastSingleLabel=yes
-      '';
-  };
-
-  services.openssh = {
-   enable = true;
-   ports = [ 727 ];
-   allowSFTP = false;
-   settings = {
-     PasswordAuthentication = false;
-     KbdInteractiveAuthentication = false;
-     challengeResponseAuthentication = false;
-   };
-   extraConfig = ''
-     AllowTcpForwarding yes
-     X11Forwarding no
-     AllowAgentForwarding no
-     AllowStreamLocalForwarding no
-     AuthenticationMethods publickey
-   '';
+    openssh = {
+     enable = true;
+     ports = [ 727 ];
+     allowSFTP = false;
+     settings = {
+       PasswordAuthentication = false;
+       KbdInteractiveAuthentication = false;
+       challengeResponseAuthentication = false;
+     };
+     extraConfig = ''
+       AllowTcpForwarding yes
+       X11Forwarding no
+       AllowAgentForwarding no
+       AllowStreamLocalForwarding no
+       AuthenticationMethods publickey
+     '';
+    };
   };
 
   console = {
@@ -211,6 +213,7 @@
   services.clamav = {
     daemon.enable = true;
     updater.enable = true;
+    scanner.enable = true;
   };
 
   boot = {
