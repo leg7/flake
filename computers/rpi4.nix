@@ -4,9 +4,29 @@
     ./modules/secureboot.nix
     ./modules/systems/server.nix
   ];
-  boot.loader.generic-extlinux-compatible.enable = lib.mkForce false;
-  boot.loader.efi.canTouchEfiVariables = true; # needed to install uefi
-  boot.kernelPackages = pkgs.linuxPackages_latest; # needed to boot
+
+  boot = {
+    loader = {
+      generic-extlinux-compatible.enable = lib.mkForce false;
+      efi.canTouchEfiVariables = true; # needed to install uefi
+    };
+    kernelPackages = pkgs.linuxPackages_latest; # needed to boot
+
+    kernelParams = [ "ip=dhcp" ];
+    initrd = {
+      availableKernelModules = [ "brcmfmac" ];
+      systemd.users.root.shell = "/bin/cryptsetup-askpass";
+      network = {
+        enable = true;
+        ssh = {
+          enable = true;
+          port = 727;
+          authorizedKeys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIwo3QjEcW8fsvqIwPi53Riuum1G/6h06E3kmVcTfHV4 user@eleum" ];
+          hostKeys = [ "/etc/ssh/ssh_host_rsa_key" ];
+        };
+      };
+    };
+  };
   secureboot.enable = true;
 
   mainDisk = {
