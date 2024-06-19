@@ -14,7 +14,7 @@
 
     kernelParams = [ "ip=dhcp" ];
     initrd = {
-      availableKernelModules = [ "brcmfmac" ];
+      availableKernelModules = [ "genet" ];
       systemd.users.root.shell = "/bin/cryptsetup-askpass";
       network = {
         enable = true;

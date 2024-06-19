@@ -90,7 +90,7 @@ in {
 
       nodev."/" = {
           fsType = "tmpfs";
-          mountOptions = [ "defaults" "size=10G" ];
+          mountOptions = [ "defaults" "size=10G" "mode=755" ];
       };
 
       lvm_vg = {
