@@ -7,7 +7,7 @@
 -- Use tmux + sessions
 -- make better treesitter text objects to improve navigation
 
-vim.g.mapleader = ' '
+vim.g.mapleader = ','
 
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
@@ -248,10 +248,10 @@ require('lazy').setup({
 				incremental_selection = {
 					enable = true,
 					keymaps = {
-						init_selection = '<c-space>',
-						node_incremental = '<c-space>',
+						init_selection = '<space>',
+						node_incremental = '<space>',
 						scope_incremental = false,
-						node_decremental = '<C-backspace>',
+						node_decremental = '<backspace>',
 					},
 				},
 			}
@@ -331,14 +331,6 @@ require('lazy').setup({
 		keys = { 'gc', 'gb', { 'gc', mode = 'x' }, { 'gb', mode = 'x' } },
 	},
 	{
-		'chrisgrieser/nvim-spider',
-		keys = {
-			{ 'e', mode = { 'n', 'o', 'x' }, function() require('spider').motion('e') end },
-			{ 'w', mode = { 'n', 'o', 'x' }, function() require('spider').motion('w') end },
-			{ 'b', mode = { 'n', 'o', 'x' }, function() require('spider').motion('b') end },
-		},
-	},
-	{
 		'gbprod/substitute.nvim',
 		config = true,
 		keys = {
@@ -374,19 +366,6 @@ require('lazy').setup({
 		end,
 		keys = {
 			{ '<leader>u', mode = 'n', vim.cmd.UndotreeToggle, desc = 'Undo tree' },
-		},
-	},
-	{
-		'folke/flash.nvim',
-		lazy = true,
-		opts = {},
-		keys = {
-			-- { 's', mode = { 'n', 'o', 'x' }, function() require('flash').jump() end, desc = 'Flash' },
-			-- { 'S', mode = { 'n', 'o', 'x' }, function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
-			{ 'r', mode = 'o', function() require('flash').remote() end, desc = 'Remote Flash' },
-			{ 'R', mode = { 'o', 'x' }, function() require('flash').treesitter_search() end, desc = 'Treesitter Search' },
-			{ '<c-s>', mode = { 'c' }, function() require('flash').toggle() end, desc = 'Toggle Flash Search' },
-			'/', 'f', 'F', 't', 'T',
 		},
 	},
 	{
@@ -516,10 +495,8 @@ require('lazy').setup({
 			{ '<leader>rx', mode = 'n', '<cmd>REPLClose<cr>' },
 		},
 	},
-	{
-		'rktjmp/lush.nvim',
-		lazy = false,
-	},
+	{ 'rktjmp/lush.nvim', lazy = false, },
+	{ "catppuccin/nvim", name = "catppuccin", priority = 1000, lazy = false },
 	{
 		dir = '~/.config/nvim/lush-template',
 		config = function()
@@ -530,7 +507,130 @@ require('lazy').setup({
 		lazy = false,
 	},
 	{
-		'itchyny/vim-cursorword',
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		init = function()
+			vim.o.timeout = true
+			vim.o.timeoutlen = 300
+		end,
+		opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		}
+	},
+	{
+		"folke/flash.nvim",
+		event = "VeryLazy",
+		---@type Flash.Config
+		opts = {
+			labels = "wlypcrstqjvdfouneiah",
+			search = {
+				forward = true,
+				wrap = true,
+				---@type Flash.Pattern.Mode
+				mode = "exact",
+				incremental = false,
+			},
+			modes = {
+				-- options used when flash is activated through
+				-- a regular search with `/` or `?`
+				search = {
+					-- when `true`, flash will be activated during regular search by default.
+					-- You can always toggle when searching with `require("flash").toggle()`
+					enabled = true,
+					highlight = { backdrop = false },
+					jump = { history = true, register = true, nohlsearch = true },
+					search = {
+						-- `forward` will be automatically set to the search direction
+						-- `mode` is always set to `search`
+						-- `incremental` is set to `true` when `incsearch` is enabled
+					},
+				},
+				char = {
+					enabled = false,
+				},
+				label = {
+					uppercase = false,
+				},
+				-- options used for treesitter selections
+				-- `require("flash").treesitter()`
+				treesitter = {
+					labels = "wlypcrstqjvdfouneiah",
+					jump = { pos = "range" },
+					search = { incremental = false },
+					label = { before = true, after = true, style = "inline" },
+					highlight = {
+						backdrop = false,
+						matches = false,
+					},
+				},
+				treesitter_search = {
+					jump = { pos = "range" },
+					search = { multi_window = true, wrap = true, incremental = false },
+					remote_op = { restore = true },
+					label = { before = true, after = true, style = "inline" },
+				},
+			},
+		},
+		keys = {
+			{ "t", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+			{ "<CR>", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+			-- Idk what these do
+			-- { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+			-- { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+		},
+	},
+	{
+		'lewis6991/gitsigns.nvim',
+		config = function()
+			require('gitsigns').setup{
+				on_attach = function(bufnr)
+					local gitsigns = require('gitsigns')
+
+					local function map(mode, l, r, opts)
+						opts = opts or {}
+						opts.buffer = bufnr
+						vim.keymap.set(mode, l, r, opts)
+					end
+
+					-- Navigation
+					map('n', ']c', function()
+						if vim.wo.diff then
+							vim.cmd.normal({']c', bang = true})
+						else
+							gitsigns.nav_hunk('next')
+						end
+					end)
+
+					map('n', '[c', function()
+						if vim.wo.diff then
+							vim.cmd.normal({'[c', bang = true})
+						else
+							gitsigns.nav_hunk('prev')
+						end
+					end)
+
+					-- Actions
+					map('n', '<leader>hs', gitsigns.stage_hunk)
+					map('n', '<leader>hr', gitsigns.reset_hunk)
+					map('v', '<leader>hs', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+					map('v', '<leader>hr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+					map('n', '<leader>hS', gitsigns.stage_buffer)
+					map('n', '<leader>hu', gitsigns.undo_stage_hunk)
+					map('n', '<leader>hR', gitsigns.reset_buffer)
+					map('n', '<leader>hp', gitsigns.preview_hunk)
+					map('n', '<leader>hb', function() gitsigns.blame_line{full=true} end)
+					map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
+					map('n', '<leader>hd', gitsigns.diffthis)
+					map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
+					map('n', '<leader>td', gitsigns.toggle_deleted)
+
+					-- Text object
+					map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+				end
+			}
+		end,
 		lazy = false,
 	},
 },
@@ -646,6 +746,7 @@ vim.keymap.set('n', '<c-w>', ':w<cr>')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', 'J', 'mzJ`z')
+vim.keymap.set('i', '<esc>', '<esc>l')
 
 -- Splits / Navigation --
 
@@ -661,7 +762,7 @@ vim.keymap.set('n', '<c-s-k>', '5<c-w>+')
 vim.keymap.set('n', '<c-s-l>', '5<c-w><')
 vim.keymap.set('n', '<c-s-e>', '5<c-w>=')
 -- close/open
-vim.keymap.set('n', '<c-x>', ':bd<cr>') -- X out of here
+vim.keymap.set('n', '<c-x>', ':close<cr>') -- X out of here
 vim.keymap.set('n', '<c-s>', ':vs<cr>')
 vim.keymap.set('n', '<c-t>', ':vs |:terminal<cr>') -- Conflicts with oil
 
