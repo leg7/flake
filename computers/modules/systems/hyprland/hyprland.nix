@@ -40,16 +40,26 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  programs.steam.enable = true;
+  programs.gamemode.enable = true;
+  nixpkgs.config.packageOverrides = pkgs: {
+    steam = pkgs.steam.override {
+      extraPkgs = pkgs: with pkgs; [
+        pango
+        libthai
+        harfbuzz
+        gamescope
+      ];
+    };
+  };
+
   home-manager.users.user = {
     home.stateVersion = config.system.stateVersion;
 
     home.packages = with pkgs; [
-      steam
       osu-lazer
       prismlauncher
       glfw-wayland-minecraft
-      gamescope
-      gamemode
       inxi
       mangohud
       openmw
@@ -62,6 +72,7 @@
       qmk
       # other
       # transmission libtransmission tremc
+      freetube
       swaybg socat jq
       ncmpcpp pavucontrol helvum pulsemixer pamixer easyeffects
       imv
