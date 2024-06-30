@@ -9,4 +9,8 @@
       allowedUDPPorts = [];
       allowedTCPPorts = [ 727 ];
   };
+
+  environment.systemPackages = with pkgs; [
+    zola
+  ];
 }
