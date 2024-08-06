@@ -41,6 +41,7 @@
   nixpkgs.config.allowUnfree = true;
 
   programs.steam.enable = true;
+  programs.steam.gamescopeSession.enable = true;
   programs.gamemode.enable = true;
   nixpkgs.config.packageOverrides = pkgs: {
     steam = pkgs.steam.override {
@@ -48,7 +49,6 @@
         pango
         libthai
         harfbuzz
-        gamescope
       ];
     };
   };
@@ -57,6 +57,7 @@
     home.stateVersion = config.system.stateVersion;
 
     home.packages = with pkgs; [
+      wootility
       osu-lazer
       prismlauncher
       glfw-wayland-minecraft
@@ -72,6 +73,7 @@
       qmk
       # other
       # transmission libtransmission tremc
+      libreoffice
       freetube
       swaybg socat jq
       ncmpcpp pavucontrol helvum pulsemixer pamixer easyeffects
@@ -96,6 +98,7 @@
       # dependencies for hyprland screensharing
       grim slurp
       satty
+      xwayland # for some reason hyprland won't pull in xwayland automatically anymore?
     ];
 
     wayland.windowManager.hyprland = {

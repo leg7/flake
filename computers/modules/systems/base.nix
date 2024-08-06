@@ -142,6 +142,8 @@
   };
 
   services = {
+    upower.enable = true;
+
     timesyncd.enable = true;
 
     resolved = {
@@ -181,10 +183,10 @@
   };
 
   # -------- some hardening taken from the hardened profile --------
-  nix.settings.allowed-users = [ "@wheel" ];
 
   environment.memoryAllocator.provider = lib.mkDefault "graphene-hardened";
 
+  nix.settings.allowed-users = [ "@wheel" ];
   security = {
     lockKernelModules = lib.mkDefault true; # This is anoying for dynamic systems like a laptop you dock, turn it off if some of your devices don't connect
     protectKernelImage = true;
