@@ -132,6 +132,11 @@
     };
 
     programs = {
+      java = {
+        enable = true;
+        package = pkgs.jdk17;
+      };
+
       obs-studio = {
         enable = true;
         plugins = with pkgs.obs-studio-plugins; [
