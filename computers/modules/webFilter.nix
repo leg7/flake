@@ -1,7 +1,6 @@
 { ... }: {
   networking.hosts = {
     "0.0.0.0" = [
-      "www.youtube.com" "youtube.com" "youtu.be" "www.youtu.be"
       "api.opencandy.com"
       "api.recommendedsw.com"
       "cdn.appround.biz"

@@ -74,7 +74,6 @@
       # other
       # transmission libtransmission tremc
       libreoffice
-      freetube
       swaybg socat jq
       ncmpcpp pavucontrol helvum pulsemixer pamixer easyeffects
       imv
