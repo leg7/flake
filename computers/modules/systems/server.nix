@@ -37,13 +37,16 @@
     minecraft-server = {
       enable = true;
       eula = true;
+      openFirewall = true;
+      declarative = true;
+
       serverProperties = {
         server-port = 43000;
         difficulty = 3;
         gamemode = 1;
         max-players = 3;
-        motd = "minecraft.leonardgomez.xyz";
-        white-list = true;
+        motd = "leonardgomez.xyz minecraft server";
+        white-list = false;
         enable-rcon = false;
         # "rcon.password" = "hunter2";
       };
@@ -69,14 +72,6 @@
         addSSL = true;
         enableACME = true;
         globalRedirect = "www.leonardgomez.xyz";
-      };
-
-      virtualHosts."minecraft.leonardgomez.xyz" =  {
-        enableACME = true;
-        forceSSL = true;
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:43000";
-        };
       };
 
       # virtualHosts."kavita.leonardgomez.xyz" = {
