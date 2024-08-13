@@ -48,13 +48,13 @@
         motd = "leonardgomez.xyz minecraft server";
         white-list = false;
         enable-rcon = false;
-        # "rcon.password" = "hunter2";
       };
 
       jvmOpts = "-Xms1G -Xmx1G";
 
       whitelist = {
         Finxert = "88637aa6-6d7c-49b0-b6b0-d72dde73b45f";
+        davidv1201 = "0178944f-665a-41c4-ae52-131e5a86bd6a";
       };
     };
 
