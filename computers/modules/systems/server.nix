@@ -51,6 +51,8 @@
         # "rcon.password" = "hunter2";
       };
 
+      jvmOpts = "-Xms1G -Xmx1G";
+
       whitelist = {
         Finxert = "88637aa6-6d7c-49b0-b6b0-d72dde73b45f";
       };
