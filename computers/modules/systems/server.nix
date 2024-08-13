@@ -19,7 +19,12 @@
     defaults.email = "leonard.gomez@protonmail.com";
     defaults.webroot = "/var/lib/acme/acme-challenge";
     certs = {
-      "leonardgomez.xyz".extraDomainNames = [ "www.leonardgomez.xyz" "git.leonardgomez.xyz" "kavita.leonardgomez.xyz" ];
+      "leonardgomez.xyz".extraDomainNames = [
+        "leonardgomez.xyz"
+        "www.leonardgomez.xyz"
+        "git.leonardgomez.xyz"
+        "kavita.leonardgomez.xyz"
+      ];
     };
   };
 
@@ -38,6 +43,12 @@
         addSSL = true;
         enableACME = true;
         root = "/var/www/www.leonardgomez.xyz/public";
+      };
+
+      virtualHosts."leonardgomez.xyz" = {
+        addSSL = true;
+        enableACME = true;
+        globalRedirect = "www.leonardgomez.xyz";
       };
 
       # virtualHosts."kavita.leonardgomez.xyz" = {
