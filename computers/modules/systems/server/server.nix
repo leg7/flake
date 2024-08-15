@@ -1,5 +1,5 @@
 { lib, pkgs, config, ... }: {
-  imports = [ ./base.nix ];
+  imports = [ ../base.nix ];
 
   networking.wireless.iwd.enable = lib.mkForce false;
   hardware.bluetooth.enable = lib.mkForce false;
@@ -7,7 +7,7 @@
   networking.firewall = {
       enable = true;
       allowedUDPPorts = [];
-      allowedTCPPorts = [ 727 80 443 ];
+      allowedTCPPorts = [ 727 80 443 ]; # ssh, http, https
   };
 
   environment.systemPackages = with pkgs; [
@@ -23,8 +23,7 @@
         "leonardgomez.xyz"
         "www.leonardgomez.xyz"
         "git.leonardgomez.xyz"
-        "kavita.leonardgomez.xyz"
-        "minecraft.leonardgomez.xyz"
+        "vaultwarden.leonardgomez.xyz"
       ];
     };
   };
@@ -58,6 +57,19 @@
       };
     };
 
+    # accessible through nginx reverse proxy
+    vaultwarden = {
+      enable = true;
+      config = {
+        DOMAIN = "https://vaultwarden.leonardgomez.xyz";
+        SIGNUPS_ALLOWED = false;
+        ROCKET_ADDRESS = "127.0.0.1";
+        ROCKET_PORT = 8222;
+        ROCKET_LOG = "critical";
+      };
+      environmentFile = ./services.vaultwarden.environmentFile;
+    };
+
     nginx = {
       enable = true;
       package = pkgs.nginxStable.override { openssl = pkgs.libressl; };
@@ -76,13 +88,13 @@
         globalRedirect = "www.leonardgomez.xyz";
       };
 
-      # virtualHosts."kavita.leonardgomez.xyz" = {
-      #   addSSL = true;
-      #   enableACME = true;
-      #   locations."/" = {
-      #     proxyPass = "127.0.0.1:5000";
-      #   };
-      # };
+      virtualHosts."vaultwarden.leonardgomez.xyz" = {
+        addSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}";
+        };
+      };
 
     };
   };

@@ -2,7 +2,7 @@
   imports = [
     ./modules/mainDisk.nix
     ./modules/secureboot.nix
-    ./modules/systems/server.nix
+    ./modules/systems/server/server.nix
   ];
 
   boot = {
