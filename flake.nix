@@ -32,9 +32,14 @@
       url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    mailserver = {
+      url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/archive/nixos-24.05/nixos-mailserver-nixos-24.05.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, disko, nixos-hardware, lanzaboote, impermanence, emacs-overlay, ... }:
+  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, disko, nixos-hardware, lanzaboote, impermanence, emacs-overlay, mailserver, ... }:
   let
     overlay-unstable = final: prev: {
       unstable = nixpkgs-unstable.legacyPackages.${prev.system};
@@ -65,6 +70,7 @@
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
           disko.nixosModules.disko
+          mailserver.nixosModules.mailserver
           ({pkgs, config, ...}: { nixpkgs.overlays = [ overlay-unstable ]; })
           ./computers/rpi4.nix
           home-manager.nixosModules.home-manager

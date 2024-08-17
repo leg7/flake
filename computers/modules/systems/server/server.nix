@@ -28,6 +28,22 @@
     };
   };
 
+  mailserver = {
+    enable = true;
+    fqdn = "mail.leonardgomez.xyz";
+    domains = [ "leonardgomez.xyz" ];
+
+    # A list of all login accounts. To create the password hashes, use
+    # nix-shell -p mkpasswd --run 'mkpasswd -sm bcrypt'
+    loginAccounts = {
+      "contact@leonardgomez.xyz" = {
+        hashedPasswordFile = ./mailserver.loginAccounts.contact-at-leonardgomez.xyz.hashedPasswordFile;
+      };
+    };
+
+    certificateScheme = "acme-nginx";
+  };
+
   services = {
     # kavita.enable = true;
     # TODO: Use nix secrets
