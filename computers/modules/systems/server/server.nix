@@ -24,25 +24,57 @@
         "www.leonardgomez.xyz"
         "git.leonardgomez.xyz"
         "vaultwarden.leonardgomez.xyz"
+        "mollysocket.leonardgomez.xyz"
       ];
     };
   };
 
-  mailserver = {
-    enable = true;
-    fqdn = "mail.leonardgomez.xyz";
-    domains = [ "leonardgomez.xyz" ];
-
-    # A list of all login accounts. To create the password hashes, use
-    # nix-shell -p mkpasswd --run 'mkpasswd -sm bcrypt'
-    loginAccounts = {
-      "contact@leonardgomez.xyz" = {
-        hashedPasswordFile = ./mailserver.loginAccounts.contact-at-leonardgomez.xyz.hashedPasswordFile;
-      };
-    };
-
-    certificateScheme = "acme-nginx";
-  };
+  # services.stalwart-mail = {
+  #   enable = true;
+  #   settings = {
+  #     certificate."snakeoil" = {
+  #       cert = "file://${certs."leonardgomez.xyz".cert}";
+  #       private-key = "file://${certs."leonardgomez.xyz".key}";
+  #     };
+  #     server = {
+  #       hostname = "leonardgomez.xyz";
+  #       tls = {
+  #         certificate = "snakeoil";
+  #         enable = true;
+  #         implicit = false;
+  #       };
+  #       listener = {
+  #         "smtp-submission" = {
+  #           bind = [ "[::]:587" ];
+  #           protocol = "smtp";
+  #         };
+  #         "imap" = {
+  #           bind = [ "[::]:143" ];
+  #           protocol = "imap";
+  #         };
+  #       };
+  #     };
+  #     session = {
+  #       rcpt.directory = "in-memory";
+  #       auth = {
+  #         mechanisms = [ "PLAIN" ];
+  #         directory = "in-memory";
+  #       };
+  #     };
+  #     jmap.directory = "in-memory";
+  #     queue.outbound.next-hop = [ "local" ];
+  #     directory."in-memory" = {
+  #       type = "memory";
+  #       users = [
+  #         {
+  #           name = "contact";
+  #           secret = "foobar";
+  #           email = [ "contact@leonardgomez.xyz" ];
+  #         }
+  #       ];
+  #     };
+  #   };
+  # };
 
   services = {
     # kavita.enable = true;
@@ -70,6 +102,14 @@
       whitelist = {
         Finxert = "88637aa6-6d7c-49b0-b6b0-d72dde73b45f";
         davidv1201 = "0178944f-665a-41c4-ae52-131e5a86bd6a";
+      };
+    };
+
+    mollysocket = {
+      enable = true;
+      settings = {
+        allowed_uuids = [ "5663c899-15fe-428e-9ae0-cf903490f3bb" ];
+        allowed_endpoints = [ "https://ntfy.sh" ];
       };
     };
 
@@ -109,6 +149,14 @@
         enableACME = true;
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}";
+        };
+      };
+
+      virtualHosts."mollysocket.leonardgomez.xyz" = {
+        addSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.mollysocket.settings.port}";
         };
       };
 
