@@ -68,11 +68,26 @@
       tree
       bottom
       shellcheck
-      any-nix-shell
     ];
 
     binsh = "${pkgs.dash}/bin/dash";
   };
+
+  programs = {
+    git.enable = true;
+
+    starship.enable = true;
+
+    fzf = {
+      fuzzyCompletion = true;
+      keybindings = true;
+    };
+  };
+
+  home-manager.users.user = {
+    home.stateVersion = config.system.stateVersion;
+  };
+
 
   users = {
     mutableUsers = false;
@@ -91,24 +106,10 @@
         group = "users";
         home = "${config.mainDisk.persistentDataPath}/home/user";
         initialPassword = "pass";
-        shell = pkgs.fish;
+        shell = pkgs.nushell;
         description = "The main user account";
         extraGroups = [ "wheel" ];
       };
-    };
-  };
-
-  programs = {
-    git.enable = true;
-
-    fish = {
-      enable = true;
-      promptInit = "any-nix-shell fish --info-right | source";
-    };
-
-    fzf = {
-      fuzzyCompletion = true;
-      keybindings = true;
     };
   };
 
