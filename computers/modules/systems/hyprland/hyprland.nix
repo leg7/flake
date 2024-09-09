@@ -36,6 +36,8 @@
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "user" ];
 
+  programs.gnupg.agent.enable = true;
+
   nixpkgs.config.allowUnfree = true;
 
   programs.steam.enable = true;
@@ -96,6 +98,7 @@
       grim slurp
       satty
       xwayland # for some reason hyprland won't pull in xwayland automatically anymore?
+      neomutt mutt-wizard gnupg pinentry-all pass isync notmuch lynx abook
     ];
 
     wayland.windowManager.hyprland = {
