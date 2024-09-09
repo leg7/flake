@@ -37,9 +37,10 @@
       ];
     };
 
-    sessionVariables = {
+    sessionVariables = rec {
       PAGER = "less";
       BROWSER = "firefox";
+      EDITOR = "nvim";
 
       XDG_CACHE_HOME  = "$HOME/.local/cache";
       XDG_CONFIG_HOME = "$HOME/.config";
@@ -47,21 +48,17 @@
       XDG_STATE_HOME  = "$HOME/.local/state";
       PATH = [ "$HOME/.local/bin" ];
 
-      HISTFILE              = "$XDG_STATE_HOME/bash/history";
-      GNUPGHOME             = "$XDG_DATA_HOME/gnupg";
-      WGETRC                = "$XDG_CONFIG_HOME/wget/wgetrc";
-      GOPATH                = "$XDG_DATA_HOME/go";
-      GOMODCACHE            = "$XDG_CACHE_HOME/go/mod";
-      RUSTUP_HOME           = "$XDG_DATA_HOME/rustup";
-      CARGO_HOME            = "$XDG_DATA_HOME/cargo";
-      STACK_ROOT            = "$XDG_DATA_HOME/stack";
-      NPM_CONFIG_USERCONFIG = "$XDG_CONFIG_HOME/npm/npmrc";
-      NUGET_PACKAGES        = "$XDG_CACHE_HOME/NuGetPackages";
-      OPAMROOT              = "$XDG_DATA_HOME/opam";
+      HISTFILE              = "${XDG_STATE_HOME}/bash/history";
+      PASSWORD_STORE_DIR    = "${XDG_DATA_HOME}/pass";
+      MBSYNCRC              = "${XDG_CONFIG_HOME}/isync/mbsyncrc";
+      GNUPGHOME             = "${XDG_DATA_HOME}/gnupg";
+      NPM_CONFIG_USERCONFIG = "${XDG_CONFIG_HOME}/npm/npmrc";
       GHCUP_USE_XDG_DIRS    = "true";
-
+      STARSHIP_CACHE        = "${XDG_CACHE_HOME}/starship";
+      CUDA_CACHE_PATH       = "${XDG_CACHE_HOME}/nv";
+      WINEPREFIX            = "${XDG_DATA_HOME}/wine";
       ASAN_OPTIONS          = "halt_on_error=0";
-      FZF_DEFAULT_OPTS      = "--layout reverse --color fg:-1,fg+:-1,bg:-1,bg+:-1,hl:-1,hl+:-1,query:-1,gutter:-1";
+      FZF_DEFAULT_OPTS      = "--ansi --layout reverse --color fg:-1,fg+:-1,bg:-1,bg+:-1,hl:-1,hl+:-1,query:-1,gutter:-1";
     };
 
     systemPackages = with pkgs; [
