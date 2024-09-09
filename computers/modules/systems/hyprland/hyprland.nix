@@ -91,7 +91,6 @@
       qalculate-gtk
       brightnessctl
       signal-desktop
-      firefox
       gnome.gnome-calendar
       gnome.adwaita-icon-theme
       libnotify
@@ -136,6 +135,34 @@
     };
 
     programs = {
+      firefox = {
+        enable = true;
+        policies = {
+          DownloadDirectory = "\${home}";
+          AppAutoUpdate = false;
+          AutofillAddressEnabled = false;
+          AutofillCreditCardEnabled = false;
+          Behavior = "reject-tracker-and-partition-foreign";
+          SanitizeOnShutdown = {
+            Cache = true;
+            Cookies = true;
+            History = true;
+            Sessions = true;
+            SiteSettings = true;
+            OfflineApps = true;
+          };
+          DisableFirefoxAccounts = true;
+          DisableFirefoxStudies = true;
+          DisableFormHistory = true;
+          DisableMasterPasswordCreation = true;
+          DisablePocket = true;
+          DisableTelemetry = true;
+          EnableTrackingProtection = true;
+          OfferToSaveLogins = false;
+          PasswordManagerEnabled = false;
+        };
+      };
+
       java = {
         enable = true;
         package = pkgs.jdk21;
