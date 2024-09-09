@@ -169,6 +169,7 @@
           selection-clipboard = "clipboard";
           recolor-lightcolor = "#262626";
           recolor-darkcolor = "#b2b3b3";
+          database = "sqlite";
         };
 
         mappings = {
