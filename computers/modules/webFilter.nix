@@ -49315,14 +49315,6 @@
 
 
 
-      "static.licdn.com"
-      "www.linkedin.com"
-      "media.licdn.com"
-      "platform.linkedin.com"
-
-
-
-
       "browseusers.myspace.com"
       "classifieds.myspace.com"
       "collect.myspace.com"
