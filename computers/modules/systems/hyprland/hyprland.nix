@@ -62,17 +62,16 @@
     home.packages = with pkgs; [
       wootility
       osu-lazer
-      prismlauncher
-      glfw-wayland-minecraft
-      inxi
+      prismlauncher glfw-wayland-minecraft
       mangohud
       openmw
-      wineWowPackages.waylandFull
+      wineWowPackages.waylandFull winetricks
       # dev tools
       zig # This serves as CC
       ocaml ocamlPackages.merlin opam nodejs_22 # For neovim mason lsp install
       # keyboard
-      appimage-run vial
+      appimage-run
+      vial
       qmk
       # other
       # transmission libtransmission tremc
