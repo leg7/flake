@@ -633,6 +633,18 @@ require('lazy').setup({
 		end,
 		lazy = false,
 	},
+	{
+		"https://git.sr.ht/~swaits/zellij-nav.nvim",
+		lazy = true,
+		event = "VeryLazy",
+		keys = {
+			{ "<a-h>", "<cmd>ZellijNavigateLeft<cr>",  { silent = true, desc = "navigate left"  } },
+			{ "<a-j>", "<cmd>ZellijNavigateDown<cr>",  { silent = true, desc = "navigate down"  } },
+			{ "<a-k>", "<cmd>ZellijNavigateUp<cr>",    { silent = true, desc = "navigate up"    } },
+			{ "<a-l>", "<cmd>ZellijNavigateRight<cr>", { silent = true, desc = "navigate right" } },
+		},
+		opts = {},
+	},
 },
 {
 	defaults = {
@@ -751,16 +763,16 @@ vim.keymap.set('i', '<esc>', '<esc>l')
 -- Splits / Navigation --
 
 -- switch
-vim.keymap.set('n', '<c-h>', '<c-w>h')
-vim.keymap.set('n', '<c-j>', '<c-w>j')
-vim.keymap.set('n', '<c-k>', '<c-w>k')
-vim.keymap.set('n', '<c-l>', '<c-w>l')
+-- vim.keymap.set('n', '<c-h>', '<c-w>h')
+-- vim.keymap.set('n', '<c-j>', '<c-w>j')
+-- vim.keymap.set('n', '<c-k>', '<c-w>k')
+-- vim.keymap.set('n', '<c-l>', '<c-w>l')
 -- resize
-vim.keymap.set('n', '<c-s-h>', '5<c-w>>')
-vim.keymap.set('n', '<c-s-j>', '5<c-w>-')
-vim.keymap.set('n', '<c-s-k>', '5<c-w>+')
-vim.keymap.set('n', '<c-s-l>', '5<c-w><')
-vim.keymap.set('n', '<c-s-e>', '5<c-w>=')
+vim.keymap.set('n', '<c-h>', '5<c-w>>')
+vim.keymap.set('n', '<c-j>', '5<c-w>+')
+vim.keymap.set('n', '<c-k>', '5<c-w>-')
+vim.keymap.set('n', '<c-l>', '5<c-w><')
+vim.keymap.set('n', '<c-e>', '5<c-w>=')
 -- close/open
 vim.keymap.set('n', '<c-x>', ':close<cr>') -- X out of here
 vim.keymap.set('n', '<c-s>', ':vs<cr>')

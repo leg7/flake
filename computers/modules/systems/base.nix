@@ -68,6 +68,7 @@
       tree
       bottom
       shellcheck
+      zellij
     ];
 
     binsh = "${pkgs.dash}/bin/dash";
