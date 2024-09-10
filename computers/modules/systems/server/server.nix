@@ -25,6 +25,7 @@
         "git.leonardgomez.xyz"
         "vaultwarden.leonardgomez.xyz"
         "mollysocket.leonardgomez.xyz"
+        "radicale.leonardgomez.xyz"
       ];
     };
   };
@@ -80,6 +81,23 @@
     # kavita.enable = true;
     # TODO: Use nix secrets
     # kavita.tokenKeyFile = ./kavita.tokenKeyFile;
+
+    radicale = {
+      enable = true;
+      settings = {
+        server = {
+          hosts = [ "127.0.0.1:5232" ];
+        };
+        auth = {
+          type = "htpasswd";
+          htpasswd_filename = "/etc/radicale/users";
+          htpasswd_encryption = "bcrypt";
+        };
+        storage = {
+          filesystem_folder = "/var/lib/radicale/collections";
+        };
+      };
+    };
 
     minecraft-server = {
       enable = true;
@@ -157,6 +175,19 @@
         enableACME = true;
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString config.services.mollysocket.settings.port}";
+        };
+      };
+
+      virtualHosts."radicale.leonardgomez.xyz" = {
+        addSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:5232";
+          extraConfig = ''
+            proxy_set_header  X-Script-Name /;
+            proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_pass_header Authorization;
+          '';
         };
       };
 
