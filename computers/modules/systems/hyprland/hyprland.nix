@@ -57,8 +57,6 @@
   };
 
   home-manager.users.user = {
-    home.stateVersion = config.system.stateVersion;
-
     home.packages = with pkgs; [
       wootility
       osu-lazer
@@ -66,7 +64,9 @@
       mangohud
       openmw
       wineWowPackages.waylandFull winetricks
-      # dev tools
+      # dev tools, lsps (mason doesn't work on nixos and the lsps don't work if installed directly in a devShell)
+      clang clang-tools
+      nixd
       zig # This serves as CC
       ocaml ocamlPackages.merlin opam nodejs_22 # For neovim mason lsp install
       # keyboard

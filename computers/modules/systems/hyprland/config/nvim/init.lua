@@ -2,9 +2,6 @@
 -- Add local completion fallback when lsp not available
 -- configure lua snippets
 -- Fix 'gl' conflict between vim-lion and lsp
--- Fix split navigation confilct with oil
--- Add Harpoon
--- Use tmux + sessions
 -- make better treesitter text objects to improve navigation
 
 vim.g.mapleader = ','
@@ -148,7 +145,7 @@ require('lazy').setup({
 				'bashls',
 				'ocamllsp',
 				'clangd',
-				'rnix',
+				'nixd',
 				'lua_ls',
 				'emmet_ls',
 				'rust_analyzer',
@@ -164,16 +161,7 @@ require('lazy').setup({
 
 			require('mason').setup()
 			require('mason-lspconfig').setup({
-				ensure_installed = {
-					'bashls',
-					'clangd',
-					'rnix',
-					'lua_ls',
-					'emmet_ls',
-					'rust_analyzer',
-				},
 				handlers = { lsp_zero.default_setup },
-				automatic_installation = true,
 			})
 		end,
 
@@ -488,11 +476,11 @@ require('lazy').setup({
 		end,
 		ft = { 'haskell', 'sh', 'fish', 'c', 'cpp' },
 		keys = {
-			{ '<leader>rs', mode = 'n' },
-			{ '<leader>e', mode = 'x', '<cmd>REPLSendVisual<cr>' },
-			{ '<leader>e', mode = 'n', '<cmd>REPLSendLine<cr>j' },
-			{ '<leader>a', mode = 'n', "mzggVG<cmd>REPLSendVisual<cr>'z" }, -- TODO: fix this
-			{ '<leader>rx', mode = 'n', '<cmd>REPLClose<cr>' },
+			{ '<leader>rs', mode = 'n', desc = 'REPL Start' },
+			{ '<leader>re', mode = 'x', '<cmd>REPLSendVisual<cr>', desc = 'REPL execute visual selection' },
+			{ '<leader>re', mode = 'n', '<cmd>REPLSendLine<cr>j', desc = 'REPL execute line' },
+			{ '<leader>ra', mode = 'n', "mzggVG<cmd>REPLSendVisual<cr>'z", desc = 'REPL execute file' }, -- TODO: fix this
+			{ '<leader>rx', mode = 'n', '<cmd>REPLClose<cr>', desc = 'REPL close' },
 		},
 	},
 	{ 'rktjmp/lush.nvim', lazy = false, },
@@ -524,39 +512,12 @@ require('lazy').setup({
 		event = "VeryLazy",
 		---@type Flash.Config
 		opts = {
-			labels = "wlypcrstqjvdfouneiah",
-			search = {
-				forward = true,
-				wrap = true,
-				---@type Flash.Pattern.Mode
-				mode = "exact",
-				incremental = false,
-			},
+			labels = "crstneiawlypfouqjvdhbgkzmx",
 			modes = {
-				-- options used when flash is activated through
-				-- a regular search with `/` or `?`
-				search = {
-					-- when `true`, flash will be activated during regular search by default.
-					-- You can always toggle when searching with `require("flash").toggle()`
-					enabled = true,
-					highlight = { backdrop = false },
-					jump = { history = true, register = true, nohlsearch = true },
-					search = {
-						-- `forward` will be automatically set to the search direction
-						-- `mode` is always set to `search`
-						-- `incremental` is set to `true` when `incsearch` is enabled
-					},
-				},
-				char = {
-					enabled = false,
-				},
-				label = {
-					uppercase = false,
-				},
-				-- options used for treesitter selections
-				-- `require("flash").treesitter()`
+				search = { enabled = false, },
+				char = { enabled = false, },
 				treesitter = {
-					labels = "wlypcrstqjvdfouneiah",
+					labels = "crstneiawlypfouqjvdhbgkzmx",
 					jump = { pos = "range" },
 					search = { incremental = false },
 					label = { before = true, after = true, style = "inline" },
@@ -574,7 +535,7 @@ require('lazy').setup({
 			},
 		},
 		keys = {
-			{ "t", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+			{ "f", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
 			{ "<CR>", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
 			-- Idk what these do
 			-- { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
@@ -584,7 +545,7 @@ require('lazy').setup({
 	{
 		'lewis6991/gitsigns.nvim',
 		config = function()
-			require('gitsigns').setup{
+			require('gitsigns').setup {
 				on_attach = function(bufnr)
 					local gitsigns = require('gitsigns')
 
@@ -635,8 +596,7 @@ require('lazy').setup({
 	},
 	{
 		"https://git.sr.ht/~swaits/zellij-nav.nvim",
-		lazy = true,
-		event = "VeryLazy",
+		lazy = false,
 		keys = {
 			{ "<a-h>", "<cmd>ZellijNavigateLeft<cr>",  { silent = true, desc = "navigate left"  } },
 			{ "<a-j>", "<cmd>ZellijNavigateDown<cr>",  { silent = true, desc = "navigate down"  } },
@@ -644,6 +604,23 @@ require('lazy').setup({
 			{ "<a-l>", "<cmd>ZellijNavigateRight<cr>", { silent = true, desc = "navigate right" } },
 		},
 		opts = {},
+	},
+	{
+		'ThePrimeagen/harpoon',
+		branch = 'harpoon2',
+		dependencies = { 'nvim-lua/plenary.nvim' },
+		config = function()
+			local harpoon = require('harpoon')
+			harpoon:setup()
+		end,
+		keys = {
+			{ '<leader>a', mode = 'n', function() require('harpoon'):list():add() end, desc = 'Harpoon add' },
+			{ '<leader>e', mode = 'n', function() require('harpoon').ui:toggle_quick_menu(require('harpoon'):list()) end, desc = 'Harpoon quick-menu' },
+			{ '<leader>h', mode = 'n', function() require('harpoon'):list():select(1) end, desc = 'Harpoon select 1' },
+			{ '<leader>t', mode = 'n', function() require('harpoon'):list():select(2) end, desc = 'Harpoon select 2' },
+			{ '<leader>n', mode = 'n', function() require('harpoon'):list():select(3) end, desc = 'Harpoon select 3' },
+			{ '<leader>s', mode = 'n', function() require('harpoon'):list():select(4) end, desc = 'Harpoon select 4' },
+		},
 	},
 },
 {
@@ -665,7 +642,7 @@ vim.opt.lazyredraw = true
 vim.opt.scrolloff = 4
 
 vim.opt.termguicolors = true
-vim.cmd('hi Normal guibg=NONE ctermbg=NONE') -- idk how to do this in lua the documentation is so bad
+-- vim.cmd('hi Normal guibg=NONE ctermbg=NONE') -- idk how to do this in lua the documentation is so bad
 vim.opt.cursorline = true
 vim.opt.fillchars = { eob = ' ' }
 vim.opt.wrap = true
@@ -747,7 +724,7 @@ vim.keymap.set('n', '<leader>x', '<cmd>!chmod +x %<cr>')
 vim.keymap.set( 't', '<esc>', '<c-\\><c-n>')
 
 -- copy pasta
-vim.keymap.set('x', '<leader>y', ":'<,'>w !wl-copy<cr><cr>", { silent = true, noremap = true })
+vim.keymap.set({'x', 'n'}, '<leader>y', '"cy<cmd>call system("wl-copy", @c)<cr>', { silent = true, noremap = true })
 vim.keymap.set('n', '<leader>p', '<cmd>r !wl-paste<cr>', { silent = true, noremap = true })
 vim.keymap.set({ 'n', 'x' }, '<leader>d', '"_d')
 
@@ -762,11 +739,7 @@ vim.keymap.set('i', '<esc>', '<esc>l')
 
 -- Splits / Navigation --
 
--- switch
--- vim.keymap.set('n', '<c-h>', '<c-w>h')
--- vim.keymap.set('n', '<c-j>', '<c-w>j')
--- vim.keymap.set('n', '<c-k>', '<c-w>k')
--- vim.keymap.set('n', '<c-l>', '<c-w>l')
+-- switch handeled by zellij
 -- resize
 vim.keymap.set('n', '<c-h>', '5<c-w>>')
 vim.keymap.set('n', '<c-j>', '5<c-w>+')
@@ -789,8 +762,6 @@ vim.keymap.set('n', '<c-t>', ':vs |:terminal<cr>') -- Conflicts with oil
 -- vim.keymap.set('n', '<c-j>', '<cmd>cprev<cr>')
 -- vim.keymap.set('n', '<leader>k', '<cmd>lnext<cr>')
 -- vim.keymap.set('n', '<leader>j', '<cmd>lprev<cr>')
-
--- vim.keymap.set('x', '<leader>y', function() vim.opt.clipboard = vim.opt.clipboard .. 'unnamedplus')
 
 -- Lushify new highligh groups
 -- vim.cmd('highlight BooleanOperators NONE')
