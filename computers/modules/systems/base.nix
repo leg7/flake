@@ -57,6 +57,7 @@
       STARSHIP_CACHE        = "${XDG_CACHE_HOME}/starship";
       CUDA_CACHE_PATH       = "${XDG_CACHE_HOME}/nv";
       WINEPREFIX            = "${XDG_DATA_HOME}/wine";
+      CARGO                 = "${XDG_DATA_HOME}/cargo";
       ASAN_OPTIONS          = "halt_on_error=0";
       FZF_DEFAULT_OPTS      = "--ansi --layout reverse --color fg:-1,fg+:-1,bg:-1,bg+:-1,hl:-1,hl+:-1,query:-1,gutter:-1";
     };
