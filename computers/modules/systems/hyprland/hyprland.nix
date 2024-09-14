@@ -127,7 +127,7 @@
 
       fnott = {
         enable = true;
-        configFile = builtins.readFile ./config/fnott/fnott.ini;
+        configFile = ./config/fnott/fnott.ini;
       };
 
       syncthing.enable = true;
