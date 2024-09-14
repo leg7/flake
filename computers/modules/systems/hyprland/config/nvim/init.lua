@@ -642,7 +642,7 @@ vim.opt.lazyredraw = true
 vim.opt.scrolloff = 4
 
 vim.opt.termguicolors = true
--- vim.cmd('hi Normal guibg=NONE ctermbg=NONE') -- idk how to do this in lua the documentation is so bad
+vim.cmd('hi Normal guibg=NONE ctermbg=NONE') -- idk how to do this in lua the documentation is so bad
 vim.opt.cursorline = true
 vim.opt.fillchars = { eob = ' ' }
 vim.opt.wrap = true

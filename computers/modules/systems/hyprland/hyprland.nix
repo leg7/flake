@@ -300,12 +300,11 @@
 
           colors = {
             alpha = "0.95";
-            background = "1D2330";
-            foreground = "ff99bb";
-
+            background = "101623";
+            foreground = "FF99BB";
             # black, red, green, yellow, blue, magenta, cyan, white
-            regular0 = "1f2228";
-            regular1 = "ff4766";
+            regular0 = "101623";
+            regular1 = "FF4766";
             regular2 = "a6c18b";
             regular3 = "fb8950";
             regular4 = "88a4dd";
@@ -316,79 +315,33 @@
             regular7 = "ff99bb";
 
             # Bright colors (color palette 8-15)
-            bright0 = "1f2228";
-            bright1 = "ff4766";
-            bright2 = "a6c18b";
-            bright3 = "fb8950";
-            bright4 = "88a4dd";
+            bright0 = "304469";
+            bright1 = "FF7A91";
+            bright2 = "BFD2AC";
+            bright3 = "FCAB82";
+            bright4 = "AFC2E9";
 
-            bright5 = "e83430";
-            bright6 = "88a4dd";
+            bright5 = "ED615E";
+            bright6 = "AFC2E9";
 
-            bright7 = "ff99bb";
+            bright7 = "FFCCDD";
 
             selection-foreground = "ff99bb";
-            selection-background = "303A50";
-            # jump-labels=<regular0> <regular3>          # black-on-yellow
-            # scrollback-indicator=<regular0> <bright4>  # black-on-bright-blue
-            # search-box-no-match=<regular0> <regular1>  # black-on-red
-            # search-box-match=<regular0> <regular3>     # black-on-yellow
+            selection-background = "202D46";
+            # jump-labels = "<regular0> <regular3>          # black-on-yellow";
+            # scrollback-indicator = "<regular0> <bright4>  # black-on-bright-blue";
+            # search-box-no-match = "<regular0> <regular1>  # black-on-red";
+            # search-box-match = "<regular0> <regular3>     # black-on-yellow";
             urls = "8be9fd";
           };
 
           key-bindings = {
-            # scrollback-up-page=Shift+Page_Up
-            # scrollback-down-page=Shift+Page_Down
             scrollback-up-half-page = "Mod1+u";
             scrollback-down-half-page = "Mod1+d";
-            scrollback-up-line = "Control+k";
-            scrollback-down-line = "Control+j";
-            # scrollback-home=Control+g
-            # clipboard-copy=Control+Shift+c XF86Copy
-            # clipboard-paste=Control+Shift+v XF86Paste
-            # primary-paste=Shift+Insert
-            search-start = "Control+slash";
             font-increase = "Control+Shift+k";
             font-decrease = "Control+Shift+j";
-            # font-reset=Control+o
-            spawn-terminal = "none";
-            # minimize=none
-            # maximize=none
-            # fullscreen=none
-            # pipe-visible=[sh -c "xurls | fuzzel | xargs -r firefox"] none
-            # pipe-scrollback=[sh -c "xurls | fuzzel | xargs -r firefox"] none
-            # pipe-selected=[xargs -r firefox] none
-            # show-urls-launch=Control+f
-            #show-urls-copy=Control+o
             show-urls-persistent = "Control+Shift+f";
-            # prompt-prev=Control+Shift+z
-            # prompt-next=Control+Shift+x
-            # unicode-input=none
-            # noop=none
           };
-
-          search-bindings = {
-            # cancel=Control+g Control+c Escape
-            # commit=Return
-            find-next = "Control+n";
-            find-prev = "Control+Shift+n";
-            # cursor-left=Left Control+b
-            # cursor-left-word=Control+Left Mod1+b
-            # cursor-right=Right Control+f
-            # cursor-right-word=Control+Right Mod1+f
-            # cursor-home=Home Control+a
-            # cursor-end=End Control+e
-            # delete-prev=BackSpace
-            # delete-prev-word=Mod1+BackSpace Control+BackSpace
-            # delete-next=Delete
-            # delete-next-word=Mod1+d Control+Delete
-            # extend-to-word-boundary=Control+w
-            # extend-to-next-whitespace=Control+Shift+w
-            # clipboard-paste=Control+v Control+Shift+v Control+y XF86Paste
-            # primary-paste=Shift+Insert
-            # unicode-input=none
-          };
-
           tweak.grapheme-width-method = "double-width";
         };
       };
