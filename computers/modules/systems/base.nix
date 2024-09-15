@@ -70,6 +70,7 @@
       bottom
       shellcheck
       zellij
+      starship
     ];
 
     binsh = "${pkgs.dash}/bin/dash";
@@ -78,7 +79,12 @@
   programs = {
     git.enable = true;
 
-    starship.enable = true;
+    starship = {
+      enable = true;
+      settings = {
+        shell = [ "nu" ];
+      };
+    };
 
     fzf = {
       fuzzyCompletion = true;
@@ -230,8 +236,8 @@
       # Enable page allocator randomization
       "page_alloc.shuffle=1"
 
-	  # Go into s3 sleep, not actually hardening
-	  "mem_sleep_default=deep"
+      # Go into s3 sleep, not actually hardening
+      "mem_sleep_default=deep"
     ];
 
     blacklistedKernelModules = [
