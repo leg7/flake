@@ -67,14 +67,19 @@
       # dev tools, lsps (mason doesn't work on nixos and the lsps don't work if installed directly in a devShell)
       clang clang-tools
       nixd
+      lua-language-server
+      jdt-language-server
+      rust-analyzer
+      emmet-ls
       zig # This serves as CC
       ocaml ocamlPackages.merlin opam nodejs_22 # For neovim mason lsp install
+      # haskellPackages.hls
+      asm-lsp
       # keyboard
       appimage-run
       vial
       qmk
       # other
-      # transmission libtransmission tremc
       libreoffice
       swaybg socat jq
       ncmpcpp pavucontrol helvum pulsemixer pamixer easyeffects
@@ -82,8 +87,7 @@
       ffmpeg yt-dlp-light
       wlsunset
       cinnamon.nemo
-      ydotool
-      wl-clipboard
+      ydotool wl-clipboard
       newsboat
       wofi
       qrencode
@@ -95,6 +99,7 @@
       libnotify
       unstable.halloy
       logseq
+      qbittorrent
       # dependencies for hyprland screensharing
       grim slurp
       satty

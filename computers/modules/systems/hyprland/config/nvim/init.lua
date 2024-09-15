@@ -149,6 +149,7 @@ require('lazy').setup({
 				'lua_ls',
 				'emmet_ls',
 				'rust_analyzer',
+				'jdtls',
 			})
 
 
