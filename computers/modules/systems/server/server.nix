@@ -14,6 +14,10 @@
     zola
   ];
 
+  environment.persistence."${config.mainDisk.persistentDataPath}".files = [
+    "/etc/radicale/users"
+  ];
+
   security.acme = {
     acceptTerms = true;
     defaults.email = "leonard.gomez@protonmail.com";
