@@ -132,7 +132,40 @@
 
       fnott = {
         enable = true;
-        configFile = ./config/fnott/fnott.ini;
+        settings = {
+          main = {
+            edge-margin-vertical = 5;
+            edge-margin-horizontal = 5;
+            max-icon-size = 64;
+            selection-helper = "wofi";
+            background = "101623ff";
+            border-color = "a6c18bff";
+            border-size = 2;
+            title-font = "monospace:pixelsize=14";
+            title-color = "fff2f0ff";
+            title-format = "";
+            summary-font = "monospace:pixelsize=14";
+            summary-color = "fff2f0ff";
+            summary-format = "<b>%s</b>\n";
+            body-font = "monospace:pixelsize=14";
+            body-color = "fff2f0ff";
+            body-format = "%b";
+            max-timeout = "20";
+            default-timeout = "10";
+            play-sound = "pw-play \${filename}";
+            sound-file = "/home/leo/.local/share/alerts/default";
+          };
+          low = {
+            border-color = "88a4ddff";
+          };
+          normal = {
+            border-color = "a6c18bff";
+          };
+          critical = {
+            border-color = "ff4766ff";
+            border-size = "3";
+          };
+        };
       };
 
       syncthing.enable = true;
