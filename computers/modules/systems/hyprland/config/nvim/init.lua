@@ -186,6 +186,7 @@ require('lazy').setup({
 			'html', 'js', 'php',
 			'zig',
 			'rust',
+			'java',
 		},
 
 		keys = {
@@ -226,6 +227,7 @@ require('lazy').setup({
 					'r',
 					'rust',
 					'zig',
+					'java',
 					-- web
 					'html',
 					'javascript', 'jsdoc', 'json',
