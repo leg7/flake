@@ -58,27 +58,34 @@
 
   home-manager.users.user = {
     home.packages = with pkgs; [
+      # Gaming
       wootility
       osu-lazer
       prismlauncher glfw-wayland-minecraft
       mangohud
       openmw
       wineWowPackages.waylandFull winetricks
-      # dev tools, lsps (mason doesn't work on nixos and the lsps don't work if installed directly in a devShell)
+
+      # Dev tools, lsps (mason doesn't work on nixos and the lsps don't work if installed directly in a devShell)
       clang clang-tools
       nixd
       lua-language-server
       jdt-language-server
       rust-analyzer
+      nodePackages.bash-language-server
       emmet-ls
       zig # This serves as CC
       ocaml ocamlPackages.merlin opam nodejs_22 # For neovim mason lsp install
+      pandoc texliveFull
       # haskellPackages.hls
       asm-lsp
+      neomutt mutt-wizard gnupg pinentry-all pass isync notmuch lynx abook
+
       # keyboard
       appimage-run
       vial
       qmk
+
       # other
       libreoffice
       swaybg socat jq
@@ -100,11 +107,11 @@
       unstable.halloy
       logseq
       qbittorrent
+
       # dependencies for hyprland screensharing
       grim slurp
       satty
       xwayland # for some reason hyprland won't pull in xwayland automatically anymore?
-      neomutt mutt-wizard gnupg pinentry-all pass isync notmuch lynx abook
     ];
 
     wayland.windowManager.hyprland = {
@@ -314,24 +321,7 @@
             font = "monospace:size=12";
             dpi-aware = "no";
             pad = "3x2 center";
-            # font-bold=<bold variant of regular font>
-            # font-italic=<italic variant of regular font>
-            # font-bold-italic=<bold+italic variant of regular font>
-            # font-size-adjustment=0.5
-            # line-height=<font metrics>
-            # letter-spacing=0
-            # horizontal-letter-offset=0
-            # vertical-letter-offset=0
-            # underline-offset=<font metrics>
-            # underline-thickness=<font underline thickness>
-            # box-drawings-uses-font-glyphs=no
-
-            # initial-window-size-pixels=700x500  # Or,
-            # initial-window-size-chars=<COLSxROWS>
-            # initial-window-mode=windowed
-            # resize-delay-ms=0
-
-            # notify=notify-send -a ${app-id} -i ${app-id} ${title} ${body}
+            initial-window-size-pixels = "700x500";
           };
 
           scrollback.lines = 10000;
