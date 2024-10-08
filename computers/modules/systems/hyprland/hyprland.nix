@@ -27,6 +27,21 @@
     };
 
     getty.autologinUser = "user";
+
+    mpd = {
+      enable = true;
+      musicDirectory = "/home/user/audio";
+      dataDir = "/home/user/.local/share/mpd";
+      user = "user";
+      group = "users";
+      extraConfig = ''
+      audio_output {
+        type "pipewire"
+        name "My PipeWire Output"
+      }
+      '';
+    };
+
   };
 
   # for gnome calendar to work
@@ -120,18 +135,6 @@
     };
 
     services = {
-      mpd = {
-        enable = true;
-        musicDirectory = "/home/user/audio";
-        dataDir = "/home/user/.local/share/mpd";
-        extraConfig = ''
-        audio_output {
-          type "pipewire"
-          name "My PipeWire Output"
-        }
-        '';
-      };
-
       emacs = {
        enable = true;
        package = pkgs.emacs29-pgtk;
