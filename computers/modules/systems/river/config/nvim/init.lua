@@ -484,37 +484,6 @@ require('lazy').setup({
 		}
 	},
 	{
-		"folke/flash.nvim",
-		event = "VeryLazy",
-		---@type Flash.Config
-		opts = {
-			labels = "crstneiawlypfouqjvdhbgkzmx",
-			modes = {
-				search = { enabled = false, },
-				char = { enabled = false, },
-				treesitter = {
-					labels = "crstneiawlypfouqjvdhbgkzmx",
-					jump = { pos = "range" },
-					search = { incremental = false },
-					label = { before = true, after = true, style = "inline" },
-					highlight = {
-						backdrop = false,
-						matches = false,
-					},
-				},
-				treesitter_search = {
-					jump = { pos = "range" },
-					search = { multi_window = true, wrap = true, incremental = false },
-					remote_op = { restore = true },
-					label = { before = true, after = true, style = "inline" },
-				},
-			},
-		},
-		keys = {
-			{ "<CR>", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-		},
-	},
-	{
 		'lewis6991/gitsigns.nvim',
 		config = function()
 			require('gitsigns').setup {
