@@ -1,5 +1,11 @@
 { pkgs, lib, config, ... }: {
   imports = [ ../base.nix ];
+  nixpkgs.config.allowUnfree = true;
+
+  # For logseq
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-27.3.11"
+  ];
 
   fonts = {
     enableDefaultPackages = true;
@@ -20,10 +26,24 @@
   };
 
   services = {
+    ollama = {
+      enable = true;
+      package = pkgs.unstable.ollama;
+    };
+
     pipewire = {
       enable = true;
       alsa.enable = true;
       pulse.enable = true;
+      jack.enable = true;
+      extraConfig.pipewire = {
+        "10-clock-rate" = {
+          "context.properties.default.clock" = {
+            "rate" = 48000;
+            "quantum" = 512;
+          };
+        };
+      };
     };
 
     getty.autologinUser = "user";
@@ -41,19 +61,39 @@
       }
       '';
     };
-
   };
+
+  programs.river.enable = true;
+  services.seatd.enable = true;
+  users.users.user.extraGroups = [ "seat" ];
 
   # for gnome calendar to work
   programs.dconf.enable = true;
   services.gnome.evolution-data-server.enable = true;
 
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "user" ];
+  # Get fast kvm qemu virtual machines
+  programs.virt-manager.enable = true;
+  systemd.enableUnifiedCgroupHierarchy = lib.mkForce true;
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm;
+      runAsRoot = true;
+      swtpm.enable = true;
+      ovmf = {
+        enable = true;
+        packages = [(pkgs.OVMF.override {
+          secureBoot = true;
+          tpmSupport = true;
+        }).fd];
+      };
+    };
+  };
+  # For android studio
+  services.flatpak.enable = true;
 
   programs.gnupg.agent.enable = true;
 
-  nixpkgs.config.allowUnfree = true;
   programs = {
     steam = {
       enable = true;
@@ -72,72 +112,147 @@
   };
 
   home-manager.users.user = {
-    home.packages = with pkgs; [
-      # Gaming
-      wootility
-      osu-lazer
-      prismlauncher glfw-wayland-minecraft
-      mangohud
-      openmw
-      wineWowPackages.waylandFull winetricks
+    home = {
+      packages = with pkgs; [
+        # Gaming
+        haskellPackages.Allure
+        wootility
+        osu-lazer
+        prismlauncher glfw-wayland-minecraft
+        mangohud
+        openmw
+        wineWowPackages.waylandFull winetricks
 
-      # Dev tools, lsps (mason doesn't work on nixos and the lsps don't work if installed directly in a devShell)
-      clang clang-tools
-      nixd
-      lua-language-server
-      jdt-language-server
-      rust-analyzer
-      nodePackages.bash-language-server
-      emmet-ls
-      zig # This serves as CC
-      ocaml ocamlPackages.merlin opam nodejs_22 # For neovim mason lsp install
-      pandoc texliveFull
-      # haskellPackages.hls
-      asm-lsp
-      neomutt mutt-wizard gnupg pinentry-all pass isync notmuch lynx abook
+        # Dev tools, lsps (mason doesn't work on nixos and the lsps don't work if installed directly in a devShell)
+        qemu_kvm
+        clang clang-tools gnumake gf gdb
+        zig # This serves as CC
+        ocaml ocamlPackages.merlin opam
+        pandoc texliveFull
+        haskell-language-server ghc
+        asm-lsp
+        nixd
+        lua-language-server
+        jdt-language-server
+        rust-analyzer
+        nodePackages.bash-language-server
+        emmet-ls
 
-      # keyboard
-      appimage-run
-      vial
-      qmk
+        # Interactive programs
+        neomutt mutt-wizard gnupg pinentry-all pass isync notmuch lynx abook
+        ardour gxplugins-lv2 guitarix
+        libreoffice
+        ncmpcpp mpc-cli helvum pulsemixer pamixer easyeffects # pamixer required for eww
+        imv
+        cinnamon.nemo
+        signal-desktop
+        gnome.gnome-calendar
+        unstable.halloy
+        logseq
+        unstable.qbittorrent
+        qalculate-gtk
+        vial
+        diskonaut
 
-      # other
-      libreoffice
-      swaybg socat jq
-      ncmpcpp pavucontrol helvum pulsemixer pamixer easyeffects
-      imv
-      ffmpeg yt-dlp-light
-      wlsunset
-      cinnamon.nemo
-      ydotool wl-clipboard
-      newsboat
-      wofi
-      qrencode
-      qalculate-gtk
-      brightnessctl
-      signal-desktop
-      gnome.gnome-calendar
-      gnome.adwaita-icon-theme
-      libnotify
-      unstable.halloy
-      logseq
-      qbittorrent
+        # Wayland wm "deps"
+        neovide
+        unstable.rivercarro
+        yambar
+        fuzzel
+        appimage-run
+        ffmpeg yt-dlp-light
+        comixcursors gnome.adwaita-icon-theme
+        wl-clipboard
+        lswt xorg.xlsclients
+        brightnessctl wlsunset
+        kanshi swayidle swaylock-effects wlr-randr
+        wlogout
+        libnotify
+        qrencode
+        swaybg
+        socat
+        jq
+        grim slurp satty wl-color-picker # for screenshots
+        xwayland # for some reason hyprland won't pull in xwayland automatically anymore?
+      ];
 
-      # dependencies for hyprland screensharing
-      grim slurp
-      satty
-      xwayland # for some reason hyprland won't pull in xwayland automatically anymore?
-    ];
+      # This has no effect because home manager is not managing my shell yet
+      sessionVariables = {
+        _JAVA_AWT_WM_NONREPARENTING = 1;
+        BROWSER = "firefox";
+      };
 
-    wayland.windowManager.hyprland = {
+      preferXdgDirectories = true;
+    };
+
+    xdg = {
       enable = true;
-      extraConfig = builtins.readFile ./config/hypr/hyprland.conf;
+
+      configFile."all" = {
+        source = ./xdg.configFile.all;
+        recursive = true;
+        target = "./";
+      };
+
+      dataFile."all" = {
+        source = ./xdg.dataFile.all;
+        recursive = true;
+        target = "./";
+      };
+
+      # TODO
+      # desktopEntries = {
+      #
+      # }
+
+      mime.enable = true;
+      mimeApps = {
+        enable = true;
+        defaultApplications = {
+            "text/x-shellscript"       = ["text.desktop"];
+            "x-scheme-handler/magnet"  = ["torrent.desktop"];
+            "application/x-bittorrent" = ["torrent.desktop"];
+            "x-scheme-handler/mailto"  = ["mail.desktop"];
+            "text/plain"               = ["text.desktop"];
+            "application/postscript"   = ["pdf.desktop"];
+            "application/pdf"          = ["pdf.desktop"];
+            "application/epub+zip"     = ["pdf.desktop"];
+            "image/png"                = ["img.desktop"];
+            "image/jpeg"               = ["img.desktop"];
+            "image/gif"                = ["img.desktop"];
+            "application/rss+xml"      = ["rss.desktop"];
+            "video/x-matroska"         = ["video.desktop"];
+            "video/mp4"                = ["video.desktop"];
+            "x-scheme-handler/lbry"    = ["lbry.desktop"];
+            "inode/directory"          = ["file.desktop"];
+        };
+      };
+
+      portal = {
+        enable = true;
+        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+        config.common.default = "*";
+      };
+
+      userDirs = {
+        enable = true;
+        createDirectories = true;
+
+        desktop     = "${config.home-manager.users.user.home.homeDirectory}";
+        documents   = "${config.home-manager.users.user.home.homeDirectory}/documents";
+        download    = "${config.home-manager.users.user.home.homeDirectory}";
+        music       = "${config.home-manager.users.user.home.homeDirectory}/audio/music";
+        pictures    = "${config.home-manager.users.user.home.homeDirectory}/pics";
+        publicShare = null;
+        templates   = "${config.home-manager.users.user.home.homeDirectory}";
+        videos      = "${config.home-manager.users.user.home.homeDirectory}";
+      };
     };
 
     services = {
       emacs = {
        enable = true;
-       package = pkgs.emacs29-pgtk;
+       package = pkgs.unstable.emacs30-pgtk;
       };
 
       fnott = {
@@ -147,7 +262,7 @@
             edge-margin-vertical = 5;
             edge-margin-horizontal = 5;
             max-icon-size = 64;
-            selection-helper = "wofi";
+            selection-helper = "fuzzel";
             background = "101623ff";
             border-color = "a6c18bff";
             border-size = 2;
@@ -227,7 +342,6 @@
       };
 
       newsboat = {
-        # TODO: Use module correctly
         enable = true;
         extraConfig = builtins.readFile ./config/newsboat/config;
       };
@@ -260,38 +374,15 @@
         };
       };
 
-      wofi = {
-        settings = {
-          width = "30%";
-
-          key_up = "Control_R-p";
-          key_down = "Control_R-n";
-          key_right = "Control_L-l";
-          key_left = "Control_L-h";
-
-          parse_search = "true";
-        };
-
-        style = builtins.readFile ./config/wofi/style.css;
-      };
-
       emacs = {
        enable = true;
        extraConfig = builtins.readFile ./config/emacs/init.el;
-      };
-
-      eww = {
-        enable = true;
-        configDir = ./config/eww;
+       package = pkgs.unstable.emacs30-pgtk;
       };
 
       mpv = {
         enable = true;
         bindings = {
-          l = "seek 5";
-          h = "seek -5";
-          j = "seek -60";
-          k = "seek 60";
           S = "cycle sub";
         };
         config = {
@@ -330,7 +421,7 @@
           scrollback.lines = 10000;
 
           colors = {
-            alpha = "0.95";
+            alpha = "0.93";
             background = "101623";
             foreground = "FF99BB";
             # black, red, green, yellow, blue, magenta, cyan, white

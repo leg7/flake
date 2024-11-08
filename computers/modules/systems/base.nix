@@ -39,8 +39,9 @@
 
     sessionVariables = rec {
       PAGER = "less";
-      BROWSER = "firefox";
       EDITOR = "nvim";
+      ASAN_OPTIONS          = "halt_on_error=0";
+      FZF_DEFAULT_OPTS      = "--ansi --layout reverse --color fg:-1,fg+:-1,bg:-1,bg+:-1,hl:-1,hl+:-1,query:-1,gutter:-1";
 
       XDG_CACHE_HOME  = "$HOME/.local/cache";
       XDG_CONFIG_HOME = "$HOME/.config";
@@ -57,9 +58,14 @@
       STARSHIP_CACHE        = "${XDG_CACHE_HOME}/starship";
       CUDA_CACHE_PATH       = "${XDG_CACHE_HOME}/nv";
       WINEPREFIX            = "${XDG_DATA_HOME}/wine";
-      CARGO                 = "${XDG_DATA_HOME}/cargo";
-      ASAN_OPTIONS          = "halt_on_error=0";
-      FZF_DEFAULT_OPTS      = "--ansi --layout reverse --color fg:-1,fg+:-1,bg:-1,bg+:-1,hl:-1,hl+:-1,query:-1,gutter:-1";
+      CARGO_HOME            = "${XDG_DATA_HOME}/cargo";
+      # ANDROID_USER_HOME     = "${XDG_DATA_HOME}/android";
+      # GRADLE_USER_HOME      = "${XDG_DATA_HOME}/gradle";
+      # _JAVA_OPTIONS         = "-Djava.util.prefs.userRoot=${XDG_CONFIG_HOME}/java";
+
+      # TODO: remove once home manager manages my shell
+      _JAVA_AWT_WM_NONREPARENTING = 1;
+      BROWSER = "firefox";
     };
 
     systemPackages = with pkgs; [
@@ -71,6 +77,8 @@
       shellcheck
       zellij
       starship
+      file
+      nix-tree
     ];
 
     binsh = "${pkgs.dash}/bin/dash";
@@ -116,7 +124,7 @@
         initialPassword = "pass";
         shell = pkgs.nushell;
         description = "The main user account";
-        extraGroups = [ "wheel" ];
+        extraGroups = [ "wheel" "kvm" "libvirtd" ];
       };
     };
   };

@@ -1,0 +1,143 @@
+#!/bin/sh
+mod_normal=Super
+mod_normal_2=Super+Control
+mod_normal_3=Super+Alt
+term=footclient
+
+#-------------#
+# Normal mode #
+#-------------#
+
+# Open/Close programs
+riverctl map normal "$mod_normal"   X close
+riverctl map normal "$mod_normal_3" X exit
+riverctl map normal "$mod_normal_3" Q spawn wlogout
+riverctl map normal "$mod_normal"   T spawn "$term"
+riverctl map normal "$mod_normal"   B spawn "$BROWSER"
+riverctl map normal "$mod_normal"   Z spawn "$term -eH nu -e zellij-attach"
+riverctl map normal "$mod_normal"   R spawn "fuzzel" # r for run
+riverctl map normal "$mod_normal"   E spawn "foot -f monospace:pixelsize=20 -T emoji-picker emoji"
+riverctl map normal "$mod_normal_2" E spawn "foot -f monospace:pixelsize=20 -T emoji-picker emoji"
+riverctl map normal "$mod_normal"   Q spawn "qr"
+riverctl map normal "$mod_normal"   V spawn "$term -T pulsemixer pulsemixer"
+riverctl map normal "$mod_normal"   P spawn "screenshot"
+riverctl map normal "$mod_normal_2" P spawn "wl-color-picker"
+riverctl map normal "$mod_normal"   Return spawn qalculate-gtk
+
+# View focus and changes
+riverctl map normal "$mod_normal" J focus-view down
+riverctl map normal "$mod_normal" K focus-view up
+riverctl map normal "$mod_normal" H focus-view left
+riverctl map normal "$mod_normal" L focus-view right
+riverctl map normal "$mod_normal" F toggle-fullscreen
+riverctl map normal "$mod_normal" S zoom # S for swap
+
+# Outpt Focus and changes
+riverctl map normal "$mod_normal" Period focus-output right
+riverctl map normal "$mod_normal" Comma focus-output left
+riverctl map normal "$mod_normal_2" Period send-to-output next
+riverctl map normal "$mod_normal_2" Comma send-to-output previous
+
+# Mouse controls for floating views
+riverctl map-pointer normal "$mod_normal" BTN_LEFT move-view
+riverctl map-pointer normal "$mod_normal" BTN_RIGHT resize-view
+riverctl map-pointer normal "$mod_normal" BTN_MIDDLE toggle-float
+
+# Layout changes
+riverctl map normal "$mod_normal_2" H send-layout-cmd rivercarro "main-ratio +0.05"
+riverctl map normal "$mod_normal_2" L send-layout-cmd rivercarro "main-ratio -0.05"
+riverctl map normal "$mod_normal_2" K send-layout-cmd rivercarro "main-count +1"
+riverctl map normal "$mod_normal_2" J send-layout-cmd rivercarro "main-count -1"
+
+# Tags
+i=0
+for t in C D I M G N O # Code Docs Internet Media Games Notes Other
+do
+    tags=$((1 << i))
+
+    riverctl map normal "$mod_normal" "$t" set-focused-tags "$tags"
+    riverctl map normal "$mod_normal_3" "$t" toggle-focused-tags "$tags"
+    riverctl map normal "$mod_normal_2" "$t" set-view-tags "$tags"
+    riverctl map -release normal "$mod_normal_2" "$t" set-focused-tags "$tags"
+    # # "$mod_normal"+"$mod3"+"$mod4"+[1-9] to toggle tag [0-8] of focused view
+    # riverctl map normal "$mod_normal"+"$mod3"+"$mod4" $i toggle-view-tags $tags
+
+    i=$((i + 1))
+done
+
+all_tags=$(((1 << 32) - 1))
+riverctl map normal "$mod_normal" A set-focused-tags $all_tags
+riverctl map normal "$mod_normal_2" A set-view-tags $all_tags
+
+#-----------#
+# Swap mode #
+#-----------#
+
+riverctl declare-mode swap
+riverctl map normal "$mod_normal_2" S enter-mode swap
+riverctl map swap None Escape enter-mode normal
+
+riverctl map swap None J swap down
+riverctl map swap None K swap up
+riverctl map swap None H swap left
+riverctl map swap None L swap right
+
+#------------#
+# Float mode #
+#------------#
+
+riverctl declare-mode float
+riverctl map normal "$mod_normal_2" F enter-mode float
+riverctl map float None Escape enter-mode normal
+
+riverctl map float None T toggle-float
+
+move_step=50
+riverctl map -repeat float None H move left "$move_step"
+riverctl map -repeat float None J move down "$move_step"
+riverctl map -repeat float None K move up "$move_step"
+riverctl map -repeat float None L move right "$move_step"
+
+riverctl map float Alt H snap left
+riverctl map float Alt J snap down
+riverctl map float Alt K snap up
+riverctl map float Alt L snap right
+
+resize_step=50
+riverctl map float Control H resize horizontal -"$resize_step"
+riverctl map float Control J resize vertical -"$resize_step"
+riverctl map float Control K resize vertical "$resize_step"
+riverctl map float Control L resize horizontal "$resize_step"
+
+#------------------#
+# Passthrough mode #
+#------------------#
+
+# This mode has only a single mapping to return to normal mode.
+# This makes it useful for testing a nested wayland compositor
+riverctl declare-mode passthrough
+riverctl map normal "$mod_normal" F11 enter-mode passthrough
+riverctl map passthrough "$mod_normal" F11 enter-mode normal
+
+
+#----------------------#
+# All modes + Switches #
+#----------------------#
+
+for mode in normal locked float swap
+do
+    riverctl map -repeat "$mode" None XF86AudioRaiseVolume  spawn 'pamixer -i 2'
+    riverctl map -repeat "$mode" None XF86AudioLowerVolume  spawn 'pamixer -d 2'
+    riverctl map         "$mode" None XF86AudioMute         spawn 'pamixer -t'
+
+    # "$mod4" MPRIS aware media players with playerctl (https://github.com/altdesktop/playerctl)
+    riverctl map "$mode" None XF86AudioMedia spawn 'playerctl play-pause'
+    riverctl map "$mode" None XF86AudioPlay  spawn 'playerctl play-pause'
+    riverctl map "$mode" None XF86AudioPrev  spawn 'playerctl previous'
+    riverctl map "$mode" None XF86AudioNext  spawn 'playerctl next'
+
+    riverctl map -repeat "$mode" None XF86MonBrightnessUp   spawn 'brightnessctl set +2%'
+    riverctl map -repeat "$mode" None XF86MonBrightnessDown spawn 'brightnessctl set 2%-'
+
+    # The antenna keys are hardware switches on my laptop so no need to bind them
+done

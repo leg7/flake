@@ -1,0 +1,61 @@
+#!/bin/sh
+
+# Layout
+riverctl default-layout rivercarro
+riverctl default-attach-mode bottom
+rivercarro -main-location right -per-tag &
+
+# Colors
+riverctl background-color 0x586e75
+riverctl border-color-focused 0x7FFF00
+riverctl border-color-unfocused 0x101623
+
+# Keyboard
+riverctl set-repeat 50 300
+
+# Cursor
+riverctl focus-follows-cursor normal
+riverctl hide-cursor timeout 5000
+riverctl hide-cursor when-typing enabled
+riverctl set-cursor-warp on-focus-change
+riverctl xcursor-theme "Comix Cursors" # Doesn't work
+
+# Input
+mouse="pointer-1133-16500-Logitech_G305 accel-profile"
+riverctl input "$mouse" accel-profile none
+
+touchpad="pointer-1739-0-Synaptics_TM3276-022"
+riverctl input "$touchpad" accel-profile adaptive
+riverctl input "$touchpad" pointer-accel 0.4
+riverctl input "$touchpad" tap enabled
+riverctl input "$touchpad" click-method clickfinger
+riverctl input "$touchpad" middle-emulation enabled
+riverctl input "$touchpad" natural-scroll enabled
+
+nipple="pointer-2-10-TPPS/2_IBM_TrackPoint"
+riverctl input "$nipple" accel-profile adaptive
+riverctl input "$nipple" pointer-accel 1
+
+#-------#
+# Rules #
+#-------#
+
+# Todo: have variables for the bit mark instead of hardcoding it like this
+
+riverctl rule-add -app-id "*steam*" tags $((1 << 4))
+riverctl rule-add -app-id "steam_app*" float
+riverctl rule-add -app-id "steam_app*" fullscreen
+
+riverctl rule-add -app-id "Logseq" tags $((1 << 5))
+riverctl rule-add -app-id "Logseq" fullscreen
+
+riverctl rule-add -title "pulsemixer" float
+riverctl rule-add -title "emoji-picker" float
+riverctl rule-add -title "satty" fullscreen
+
+riverctl rule-add -app-id "qalculate-gtk" float
+riverctl rule-add -app-id "qalculate-gtk" dimensions 500 200
+riverctl rule-add -app-id "qalculate-gtk" position 40 70
+riverctl rule-add -app-id "qalculate-gtk" tags $(((1 << 32) - 1))
+
+riverctl rule-add -app-id "*" ssd

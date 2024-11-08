@@ -439,7 +439,7 @@ require('lazy').setup({
 			yarepl.setup {
 				wincmd = 'vertical topleft 80 split',
 				metas = {
-					ghci = { cmd = 'ghci', formatter = send_lines_ghci },
+					ghci = { cmd = 'ghci -Wall', formatter = send_lines_ghci },
 					cling = { cmd = 'cling', formatter = yarepl.formatter.bracketed_pasting } -- TODO: Doesn't work
 				},
 			}

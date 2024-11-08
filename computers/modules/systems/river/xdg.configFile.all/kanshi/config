@@ -1,0 +1,17 @@
+profile docked {
+	output eDP-1 disable
+	output "Samsung Electric Company S34J55x HTRK901623" {
+		enable
+		mode 3440x1440@60
+	}
+	exec yambar-reload
+	exec antenna -d wlan
+	exec idle --docked
+}
+
+profile nomad {
+	output eDP-1 enable
+	exec yambar-reload
+	exec antenna -c wlan
+	exec idle
+}
