@@ -196,6 +196,7 @@ require('lazy').setup({
 	{
 		'nvim-treesitter/nvim-treesitter',
 		lazy = false,
+		tag = "v0.9.3",
 		config = function()
 			require'nvim-treesitter.configs'.setup {
 				highlight = { enable = true },
@@ -206,35 +207,7 @@ require('lazy').setup({
 				},
 
 				additional_vim_regex_highlighting = false,
-
-				ensure_installed = {
-					-- linux
-					'bash', 'fish', 'awk',
-					'make',
-					'nix',
-					'toml',
-					'xml',
-					'markdown', 'markdown_inline',
-					'vim', 'vimdoc',
-					'yaml',
-					'query', 'regex',
-					-- prog
-					'c',
-					'lua', 'luadoc', 'luap',
-					'python',
-					'ocaml',
-					'haskell',
-					'r',
-					'rust',
-					'zig',
-					'java',
-					-- web
-					'html',
-					'javascript', 'jsdoc', 'json',
-					'typescript', 'tsx',
-					'php',
-					'sql',
-				},
+				auto_install = true,
 
 				incremental_selection = {
 					enable = true,
@@ -538,11 +511,7 @@ require('lazy').setup({
 			},
 		},
 		keys = {
-			{ "f", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
 			{ "<CR>", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-			-- Idk what these do
-			-- { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-			-- { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
 		},
 	},
 	{

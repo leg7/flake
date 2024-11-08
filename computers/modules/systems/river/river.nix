@@ -155,6 +155,7 @@
         diskonaut
 
         # Wayland wm "deps"
+        tree-sitter
         neovide
         unstable.rivercarro
         yambar
