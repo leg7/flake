@@ -238,22 +238,20 @@ require('lazy').setup({
 	},
 	{
 		'NvChad/nvim-colorizer.lua',
-		config = true,
+		opts = {},
 		ft = { 'vim', 'lua', 'html', 'css', 'js', 'php', 'scss', 'dosini' },
 	},
 	{
 		'windwp/nvim-autopairs',
 		event = { 'InsertEnter', 'CmdlineEnter' },
-		config = function()
-			require('nvim-autopairs').setup({
-				enable_check_bracket_line = false,
-				ignored_next_char = "[%w%.]",
-			})
-		end,
+		opts = {
+			enable_check_bracket_line = false,
+			ignored_next_char = "[%w%.]",
+		},
 	},
 	{
 		'windwp/nvim-ts-autotag',
-		config = true,
+		opts = {},
 		ft = { 'html', 'css', 'php', 'xml', 'js' },
 		dependencies = 'nvim-treesitter/nvim-treesitter',
 	},
@@ -271,10 +269,12 @@ require('lazy').setup({
 		'andymass/vim-matchup',
 		lazy = false,
 		dependencies = 'nvim-treesitter/nvim-treesitter',
-		config = function()
+		init = function()
 			vim.g.matchup_surround_enabled = 1
 			vim.g.matchup_transmute_enabled = 1
 			vim.g.matchup_delim_stopline = 43
+		end,
+		config = function()
 			require('nvim-treesitter.configs').setup {
 				matchup = {
 					enable = true,
@@ -286,25 +286,25 @@ require('lazy').setup({
 	{
 		'kylechui/nvim-surround',
 		version = '*',
-		config = true,
+		opts = {},
 		keys = { 'cs', 'ds', 'ys', { 'S', mode = 'x' } },
 	},
 	{
 		'numToStr/Comment.nvim',
-		config = true,
+		opts = {},
 		keys = { 'gc', 'gb', { 'gc', mode = 'x' }, { 'gb', mode = 'x' } },
 	},
 	{
 		'gbprod/substitute.nvim',
-		config = true,
+		opts = {},
 		keys = {
 			{ 's',  mode = 'n', function() require('substitute').operator() end, desc = 'Substitute' },
 			{ 'ss', mode = 'n',  function() require('substitute').line() end, },
 			{ 'S',  mode = 'n',  function() require('substitute').eol() end, },
 			{ 's',  mode = 'x',  function() require('substitute').visual() end, },
-			{ '<leader>s', mode = 'n',  function() require('substitute.range').operator() end,  },
-			{ '<leader>s', mode = 'x',  function() require('substitute.range').visual() end,  },
-			{ '<leader>ss', mode = 'n', function() require('substitute.range').word() end,  },
+			-- { '<leader>s', mode = 'n',  function() require('substitute.range').operator() end,  },
+			-- { '<leader>s', mode = 'x',  function() require('substitute.range').visual() end,  },
+			-- { '<leader>ss', mode = 'n', function() require('substitute.range').word() end,  },
 			{ 'sx',  mode ='n', function() require('substitute.exchange').operator() end,  },
 			{ 'sxx', mode ='n', function() require('substitute.exchange').line() end,  },
 			{ 'X',   mode ='x', function() require('substitute.exchange').visual() end,  },
@@ -313,7 +313,7 @@ require('lazy').setup({
 	},
 	{
 		'tommcdo/vim-lion',
-		config = function()
+		init = function()
 			vim.g.lion_squeeze_spaces = 1
 		end,
 		keys = {
@@ -323,7 +323,7 @@ require('lazy').setup({
 	},
 	{
 		'mbbill/undotree',
-		config = function()
+		init = function()
 			vim.g.undotree_ShortIndicators = 1
 			vim.g.undotree_SetFocusWhenToggle = 1
 			vim.g.undotree_WindowLayout = 3
@@ -335,6 +335,9 @@ require('lazy').setup({
 	{
 		'ibhagwan/fzf-lua',
 		dependencies = { 'nvim-tree/nvim-web-devicons' },
+		config = function()
+			require('fzf-lua').register_ui_select()
+		end,
 		keys = {
 			{ '<c-f>', mode = 'n', function() require('fzf-lua').files() end, desc = 'Fzf' },
 			{ '<c-b>', mode = 'n', function() require('fzf-lua').buffers() end, desc = 'Fzf buffers' },
@@ -342,23 +345,42 @@ require('lazy').setup({
 		},
 	},
 	{
+		'rmagatti/auto-session',
+		dependencies = { 'ibhagwan/fzf-lua' },
+		lazy = false,
+
+		init = function()
+			vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+		end,
+		---enables autocomplete for opts
+		---@module "auto-session"
+		---@type AutoSession.Config
+		opts = {
+			suppressed_dirs = { '~/', '/' },
+			-- log_level = 'debug',
+		},
+		keys = {
+			{ '<leader>sf', mode = 'n', '<cmd>Autosession search<cr>', desc = "Find a session to open" },
+			{ '<leader>sd', mode = 'n', '<cmd>Autosession delete<cr>', desc = "Find a session to delete" },
+			{ '<leader>ss', mode = 'n', '<cmd>SessionSave<cr>', desc = "Save current session" },
+		},
+	},
+	{
 		'stevearc/oil.nvim',
-		lazy = false, -- Can't be lazy because you can do 'nvim /path/to/dir'
-		config = function()
-			require('oil').setup {
-				keymaps = {
-					['gt'] = 'actions.open_terminal'
-				}
-			}
+		dependencies = { 'nvim-tree/nvim-web-devicons' },
+		init = function()
 			vim.g.loaded_netrw = 1
 			vim.g.loaded_netrw_Plugin = 1
 		end,
+		opts = {
+			keymaps = {
+				['gt'] = 'actions.open_terminal'
+			},
+		},
 		keys = {
 			{ '-', mode = 'n', function() require('oil').open(nil) end, desc = 'Oil file manager' },
 		},
 		ft = { 'netrw', 'oil' },
-		dependencies = { 'nvim-tree/nvim-web-devicons' },
-
 	},
 	{
 		'folke/zen-mode.nvim',
@@ -477,90 +499,88 @@ require('lazy').setup({
 			vim.o.timeout = true
 			vim.o.timeoutlen = 300
 		end,
-		opts = {
-			-- your configuration comes here
-			-- or leave it empty to use the default settings
-			-- refer to the configuration section below
-		}
+		opts = {}
 	},
 	{
 		'lewis6991/gitsigns.nvim',
-		config = function()
-			require('gitsigns').setup {
-				on_attach = function(bufnr)
-					local gitsigns = require('gitsigns')
+		opts = {
+			on_attach = function(bufnr)
+				local gitsigns = require('gitsigns')
 
-					local function map(mode, l, r, opts)
-						opts = opts or {}
-						opts.buffer = bufnr
-						vim.keymap.set(mode, l, r, opts)
-					end
-
-					-- Navigation
-					map('n', ']c', function()
-						if vim.wo.diff then
-							vim.cmd.normal({']c', bang = true})
-						else
-							gitsigns.nav_hunk('next')
-						end
-					end)
-
-					map('n', '[c', function()
-						if vim.wo.diff then
-							vim.cmd.normal({'[c', bang = true})
-						else
-							gitsigns.nav_hunk('prev')
-						end
-					end)
-
-					-- Actions
-					map('n', '<leader>hs', gitsigns.stage_hunk)
-					map('n', '<leader>hr', gitsigns.reset_hunk)
-					map('v', '<leader>hs', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-					map('v', '<leader>hr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-					map('n', '<leader>hS', gitsigns.stage_buffer)
-					map('n', '<leader>hu', gitsigns.undo_stage_hunk)
-					map('n', '<leader>hR', gitsigns.reset_buffer)
-					map('n', '<leader>hp', gitsigns.preview_hunk)
-					map('n', '<leader>hb', function() gitsigns.blame_line{full=true} end)
-					map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
-					map('n', '<leader>hd', gitsigns.diffthis)
-					map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
-					map('n', '<leader>td', gitsigns.toggle_deleted)
-
-					-- Text object
-					map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+				local function map(mode, l, r, opts)
+					opts = opts or {}
+					opts.buffer = bufnr
+					vim.keymap.set(mode, l, r, opts)
 				end
-			}
-		end,
-		lazy = false,
-	},
-	{
-		"https://git.sr.ht/~swaits/zellij-nav.nvim",
-		lazy = false,
-		keys = {
-			{ "<a-h>", "<cmd>ZellijNavigateLeft<cr>",  { silent = true, desc = "navigate left"  } },
-			{ "<a-j>", "<cmd>ZellijNavigateDown<cr>",  { silent = true, desc = "navigate down"  } },
-			{ "<a-k>", "<cmd>ZellijNavigateUp<cr>",    { silent = true, desc = "navigate up"    } },
-			{ "<a-l>", "<cmd>ZellijNavigateRight<cr>", { silent = true, desc = "navigate right" } },
+
+				-- Navigation
+				map('n', ']c', function()
+					if vim.wo.diff then
+						vim.cmd.normal({']c', bang = true})
+					else
+						gitsigns.nav_hunk('next')
+					end
+				end)
+
+				map('n', '[c', function()
+					if vim.wo.diff then
+						vim.cmd.normal({'[c', bang = true})
+					else
+						gitsigns.nav_hunk('prev')
+					end
+				end)
+
+				-- Actions
+				map('n', '<leader>gs', gitsigns.stage_hunk)
+				map('n', '<leader>gr', gitsigns.reset_hunk)
+				map('v', '<leader>gs', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+				map('v', '<leader>gr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+				map('n', '<leader>gS', gitsigns.stage_buffer)
+				map('n', '<leader>gu', gitsigns.undo_stage_hunk)
+				map('n', '<leader>gR', gitsigns.reset_buffer)
+				map('n', '<leader>gp', gitsigns.preview_hunk)
+				map('n', '<leader>gb', function() gitsigns.blame_line{full=true} end)
+				map('n', '<leader>gtb', gitsigns.toggle_current_line_blame)
+				map('n', '<leader>gd', gitsigns.diffthis)
+				map('n', '<leader>gD', function() gitsigns.diffthis('~') end)
+				map('n', '<leader>gtd', gitsigns.toggle_deleted)
+
+				-- Text object
+				map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+			end
 		},
-		opts = {},
+		lazy = false,
 	},
 	{
 		'ThePrimeagen/harpoon',
 		branch = 'harpoon2',
 		dependencies = { 'nvim-lua/plenary.nvim' },
-		config = function()
-			local harpoon = require('harpoon')
-			harpoon:setup()
-		end,
+		opts = {},
 		keys = {
 			{ '<leader>a', mode = 'n', function() require('harpoon'):list():add() end, desc = 'Harpoon add' },
 			{ '<leader>e', mode = 'n', function() require('harpoon').ui:toggle_quick_menu(require('harpoon'):list()) end, desc = 'Harpoon quick-menu' },
-			{ '<leader>h', mode = 'n', function() require('harpoon'):list():select(1) end, desc = 'Harpoon select 1' },
-			{ '<leader>t', mode = 'n', function() require('harpoon'):list():select(2) end, desc = 'Harpoon select 2' },
-			{ '<leader>n', mode = 'n', function() require('harpoon'):list():select(3) end, desc = 'Harpoon select 3' },
-			{ '<leader>s', mode = 'n', function() require('harpoon'):list():select(4) end, desc = 'Harpoon select 4' },
+			{ '<leader>n', mode = 'n', function() require('harpoon'):list():select(1) end, desc = 'Harpoon select 1' },
+			{ '<leader>h', mode = 'n', function() require('harpoon'):list():select(2) end, desc = 'Harpoon select 2' },
+			{ '<leader>.', mode = 'n', function() require('harpoon'):list():select(3) end, desc = 'Harpoon select 3' },
+			{ '<leader>-', mode = 'n', function() require('harpoon'):list():select(4) end, desc = 'Harpoon select 4' },
+		},
+	},
+	{
+		'mrjones2014/smart-splits.nvim',
+		opts = {},
+		keys = {
+			-- Moving
+			{ '<c-k>', mode = 'n', function() require('smart-splits').move_cursor_up()    end, desc = "Smart split move up" },
+			{ '<c-j>', mode = 'n', function() require('smart-splits').move_cursor_down()  end, desc = "Smart split move down" },
+			{ '<c-h>', mode = 'n', function() require('smart-splits').move_cursor_left()  end, desc = "Smart split move left" },
+			{ '<c-l>', mode = 'n', function() require('smart-splits').move_cursor_right() end, desc = "Smart split move right" },
+			-- Swapping
+			{ '<a-k>', mode = 'n', function() require('smart-splits').swap_buf_up()    end, desc = "Smart split move up" },
+			{ '<a-j>', mode = 'n', function() require('smart-splits').swap_buf_down()  end, desc = "Smart split move down" },
+			{ '<a-h>', mode = 'n', function() require('smart-splits').swap_buf_left()  end, desc = "Smart split move left" },
+			{ '<a-l>', mode = 'n', function() require('smart-splits').swap_buf_right() end, desc = "Smart split move right" },
+			-- Resizing
+			{ '<a-r>', mode = 'n', function() require('smart-splits').start_resize_mode() end, noremap = true, desc = "Smart split resize mode" },
 		},
 	},
 },
@@ -569,8 +589,6 @@ require('lazy').setup({
 		lazy = true
 	},
 })
-
-
 
 --------------
 -- Settings --
@@ -583,7 +601,7 @@ vim.opt.lazyredraw = true
 vim.opt.scrolloff = 4
 
 vim.opt.termguicolors = true
-vim.cmd('hi Normal guibg=NONE ctermbg=NONE') -- idk how to do this in lua the documentation is so bad
+-- vim.cmd('hi Normal guibg=NONE ctermbg=NONE') -- idk how to do this in lua the documentation is so bad
 vim.opt.cursorline = true
 vim.opt.fillchars = { eob = ' ' }
 vim.opt.wrap = true
@@ -600,9 +618,6 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.infercase = true
 
--- These settings are great with auto-save.nvim. It makes it so you can't loose
--- code, it does increase the ammounts of write on your disk though so if
--- you're using a hard drive you might want to reconsider autosave
 vim.opt.backup = false
 vim.opt.swapfile = false
 vim.opt.autowrite = true
@@ -656,6 +671,10 @@ vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter'}, {
 	end,
 })
 
+if vim.g.neovide then
+	vim.o.guifont = "monospace:h14"
+end
+
 -------------
 -- Keymaps --
 -------------
@@ -665,8 +684,8 @@ vim.keymap.set('n', '<leader>x', '<cmd>!chmod +x %<cr>')
 vim.keymap.set( 't', '<esc>', '<c-\\><c-n>')
 
 -- copy pasta
-vim.keymap.set({'x', 'n'}, '<leader>y', '"cy<cmd>call system("wl-copy", @c)<cr>', { silent = true, noremap = true })
-vim.keymap.set('n', '<leader>p', '<cmd>r !wl-paste<cr>', { silent = true, noremap = true })
+vim.keymap.set({'x', 'n'}, '<leader>y', '"+y', { silent = true, noremap = true })
+vim.keymap.set('n', '<leader>p', '"+p', { silent = true, noremap = true })
 vim.keymap.set({ 'n', 'x' }, '<leader>d', '"_d')
 
 vim.keymap.set('n', '<a-a>', 'ggVG')
@@ -678,33 +697,13 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', 'J', 'mzJ`z')
 vim.keymap.set('i', '<esc>', '<esc>l')
 
--- Splits / Navigation --
-
--- switch handeled by zellij
--- resize
-vim.keymap.set('n', '<c-h>', '5<c-w>>')
-vim.keymap.set('n', '<c-j>', '5<c-w>+')
-vim.keymap.set('n', '<c-k>', '5<c-w>-')
-vim.keymap.set('n', '<c-l>', '5<c-w><')
-vim.keymap.set('n', '<c-e>', '5<c-w>=')
 -- close/open
 vim.keymap.set('n', '<c-x>', ':close<cr>') -- X out of here
 vim.keymap.set('n', '<c-s>', ':vs<cr>')
 vim.keymap.set('n', '<c-t>', ':vs |:terminal<cr>') -- Conflicts with oil
-
--- Move the visual selection up and down with J and K respectively
--- I need to make this a continous action so that it doesn't pollute the
--- undo history and spams auto save
--- vim.keymap.set('x', '<a-j>', ":m '>+1<CR>gv=gv")
--- vim.keymap.set('x', '<a-k>', ":m '<-2<CR>gv=gv")
 
 -- -- quickfix stuff
 -- vim.keymap.set('n', '<c-k>', '<cmd>cnext<cr>')
 -- vim.keymap.set('n', '<c-j>', '<cmd>cprev<cr>')
 -- vim.keymap.set('n', '<leader>k', '<cmd>lnext<cr>')
 -- vim.keymap.set('n', '<leader>j', '<cmd>lprev<cr>')
-
--- Lushify new highligh groups
--- vim.cmd('highlight BooleanOperators NONE')
--- vim.cmd([[match BooleanOperators /&&\|||\|^\|!\|!=\|==\|>\|>=\|<\|<=\|<=>\|===/]])
--- vim.cmd([[match BooleanOperators /&&/]])
