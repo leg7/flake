@@ -238,22 +238,20 @@ require('lazy').setup({
 	},
 	{
 		'NvChad/nvim-colorizer.lua',
-		config = true,
+		opts = {},
 		ft = { 'vim', 'lua', 'html', 'css', 'js', 'php', 'scss', 'dosini' },
 	},
 	{
 		'windwp/nvim-autopairs',
 		event = { 'InsertEnter', 'CmdlineEnter' },
-		config = function()
-			require('nvim-autopairs').setup({
-				enable_check_bracket_line = false,
-				ignored_next_char = "[%w%.]",
-			})
-		end,
+		opts = {
+			enable_check_bracket_line = false,
+			ignored_next_char = "[%w%.]",
+		},
 	},
 	{
 		'windwp/nvim-ts-autotag',
-		config = true,
+		opts = {},
 		ft = { 'html', 'css', 'php', 'xml', 'js' },
 		dependencies = 'nvim-treesitter/nvim-treesitter',
 	},
@@ -271,10 +269,12 @@ require('lazy').setup({
 		'andymass/vim-matchup',
 		lazy = false,
 		dependencies = 'nvim-treesitter/nvim-treesitter',
-		config = function()
+		init = function()
 			vim.g.matchup_surround_enabled = 1
 			vim.g.matchup_transmute_enabled = 1
 			vim.g.matchup_delim_stopline = 43
+		end,
+		config = function()
 			require('nvim-treesitter.configs').setup {
 				matchup = {
 					enable = true,
@@ -286,25 +286,25 @@ require('lazy').setup({
 	{
 		'kylechui/nvim-surround',
 		version = '*',
-		config = true,
+		opts = {},
 		keys = { 'cs', 'ds', 'ys', { 'S', mode = 'x' } },
 	},
 	{
 		'numToStr/Comment.nvim',
-		config = true,
+		opts = {},
 		keys = { 'gc', 'gb', { 'gc', mode = 'x' }, { 'gb', mode = 'x' } },
 	},
 	{
 		'gbprod/substitute.nvim',
-		config = true,
+		opts = {},
 		keys = {
 			{ 's',  mode = 'n', function() require('substitute').operator() end, desc = 'Substitute' },
 			{ 'ss', mode = 'n',  function() require('substitute').line() end, },
 			{ 'S',  mode = 'n',  function() require('substitute').eol() end, },
 			{ 's',  mode = 'x',  function() require('substitute').visual() end, },
-			{ '<leader>s', mode = 'n',  function() require('substitute.range').operator() end,  },
-			{ '<leader>s', mode = 'x',  function() require('substitute.range').visual() end,  },
-			{ '<leader>ss', mode = 'n', function() require('substitute.range').word() end,  },
+			-- { '<leader>s', mode = 'n',  function() require('substitute.range').operator() end,  },
+			-- { '<leader>s', mode = 'x',  function() require('substitute.range').visual() end,  },
+			-- { '<leader>ss', mode = 'n', function() require('substitute.range').word() end,  },
 			{ 'sx',  mode ='n', function() require('substitute.exchange').operator() end,  },
 			{ 'sxx', mode ='n', function() require('substitute.exchange').line() end,  },
 			{ 'X',   mode ='x', function() require('substitute.exchange').visual() end,  },
@@ -313,7 +313,7 @@ require('lazy').setup({
 	},
 	{
 		'tommcdo/vim-lion',
-		config = function()
+		init = function()
 			vim.g.lion_squeeze_spaces = 1
 		end,
 		keys = {
@@ -323,7 +323,7 @@ require('lazy').setup({
 	},
 	{
 		'mbbill/undotree',
-		config = function()
+		init = function()
 			vim.g.undotree_ShortIndicators = 1
 			vim.g.undotree_SetFocusWhenToggle = 1
 			vim.g.undotree_WindowLayout = 3
@@ -335,6 +335,9 @@ require('lazy').setup({
 	{
 		'ibhagwan/fzf-lua',
 		dependencies = { 'nvim-tree/nvim-web-devicons' },
+		config = function()
+			require('fzf-lua').register_ui_select()
+		end,
 		keys = {
 			{ '<c-f>', mode = 'n', function() require('fzf-lua').files() end, desc = 'Fzf' },
 			{ '<c-b>', mode = 'n', function() require('fzf-lua').buffers() end, desc = 'Fzf buffers' },
@@ -342,23 +345,43 @@ require('lazy').setup({
 		},
 	},
 	{
+		'rmagatti/auto-session',
+		dependencies = { 'ibhagwan/fzf-lua' },
+		lazy = false,
+
+		init = function()
+			vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+		end,
+		---enables autocomplete for opts
+		---@module "auto-session"
+		---@type AutoSession.Config
+		opts = {
+			suppressed_dirs = { '~/', '/' },
+			-- log_level = 'debug',
+		},
+		keys = {
+			{ '<leader>sf', mode = 'n', '<cmd>Autosession search<cr>', desc = "Find a session to open" },
+			{ '<leader>sd', mode = 'n', '<cmd>Autosession delete<cr>', desc = "Find a session to delete" },
+			{ '<leader>ss', mode = 'n', '<cmd>SessionSave<cr>', desc = "Save current session" },
+			{ '<leader>sd', mode = 'n', '<cmd>SessionDelete<cr>', desc = "Save current session" },
+		},
+	},
+	{
 		'stevearc/oil.nvim',
-		lazy = false, -- Can't be lazy because you can do 'nvim /path/to/dir'
-		config = function()
-			require('oil').setup {
-				keymaps = {
-					['gt'] = 'actions.open_terminal'
-				}
-			}
+		dependencies = { 'nvim-tree/nvim-web-devicons' },
+		init = function()
 			vim.g.loaded_netrw = 1
 			vim.g.loaded_netrw_Plugin = 1
 		end,
+		opts = {
+			keymaps = {
+				['gt'] = 'actions.open_terminal'
+			},
+		},
 		keys = {
 			{ '-', mode = 'n', function() require('oil').open(nil) end, desc = 'Oil file manager' },
 		},
 		ft = { 'netrw', 'oil' },
-		dependencies = { 'nvim-tree/nvim-web-devicons' },
-
 	},
 	{
 		'folke/zen-mode.nvim',
@@ -477,62 +500,56 @@ require('lazy').setup({
 			vim.o.timeout = true
 			vim.o.timeoutlen = 300
 		end,
-		opts = {
-			-- your configuration comes here
-			-- or leave it empty to use the default settings
-			-- refer to the configuration section below
-		}
+		opts = {}
 	},
 	{
 		'lewis6991/gitsigns.nvim',
-		config = function()
-			require('gitsigns').setup {
-				on_attach = function(bufnr)
-					local gitsigns = require('gitsigns')
+		opts = {
+			on_attach = function(bufnr)
+				local gitsigns = require('gitsigns')
 
-					local function map(mode, l, r, opts)
-						opts = opts or {}
-						opts.buffer = bufnr
-						vim.keymap.set(mode, l, r, opts)
-					end
-
-					-- Navigation
-					map('n', ']c', function()
-						if vim.wo.diff then
-							vim.cmd.normal({']c', bang = true})
-						else
-							gitsigns.nav_hunk('next')
-						end
-					end)
-
-					map('n', '[c', function()
-						if vim.wo.diff then
-							vim.cmd.normal({'[c', bang = true})
-						else
-							gitsigns.nav_hunk('prev')
-						end
-					end)
-
-					-- Actions
-					map('n', '<leader>hs', gitsigns.stage_hunk)
-					map('n', '<leader>hr', gitsigns.reset_hunk)
-					map('v', '<leader>hs', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-					map('v', '<leader>hr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-					map('n', '<leader>hS', gitsigns.stage_buffer)
-					map('n', '<leader>hu', gitsigns.undo_stage_hunk)
-					map('n', '<leader>hR', gitsigns.reset_buffer)
-					map('n', '<leader>hp', gitsigns.preview_hunk)
-					map('n', '<leader>hb', function() gitsigns.blame_line{full=true} end)
-					map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
-					map('n', '<leader>hd', gitsigns.diffthis)
-					map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
-					map('n', '<leader>td', gitsigns.toggle_deleted)
-
-					-- Text object
-					map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+				local function map(mode, l, r, opts)
+					opts = opts or {}
+					opts.buffer = bufnr
+					vim.keymap.set(mode, l, r, opts)
 				end
-			}
-		end,
+
+				-- Navigation
+				map('n', ']c', function()
+					if vim.wo.diff then
+						vim.cmd.normal({']c', bang = true})
+					else
+						gitsigns.nav_hunk('next')
+					end
+				end)
+
+				map('n', '[c', function()
+					if vim.wo.diff then
+						vim.cmd.normal({'[c', bang = true})
+					else
+						gitsigns.nav_hunk('prev')
+					end
+				end)
+
+				-- Actions
+				map('n', '<leader>gs', gitsigns.stage_hunk)
+				map('n', '<leader>gr', gitsigns.reset_hunk)
+				map('v', '<leader>gs', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+				map('v', '<leader>gr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+				map('n', '<leader>gS', gitsigns.stage_buffer)
+				map('n', '<leader>gu', gitsigns.undo_stage_hunk)
+				map('n', '<leader>gR', gitsigns.reset_buffer)
+				map('n', '<leader>gp', gitsigns.preview_hunk)
+				map('n', '<leader>gb', function() gitsigns.blame_line{full=true} end)
+				map('n', '<leader>gtb', gitsigns.toggle_current_line_blame)
+				map('n', '<leader>gd', gitsigns.diffthis)
+				map('n', '<leader>gD', function() gitsigns.diffthis('~') end)
+				map('n', '<leader>gtd', gitsigns.toggle_deleted)
+
+				-- Text object
+				map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+			end
+		},
 		lazy = false,
 	},
 	{
@@ -550,17 +567,14 @@ require('lazy').setup({
 		'ThePrimeagen/harpoon',
 		branch = 'harpoon2',
 		dependencies = { 'nvim-lua/plenary.nvim' },
-		config = function()
-			local harpoon = require('harpoon')
-			harpoon:setup()
-		end,
+		opts = {},
 		keys = {
 			{ '<leader>a', mode = 'n', function() require('harpoon'):list():add() end, desc = 'Harpoon add' },
 			{ '<leader>e', mode = 'n', function() require('harpoon').ui:toggle_quick_menu(require('harpoon'):list()) end, desc = 'Harpoon quick-menu' },
-			{ '<leader>h', mode = 'n', function() require('harpoon'):list():select(1) end, desc = 'Harpoon select 1' },
-			{ '<leader>t', mode = 'n', function() require('harpoon'):list():select(2) end, desc = 'Harpoon select 2' },
-			{ '<leader>n', mode = 'n', function() require('harpoon'):list():select(3) end, desc = 'Harpoon select 3' },
-			{ '<leader>s', mode = 'n', function() require('harpoon'):list():select(4) end, desc = 'Harpoon select 4' },
+			{ '<leader>n', mode = 'n', function() require('harpoon'):list():select(1) end, desc = 'Harpoon select 1' },
+			{ '<leader>h', mode = 'n', function() require('harpoon'):list():select(2) end, desc = 'Harpoon select 2' },
+			{ '<leader>.', mode = 'n', function() require('harpoon'):list():select(3) end, desc = 'Harpoon select 3' },
+			{ '<leader>-', mode = 'n', function() require('harpoon'):list():select(4) end, desc = 'Harpoon select 4' },
 		},
 	},
 },
