@@ -140,7 +140,7 @@
 
         # Interactive programs
         neomutt mutt-wizard gnupg pinentry-all pass isync notmuch lynx abook
-        ardour gxplugins-lv2 guitarix
+        ardour gxplugins-lv2 guitarix gmetronome
         libreoffice
         ncmpcpp mpc-cli helvum pulsemixer pamixer easyeffects # pamixer required for eww
         imv
@@ -153,10 +153,9 @@
         qalculate-gtk
         vial
         diskonaut
+        neovide tree-sitter
 
         # Wayland wm "deps"
-        tree-sitter
-        neovide
         unstable.rivercarro
         yambar
         fuzzel
