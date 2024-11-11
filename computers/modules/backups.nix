@@ -19,7 +19,7 @@
       home=${config.mainDisk.persistentDataPath}/home/user
 
       ${pkgs.util-linux}/bin/mount "$backupDir"
-      ${pkgs.findutils}/bin/find "$backupDir" -mtime +3 -delete
+      ${pkgs.findutils}/bin/find "$backupDir" -mtime +2 -delete
       ${pkgs.gnutar}/bin/tar cvf "$backupDir"/"$(date +"%F_%H-%M-%S")".tar $home/books $home/documents $home/pics $home/vids $home/audio
       ${pkgs.util-linux}/bin/umount "$backupDir"
       '';
