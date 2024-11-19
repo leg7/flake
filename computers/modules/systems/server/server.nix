@@ -30,21 +30,25 @@
         "vaultwarden.leonardgomez.xyz"
         "mollysocket.leonardgomez.xyz"
         "radicale.leonardgomez.xyz"
+        "mail.leonardgomez.xyz"
+        "wordpress.leonardgomez.xyz"
       ];
     };
   };
 
   # services.stalwart-mail = {
   #   enable = true;
+  #   package = pkgs.stalwart-mail;
   #   settings = {
-  #     certificate."snakeoil" = {
-  #       cert = "file://${certs."leonardgomez.xyz".cert}";
-  #       private-key = "file://${certs."leonardgomez.xyz".key}";
+  #     certificate."leonardgomez" = {
+  #       cert = "%{file:/var/lib/acme/mail.leonardgomez.xyz/fullchain.pem}%";
+  #       private-key = "%{file:/var/lib/acme/mail.leonardgomez.xyz/key.pem}%";
   #     };
+  #
   #     server = {
-  #       hostname = "leonardgomez.xyz";
+  #       hostname = "mail.leonardgomez.xyz";
   #       tls = {
-  #         certificate = "snakeoil";
+  #         certificate = "leonardgomez";
   #         enable = true;
   #         implicit = false;
   #       };
@@ -59,6 +63,7 @@
   #         };
   #       };
   #     };
+  #
   #     session = {
   #       rcpt.directory = "in-memory";
   #       auth = {
@@ -66,6 +71,7 @@
   #         directory = "in-memory";
   #       };
   #     };
+  #
   #     jmap.directory = "in-memory";
   #     queue.outbound.next-hop = [ "local" ];
   #     directory."in-memory" = {
@@ -85,6 +91,19 @@
     # kavita.enable = true;
     # TODO: Use nix secrets
     # kavita.tokenKeyFile = ./kavita.tokenKeyFile;
+
+    wordpress = {
+      webserver = "nginx";
+      sites."localhost" = {
+        settings = {
+          # Needed to run behind reverse proxy
+          FORCE_SSL_ADMIN = true;
+        };
+        extraConfig = ''
+        $_SERVER['HTTPS']='on';
+        '';
+      };
+    };
 
     radicale = {
       enable = true;
@@ -179,6 +198,14 @@
         enableACME = true;
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString config.services.mollysocket.settings.port}";
+        };
+      };
+
+      virtualHosts."wordpress.leonardgomez.xyz" = {
+        addSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:443";
         };
       };
 
