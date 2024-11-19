@@ -16,7 +16,7 @@ riverctl map normal "$mod_normal"   T spawn "$term"
 riverctl map normal "$mod_normal"   B spawn "$BROWSER"
 riverctl map normal "$mod_normal"   Z spawn "$term -eH nu -e zellij-attach"
 riverctl map normal "$mod_normal"   R spawn "fuzzel" # r for run
-riverctl map normal "$mod_normal"   E spawn "foot -f monospace:pixelsize=20 -T emoji-picker emoji"
+riverctl map normal "$mod_normal" 	E spawn "neovide --server=$NVIM_SERVER"
 riverctl map normal "$mod_normal_2" E spawn "foot -f monospace:pixelsize=20 -T emoji-picker emoji"
 riverctl map normal "$mod_normal"   Q spawn "qr"
 riverctl map normal "$mod_normal"   V spawn "$term -T pulsemixer pulsemixer"

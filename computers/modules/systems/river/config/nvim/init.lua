@@ -127,55 +127,34 @@ require('lazy').setup({
 		end,
 	},
 	{
-		'VonHeikemen/lsp-zero.nvim',
-		branch = 'v3.x',
-
+		'neovim/nvim-lspconfig',
+		dependencies = 'hrsh7th/cmp-nvim-lsp',
 		config = function()
 
-			local lsp_zero = require('lsp-zero')
+			local lspconfig_defaults = require('lspconfig').util.default_config
+			lspconfig_defaults.capabilities = vim.tbl_deep_extend(
+				'force',
+				lspconfig_defaults.capabilities,
+				require('cmp_nvim_lsp').default_capabilities()
+			)
 
-			lsp_zero.on_attach(function(client, bufnr)
-				lsp_zero.default_keymaps({buffer = bufnr, exclude = 'gl'})
-			end)
-
-			lsp_zero.setup_servers({
-				'zls',
-				'hls',
-				'asm_lsp',
-				'bashls',
-				'ocamllsp',
-				'clangd',
-				'nixd',
-				'lua_ls',
-				'emmet_ls',
-				'rust_analyzer',
-				'jdtls',
+			local lspconfig = require('lspconfig')
+			lspconfig.zls.setup({})
+			lspconfig.hls.setup({
+				-- TODO: figure out how to disable certain hints
 			})
-
-
-			lsp_zero.set_sign_icons({
-				error = '',
-				warn = '',
-				hint = '⚑',
-				info = ''
-			})
-
-			require('mason').setup()
-			require('mason-lspconfig').setup({
-				handlers = { lsp_zero.default_setup },
-			})
+			lspconfig.asm_lsp.setup({})
+			lspconfig.bashls.setup({})
+			lspconfig.ocamllsp.setup({})
+			lspconfig.clangd.setup({})
+			lspconfig.nixd.setup({})
+			lspconfig.lua_ls.setup({})
+			lspconfig.emmet_ls.setup({})
+			lspconfig.rust_analyzer.setup({})
+			lspconfig.jdtls.setup({})
 		end,
-
-		dependencies = {
-			'williamboman/mason.nvim',
-			'williamboman/mason-lspconfig.nvim',
-			'neovim/nvim-lspconfig',
-			'hrsh7th/cmp-nvim-lsp',
-			'hrsh7th/nvim-cmp',
-			'L3MON4D3/LuaSnip',
-		},
-
 		ft = {
+			'zig',
 			'haskell',
 			'asm',
 			'sh',
@@ -184,19 +163,67 @@ require('lazy').setup({
 			'nix',
 			'lua',
 			'html', 'js', 'php',
-			'zig',
 			'rust',
 			'java',
 		},
+		keymaps = {
+			{ 'gd',        mode = 'n',        '<cmd>lua vim.lsp.buf.definition()<cr>',           desc = 'lsp: Go to definition of symbol' },
+			{ 'gD',        mode = 'n',        '<cmd>lua vim.lsp.buf.declaration()<cr>',          desc = 'lsp: Go to declaration of symbol' },
+			{ 'gi',        mode = 'n',        '<cmd>lua vim.lsp.buf.implementation()<cr>',       desc = 'lsp: Go to implementation of symbol' },
+			{ 'go',        mode = 'n',        '<cmd>lua vim.lsp.buf.type_definition()<cr>',      desc = 'lsp: Go to type definition of symbol' },
+			{ 'gr',        mode = 'n',        '<cmd>lua vim.lsp.buf.references()<cr>',           desc = 'lsp: Find references of symbol' },
+			{ 'gs',        mode = 'n',        '<cmd>lua vim.lsp.buf.signature_help()<cr>',       desc = 'lsp: Show signature help for function' },
+			{ '<F2>',      mode = 'n',        '<cmd>lua vim.lsp.buf.rename()<cr>',               desc = 'lsp: Rename symbol under cursor' },
+			{ '<F3>',      mode = {'n', 'x'}, '<cmd>lua vim.lsp.buf.format({async = true})<cr>', desc = 'lsp: Format buffer (async)' },
+			{ '<F4>',      mode = 'n',        '<cmd>lua vim.lsp.buf.code_action()<cr>',          desc = 'lsp: Show code actions for symbol' },
+		},
+	},
+	{
+		'hrsh7th/nvim-cmp',
+		dependencies = 'L3MON4D3/LuaSnip',
+		event = 'InsertEnter',
+		config = function()
+			local cmp = require('cmp')
+			cmp.setup({
+				sources = {
+					{name = 'nvim_lsp'},
+				},
+				snippet = {
+					expand = function(args)
+						require('luasnip').lsp_expand(args.body)
+					end,
+				},
+				mapping = require('cmp').mapping.preset.insert({}),
 
-		keys = {
-			{ '<leader>i', mode = 'n', function() vim.diagnostic.open_float() end, },
-		}
+			})
+		end,
+	},
+	{
+		'L3MON4D3/LuaSnip',
+		event = 'InsertEnter',
+	},
+	{
+		-- Configuring signs through nvim doesn't work so I have to use this
+		'VonHeikemen/lsp-zero.nvim',
+		branch = 'v4.x',
+		lazy = false,
+		config = function()
+			local lsp_zero = require('lsp-zero')
+			lsp_zero.ui({
+				float_border = 'rounded',
+				sign_text = {
+					error = '✘',
+					warn = '▲',
+					hint = '⚑',
+					info = '»',
+				},
+			})
+		end,
 	},
 	{
 		'nvim-treesitter/nvim-treesitter',
-		lazy = false,
 		tag = "v0.9.3",
+		event = 'BufEnter',
 		config = function()
 			require'nvim-treesitter.configs'.setup {
 				highlight = { enable = true },
@@ -223,7 +250,7 @@ require('lazy').setup({
 	},
 	{
 		'nvim-treesitter/nvim-treesitter-textobjects',
-		lazy = false,
+		event = 'BufEnter',
 		dependencies = { 'nvim-treesitter/nvim-treesitter' },
 	},
 	{
@@ -243,7 +270,7 @@ require('lazy').setup({
 	},
 	{
 		'windwp/nvim-autopairs',
-		event = { 'InsertEnter', 'CmdlineEnter' },
+		event = 'InsertEnter',
 		opts = {
 			enable_check_bracket_line = false,
 			ignored_next_char = "[%w%.]",
@@ -267,7 +294,7 @@ require('lazy').setup({
 	},
 	{
 		'andymass/vim-matchup',
-		lazy = false,
+		event = 'BufEnter',
 		dependencies = 'nvim-treesitter/nvim-treesitter',
 		init = function()
 			vim.g.matchup_surround_enabled = 1
@@ -345,7 +372,9 @@ require('lazy').setup({
 		},
 	},
 	{
-		'rmagatti/auto-session',
+		-- 'rmagatti/auto-session',
+		-- I'm using this fork because the guy fixed my issue with oil and terminal restore
+		'cameronr/auto-session',
 		dependencies = { 'ibhagwan/fzf-lua' },
 		lazy = false,
 
@@ -357,6 +386,8 @@ require('lazy').setup({
 		---@type AutoSession.Config
 		opts = {
 			suppressed_dirs = { '~/', '/' },
+			auto_create = false, -- TODO: Auto create if I spent more than an hour in the session
+			use_git_branch = true,
 			-- log_level = 'debug',
 		},
 		keys = {
@@ -368,6 +399,7 @@ require('lazy').setup({
 	{
 		'stevearc/oil.nvim',
 		dependencies = { 'nvim-tree/nvim-web-devicons' },
+		lazy = false,
 		init = function()
 			vim.g.loaded_netrw = 1
 			vim.g.loaded_netrw_Plugin = 1
@@ -433,9 +465,12 @@ require('lazy').setup({
 			local yarepl = require 'yarepl'
 			yarepl.setup {
 				wincmd = 'vertical topleft 80 split',
+				-- For auto-session to restore repls properly
+				format_repl_buffers_names = false,
 				metas = {
-					ghci = { cmd = 'ghci -Wall', formatter = send_lines_ghci },
-					cling = { cmd = 'cling', formatter = yarepl.formatter.bracketed_pasting } -- TODO: Doesn't work
+					ghci = { cmd = 'ghci -Wall -Wno-unused-do-bind', formatter = send_lines_ghci },
+					cling = { cmd = 'cling', formatter = yarepl.formatter.bracketed_pasting }, -- TODO: Doesn't work
+					swipl = { cmd = 'swipl', formatter = yarepl.formatter.bracketed_pasting }, -- TODO: Make a formatter that wraps every line in `assert().` + make an action that loads the currently focused file
 				},
 			}
 
@@ -453,15 +488,15 @@ require('lazy').setup({
 				sh = 'bash',
 				fish = 'fish',
 				c = 'cling',
-				cpp = 'cling'
+				cpp = 'cling',
+				prolog = 'swipl',
 			}
 
-			local keymap = vim.api.nvim_set_keymap
 			local bufmap = vim.api.nvim_buf_set_keymap
 			local autocmd = vim.api.nvim_create_autocmd
 
 			autocmd('FileType', {
-				pattern = { 'haskell', 'sh', 'fish', 'c', 'cpp' },
+				pattern = { 'haskell', 'sh', 'fish', 'c', 'cpp', 'prolog' },
 				desc = 'set up REPL keymap',
 				callback = function()
 					local repl = ft_to_repl[vim.bo.filetype]
@@ -472,7 +507,7 @@ require('lazy').setup({
 				end,
 			})
 		end,
-		ft = { 'haskell', 'sh', 'fish', 'c', 'cpp' },
+		ft = { 'haskell', 'sh', 'fish', 'c', 'cpp', 'prolog' },
 		keys = {
 			{ '<leader>rs', mode = 'n', desc = 'REPL Start' },
 			{ '<leader>re', mode = 'x', '<cmd>REPLSendVisual<cr>', desc = 'REPL execute visual selection' },
@@ -549,7 +584,7 @@ require('lazy').setup({
 				map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
 			end
 		},
-		lazy = false,
+		event = 'BufEnter';
 	},
 	{
 		'ThePrimeagen/harpoon',
@@ -597,7 +632,7 @@ require('lazy').setup({
 vim.opt.fileencoding = 'UTF-8'
 vim.opt.title = true
 vim.opt.shortmess = 'a'
-vim.opt.lazyredraw = true
+vim.opt.lazyredraw = false
 vim.opt.scrolloff = 4
 
 vim.opt.termguicolors = true
@@ -652,12 +687,12 @@ vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter'}, {
 
 vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter'}, {
 	desc = 'Set indentation settings for curly brace languages',
-	pattern = { '*.c', '*.cpp','*.h','*.hpp','*.lua','*.js','*.php', '*.sh', '.y', '.yy', '.l', '.ll'},
+	pattern = { '*.c','*.cc','*.cpp','*.h','*.hh','*.hpp','*.lua','*.js','*.php','*.sh','.y','.yy','.l','.ll' },
 	callback = function()
 		vim.opt.expandtab = false
 		vim.opt.cindent = true
-		vim.opt.tabstop = 6
-		vim.opt.shiftwidth = 6
+		vim.opt.tabstop = 4
+		vim.opt.shiftwidth = 4
 	end,
 })
 
@@ -671,15 +706,40 @@ vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter'}, {
 	end,
 })
 
-if vim.g.neovide then
-	vim.o.guifont = "monospace:h14"
-end
+vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter'}, {
+	desc = 'Setup prolog filetype',
+	pattern = { '*.pro', '*.P' },
+	callback = function()
+		vim.o.filetype = 'prolog'
+	end,
+})
+
+vim.api.nvim_create_autocmd("UIEnter", {
+	callback = function()
+		if vim.g.neovide then
+			vim.opt.lazyredraw = false
+			vim.o.guifont = "monospace:h14"
+			-- vim.g.neovide_cursor_vfx_mode = "pixiedust"
+			vim.g.neovide_transparency = 0.96
+			vim.g.transparency = vim.g.neovide_transparency
+			vim.g.neovide_floating_blur_amount_x = 0
+			vim.g.neovide_floating_blur_amount_y = 0
+			vim.g.neovide_floating_shadow = false
+
+			local alpha = function()
+				return string.format("%x", math.floor(255 * vim.g.transparency or 0.8))
+			end
+			vim.g.neovide_background_color = "#101623" .. alpha()
+		end
+	end
+})
 
 -------------
 -- Keymaps --
 -------------
 vim.keymap.set('n', 'Q', '<nop>')
-vim.keymap.set('n', '<esc>', '<cmd>noh<cr>', { noremap = true })
+-- vim.keymap.set('n', '<esc>', '<cmd>noh<cr>', { noremap = true }) -- Disabled because I breaks smart_splits resize mode
+vim.keymap.set('n', '<backspace>', '<cmd>noh<cr>', { noremap = true }) -- Disabled because I breaks smart_splits resize mode
 vim.keymap.set('n', '<leader>x', '<cmd>!chmod +x %<cr>')
 vim.keymap.set( 't', '<esc>', '<c-\\><c-n>')
 
@@ -701,6 +761,8 @@ vim.keymap.set('i', '<esc>', '<esc>l')
 vim.keymap.set('n', '<c-x>', ':close<cr>') -- X out of here
 vim.keymap.set('n', '<c-s>', ':vs<cr>')
 vim.keymap.set('n', '<c-t>', ':vs |:terminal<cr>') -- Conflicts with oil
+
+vim.keymap.set('n', '<leader>do', '<cmd>lua vim.diagnostic.open_float()<cr>')
 
 -- -- quickfix stuff
 -- vim.keymap.set('n', '<c-k>', '<cmd>cnext<cr>')
