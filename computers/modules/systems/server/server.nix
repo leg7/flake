@@ -31,7 +31,6 @@
         "mollysocket.leonardgomez.xyz"
         "radicale.leonardgomez.xyz"
         "mail.leonardgomez.xyz"
-        "wordpress.leonardgomez.xyz"
       ];
     };
   };
@@ -91,19 +90,6 @@
     # kavita.enable = true;
     # TODO: Use nix secrets
     # kavita.tokenKeyFile = ./kavita.tokenKeyFile;
-
-    wordpress = {
-      webserver = "nginx";
-      sites."localhost" = {
-        settings = {
-          # Needed to run behind reverse proxy
-          FORCE_SSL_ADMIN = true;
-        };
-        extraConfig = ''
-        $_SERVER['HTTPS']='on';
-        '';
-      };
-    };
 
     radicale = {
       enable = true;
@@ -173,6 +159,7 @@
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
 
+
       virtualHosts."www.leonardgomez.xyz" = {
         addSSL = true;
         enableACME = true;
@@ -198,14 +185,6 @@
         enableACME = true;
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString config.services.mollysocket.settings.port}";
-        };
-      };
-
-      virtualHosts."wordpress.leonardgomez.xyz" = {
-        addSSL = true;
-        enableACME = true;
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:443";
         };
       };
 
