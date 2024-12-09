@@ -1,18 +1,13 @@
 { pkgs, lib, config, ... }: {
-  imports = [ ../base.nix ];
+  imports = [ ../base/base.nix ];
   nixpkgs.config.allowUnfree = true;
-
-  # For logseq
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-27.3.11"
-  ];
 
   fonts = {
     enableDefaultPackages = true;
 
     packages = with pkgs; [
       noto-fonts
-      noto-fonts-cjk
+      noto-fonts-cjk-sans
       noto-fonts-emoji
       nerdfonts
     ];
@@ -20,17 +15,12 @@
     fontconfig.defaultFonts = {
       serif = [ "Noto Serif" ];
       sansSerif = [ "Noto Sans" ];
-      monospace = [ "Iosevka Nerd Font Mono" "Symbols Nerd Font" ];
+      monospace = [ "Iosevka Nerd Font" "Symbols Nerd Font" ];
       emoji = [ "Noto Color Emoji" ];
     };
   };
 
   services = {
-    ollama = {
-      enable = true;
-      package = pkgs.unstable.ollama;
-    };
-
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -73,7 +63,6 @@
 
   # Get fast kvm qemu virtual machines
   programs.virt-manager.enable = true;
-  systemd.enableUnifiedCgroupHierarchy = lib.mkForce true;
   virtualisation.libvirtd = {
     enable = true;
     qemu = {
@@ -91,6 +80,15 @@
   };
   # For android studio
   services.flatpak.enable = true;
+
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "user" ];
+
+  virtualisation.docker = {
+    enable = true;
+  };
+  users.extraGroups.docker.members = [ "user" ];
+  networking.firewall.allowedTCPPorts = [ 8080 ];
 
   programs.gnupg.agent.enable = true;
 
@@ -122,13 +120,17 @@
         mangohud
         openmw
         wineWowPackages.waylandFull winetricks
+        heroic
 
         # Dev tools, lsps (mason doesn't work on nixos and the lsps don't work if installed directly in a devShell)
-        qemu_kvm
+        zed-editor
+        man-pages man-pages-posix
+        docker docker-compose
         clang clang-tools gnumake gf gdb
-        zig # This serves as CC
+        zig
+        swi-prolog
+        python312Full python312Packages.python-lsp-server python312Packages.ipykernel
         ocaml ocamlPackages.merlin opam
-        pandoc texliveFull
         haskell-language-server ghc
         asm-lsp
         nixd
@@ -137,6 +139,8 @@
         rust-analyzer
         nodePackages.bash-language-server
         emmet-ls
+        qemu_kvm
+        pandoc texliveFull
 
         # Interactive programs
         neomutt mutt-wizard gnupg pinentry-all pass isync notmuch lynx abook
@@ -144,11 +148,10 @@
         libreoffice
         ncmpcpp mpc-cli helvum pulsemixer pamixer easyeffects # pamixer required for eww
         imv
-        cinnamon.nemo
+        nemo
         signal-desktop
-        gnome.gnome-calendar
+        gnome-calendar
         unstable.halloy
-        logseq
         unstable.qbittorrent
         qalculate-gtk
         vial
@@ -161,7 +164,7 @@
         fuzzel
         appimage-run
         ffmpeg yt-dlp-light
-        comixcursors gnome.adwaita-icon-theme
+        comixcursors adwaita-icon-theme
         wl-clipboard
         lswt xorg.xlsclients
         brightnessctl wlsunset
@@ -250,11 +253,6 @@
     };
 
     services = {
-      emacs = {
-       enable = true;
-       package = pkgs.unstable.emacs30-pgtk;
-      };
-
       fnott = {
         enable = true;
         settings = {
@@ -372,12 +370,6 @@
           p = "print";
           g = "goto top";
         };
-      };
-
-      emacs = {
-       enable = true;
-       extraConfig = builtins.readFile ./config/emacs/init.el;
-       package = pkgs.unstable.emacs30-pgtk;
       };
 
       mpv = {

@@ -23,20 +23,28 @@
     };
   };
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.11";
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.nvidia.acceptLicense = true;
   time.timeZone = "Europe/Paris";
 
   boot = {
-    kernelModules = [ "nvidia" ];
-    blacklistedKernelModules = [ "nouveau" "i915" ];
+    kernelModules = [ "nvidia" "i915" ];
+    blacklistedKernelModules = [ "nouveau" ];
 
     initrd = {
       availableKernelModules = [ "usbhid" "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
       kernelModules = [ "nvidia" "dm-snapshot" ];
     };
   };
+
+
+  # for opentablet driver
+  nixpkgs.config.permittedInsecurePackages = [
+    "dotnet-runtime-6.0.36"
+    "dotnet-sdk-wrapped-6.0.428"
+    "dotnet-sdk-6.0.428"
+  ];
 
   hardware = {
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
@@ -45,6 +53,7 @@
     opentabletdriver.enable = true;
 
     nvidia = {
+      open = false;
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       modesetting.enable = true;
       nvidiaSettings = true;
@@ -55,12 +64,12 @@
       };
     };
 
-    opengl = {
-      driSupport = true;
-      driSupport32Bit = true;
-      enable = true;
-      extraPackages = with pkgs; [ intel-media-driver ];
-    };
+    # opengl = {
+    #   driSupport = true;
+    #   driSupport32Bit = true;
+    #   enable = true;
+    #   extraPackages = with pkgs; [ intel-media-driver ];
+    # };
   };
 
   # this is required to be able to use ethernet thourgh thunderbolt and though the rj45 port
@@ -87,7 +96,7 @@
     SUBSYSTEM=="hidraw", ATTRS{idVendor}=="056a", ATTRS{idProduct}=="030e", MODE="0666"
     SUBSYSTEM=="usb", ATTRS{idVendor}=="056a", ATTRS{idProduct}=="030e", MODE="0666"
     # Chocofi
-    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{serial}=="*vial:f64c2b3c*", MODE="0660", GROUP="$USER_GID", TAG+="uaccess", TAG+="udev-acl"
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{serial}=="*vial:f64c2b3c*", MODE="0660", GROUP="users", TAG+="uaccess", TAG+="udev-acl"
     # Wooting One Legacy
     SUBSYSTEM=="hidraw", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="ff01", TAG+="uaccess"
     SUBSYSTEM=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="ff01", TAG+="uaccess"

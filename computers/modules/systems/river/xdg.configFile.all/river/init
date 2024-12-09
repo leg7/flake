@@ -15,8 +15,6 @@ export XDG_SESSION_DESKTOP=sway
 
 export GTK_THEME=Adwaita
 
-export NVIM_SERVER=/home/user/.local/share/nvim/nvim.sock
-
 dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP &
 
 #-----------#

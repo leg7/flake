@@ -67,6 +67,7 @@ in {
                   initrdUnlock = true;
                   askPassword = true;
 
+                  # TODO: Check if bcrypt hash is supported
                   extraFormatArgs = [
                     "--type luks2"
                     "-i 5000"
@@ -88,6 +89,8 @@ in {
         };
       };
 
+      # TODO: Use snapshots instead to be able to see what files were added since boot
+      # and also to not waste so much ram
       nodev."/" = {
           fsType = "tmpfs";
           mountOptions = [ "defaults" "size=10G" "mode=755" ];

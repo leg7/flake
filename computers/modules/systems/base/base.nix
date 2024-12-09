@@ -2,11 +2,11 @@
 # This config uses impermanence
 { pkgs, lib, config, ... }: {
 
-  imports = [ ../webFilter.nix ];
+  imports = [ ../../webFilter.nix ];
 
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+      experimental-features = [ "nix-command" "flakes" ];
       auto-optimise-store = true;
     };
     gc = {
@@ -14,6 +14,7 @@
       dates = "weekly";
       options = "--delete-older-than 14d";
     };
+    trustedUsers = [ "root" "@wheel" ];
   };
 
   documentation.dev.enable = true;
@@ -40,6 +41,7 @@
     sessionVariables = rec {
       PAGER = "less";
       EDITOR = "nvim";
+      TERM = "xterm256-color";
       ASAN_OPTIONS          = "halt_on_error=0";
       FZF_DEFAULT_OPTS      = "--ansi --layout reverse --color fg:-1,fg+:-1,bg:-1,bg+:-1,hl:-1,hl+:-1,query:-1,gutter:-1";
 
@@ -69,6 +71,7 @@
     };
 
     systemPackages = with pkgs; [
+      tealdeer
       xdg-utils xdg-user-dirs xdg-ninja
       p7zip unzip
       wget
@@ -85,14 +88,13 @@
   };
 
   programs = {
-    git.enable = true;
-
-    starship = {
+    xonsh = {
       enable = true;
-      settings = {
-        shell = [ "nu" ];
-      };
+      config = lib.readFile ./programs.xonsh.config;
     };
+    starship.enable = true;
+
+    git.enable = true;
 
     fzf = {
       fuzzyCompletion = true;
@@ -110,19 +112,14 @@
     groups.users = {};
 
     users = {
-      # Set a root password, consider using initialHashedPassword instead.
-      #
-      # To generate a hash to put in initialHashedPassword
-      # you can do this:
-      # $ nix-shell --run 'mkpasswd -m SHA-512 -s' -p mkpasswd
-      root.initialPassword = "pass";
+      root.hashedPassword = "$2b$05$gMb04I4jVLgvFhM9G2Ny9emHGxhjQX1f/.0xsaLKJW1E.xijzPyLW";
 
       user = {
         isNormalUser = true;
         group = "users";
         home = "${config.mainDisk.persistentDataPath}/home/user";
-        initialPassword = "pass";
-        shell = pkgs.nushell;
+        hashedPassword = "$2b$05$VhAP0kczmeqw1yXlQmvCk.5cDzmB6rnq/oFVudupkvHqrYdrGNaay";
+        shell = pkgs.xonsh;
         description = "The main user account";
         extraGroups = [ "wheel" "kvm" "libvirtd" ];
       };

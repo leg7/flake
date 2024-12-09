@@ -2,13 +2,13 @@
   description = "A flake to manage my systems";
 
   nixConfig = {
-    experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+    experimental-features = [ "nix-command" "flakes" ];
     auto-optimise-store = true;
     use-xdg-base-directories = true;
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     impermanence.url = "github:nix-community/impermanence";
@@ -29,7 +29,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

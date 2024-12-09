@@ -1,5 +1,5 @@
 { lib, pkgs, config, ... }: {
-  imports = [ ../base.nix ];
+  imports = [ ../base/base.nix ];
 
   networking.wireless.iwd.enable = lib.mkForce false;
   hardware.bluetooth.enable = lib.mkForce false;
@@ -140,7 +140,7 @@
       };
     };
 
-    # accessible through nginx reverse proxy
+    # figure out what files are not being persisted on reboot
     vaultwarden = {
       enable = true;
       config = {

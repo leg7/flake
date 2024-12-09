@@ -152,6 +152,7 @@ require('lazy').setup({
 			lspconfig.emmet_ls.setup({})
 			lspconfig.rust_analyzer.setup({})
 			lspconfig.jdtls.setup({})
+			lspconfig.pylsp.setup({})
 		end,
 		ft = {
 			'zig',
@@ -165,6 +166,7 @@ require('lazy').setup({
 			'html', 'js', 'php',
 			'rust',
 			'java',
+			'python',
 		},
 		keymaps = {
 			{ 'gd',        mode = 'n',        '<cmd>lua vim.lsp.buf.definition()<cr>',           desc = 'lsp: Go to definition of symbol' },
@@ -471,6 +473,7 @@ require('lazy').setup({
 					ghci = { cmd = 'ghci -Wall -Wno-unused-do-bind', formatter = send_lines_ghci },
 					cling = { cmd = 'cling', formatter = yarepl.formatter.bracketed_pasting }, -- TODO: Doesn't work
 					swipl = { cmd = 'swipl', formatter = yarepl.formatter.bracketed_pasting }, -- TODO: Make a formatter that wraps every line in `assert().` + make an action that loads the currently focused file
+					python = { cmd = 'python', formatter = yarepl.formatter.bracketed_pasting }, -- TODO: Make a formatter that wraps every line in `assert().` + make an action that loads the currently focused file
 				},
 			}
 
@@ -490,13 +493,14 @@ require('lazy').setup({
 				c = 'cling',
 				cpp = 'cling',
 				prolog = 'swipl',
+				python = 'python',
 			}
 
 			local bufmap = vim.api.nvim_buf_set_keymap
 			local autocmd = vim.api.nvim_create_autocmd
 
 			autocmd('FileType', {
-				pattern = { 'haskell', 'sh', 'fish', 'c', 'cpp', 'prolog' },
+				pattern = { 'haskell', 'sh', 'fish', 'c', 'cpp', 'prolog', 'python' },
 				desc = 'set up REPL keymap',
 				callback = function()
 					local repl = ft_to_repl[vim.bo.filetype]
@@ -507,7 +511,7 @@ require('lazy').setup({
 				end,
 			})
 		end,
-		ft = { 'haskell', 'sh', 'fish', 'c', 'cpp', 'prolog' },
+		ft = { 'haskell', 'sh', 'fish', 'c', 'cpp', 'prolog', 'python' },
 		keys = {
 			{ '<leader>rs', mode = 'n', desc = 'REPL Start' },
 			{ '<leader>re', mode = 'x', '<cmd>REPLSendVisual<cr>', desc = 'REPL execute visual selection' },
@@ -597,12 +601,14 @@ require('lazy').setup({
 			{ '<leader>n', mode = 'n', function() require('harpoon'):list():select(1) end, desc = 'Harpoon select 1' },
 			{ '<leader>h', mode = 'n', function() require('harpoon'):list():select(2) end, desc = 'Harpoon select 2' },
 			{ '<leader>.', mode = 'n', function() require('harpoon'):list():select(3) end, desc = 'Harpoon select 3' },
-			{ '<leader>-', mode = 'n', function() require('harpoon'):list():select(4) end, desc = 'Harpoon select 4' },
+			{ '<leader>/', mode = 'n', function() require('harpoon'):list():select(4) end, desc = 'Harpoon select 4' },
 		},
 	},
 	{
 		'mrjones2014/smart-splits.nvim',
-		opts = {},
+		opts = {
+			cursor_follows_swapped_bufs = true,
+		},
 		keys = {
 			-- Moving
 			{ '<c-k>', mode = 'n', function() require('smart-splits').move_cursor_up()    end, desc = "Smart split move up" },

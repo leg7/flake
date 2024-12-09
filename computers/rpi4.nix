@@ -41,7 +41,7 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIwo3QjEcW8fsvqIwPi53Riuum1G/6h06E3kmVcTfHV4 user@eleum"
   ];
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.11";
   time.timeZone = "Europe/Paris";
   nixpkgs.config.allowUnfree = true;
 
