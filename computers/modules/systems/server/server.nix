@@ -12,6 +12,7 @@
 
   environment.systemPackages = with pkgs; [
     zola
+    neovim
   ];
 
   environment.persistence."${config.mainDisk.persistentDataPath}".files = [
@@ -118,9 +119,9 @@
         server-port = 43000;
         difficulty = 3;
         gamemode = 0;
-        max-players = 3;
+        max-players = 10;
         motd = "leonardgomez.xyz minecraft server";
-        white-list = false;
+        white-list = true;
         enable-rcon = false;
       };
 
@@ -129,6 +130,8 @@
       whitelist = {
         Finxert = "88637aa6-6d7c-49b0-b6b0-d72dde73b45f";
         davidv1201 = "0178944f-665a-41c4-ae52-131e5a86bd6a";
+        chauvy = "87a47880-bf37-4fa0-a4ad-c94ed2059561";
+        ac0oustik = "f9560c8c-850c-4a47-b658-84fee5b32c64";
       };
     };
 
