@@ -123,6 +123,7 @@
         motd = "leonardgomez.xyz minecraft server";
         white-list = true;
         enable-rcon = false;
+        enforce-secure-profile = false;
       };
 
       jvmOpts = "-Xms1G -Xmx1G";
