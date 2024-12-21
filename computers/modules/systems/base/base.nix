@@ -213,11 +213,7 @@
       killUnconfinedConfinables = true;
     };
 
-    sudo.enable = false;
-    doas = {
-      enable = true;
-      extraRules = [ { persist = true; keepEnv = true; groups = ["wheel"]; } ];
-    };
+    sudo.enable = true;
 
     # Required to run chrome
     chromiumSuidSandbox.enable = true;
