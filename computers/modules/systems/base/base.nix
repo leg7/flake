@@ -223,11 +223,6 @@
     chromiumSuidSandbox.enable = true;
   };
 
-  services.clamav = {
-    daemon.enable = true;
-    updater.enable = true;
-  };
-
   boot = {
     kernelPackages = lib.mkOverride 950 pkgs.linuxPackages_hardened;
 
