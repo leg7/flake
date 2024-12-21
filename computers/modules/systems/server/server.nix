@@ -130,7 +130,7 @@
 
       whitelist = {
         Finxert = "88637aa6-6d7c-49b0-b6b0-d72dde73b45f";
-        davidv1201 = "0178944f-665a-41c4-ae52-131e5a86bd6a";
+        davidpv1201 = "c6becb79-e11a-45a8-8ae4-2a190d0c1605";
         chauvy = "87a47880-bf37-4fa0-a4ad-c94ed2059561";
         ac0oustik = "f9560c8c-850c-4a47-b658-84fee5b32c64";
       };
