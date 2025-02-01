@@ -1,16 +1,16 @@
 { pkgs, lib, config, ... }: {
   imports = [
-    ./modules/secureboot.nix
-    ./modules/systems/river/river.nix
-    ./modules/mainDisk.nix
-    ./modules/backups.nix
+    ../modules/secureboot.nix
+    ../modules/mainDisk.nix
+    ../modules/backups.nix
+    ../systems/river/river.nix
   ];
 
   mainDisk = {
     name = "/dev/nvme0n1";
     sizes = {
       swap = "20G";
-      nix = "90G";
+      nix = "128G";
     };
   };
 
@@ -87,9 +87,8 @@
     fstrim.enable = true;
     fwupd.enable = true;
 
-    # Rules to use wacom 480 with opentablet driver & vial kb firmware
     udev.extraRules = ''
-    # wacom 480
+    # Wacom 480
     KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess", OPTIONS+="static_node=uinput"
     SUBSYSTEM=="hidraw", ATTRS{idVendor}=="056a", ATTRS{idProduct}=="0302", MODE="0666"
     SUBSYSTEM=="usb", ATTRS{idVendor}=="056a", ATTRS{idProduct}=="0302", MODE="0666"

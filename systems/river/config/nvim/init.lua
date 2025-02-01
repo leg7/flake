@@ -732,6 +732,10 @@ vim.api.nvim_create_autocmd("UIEnter", {
 			vim.g.neovide_floating_blur_amount_y = 0
 			vim.g.neovide_floating_shadow = false
 
+			vim.keymap.set({ "n", "v" }, "<C-+>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
+			vim.keymap.set({ "n", "v" }, "<C-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
+			vim.keymap.set({ "n" , "v" }, "<C-0>", ":lua vim.g.neovide_scale_factor = 1<CR>")
+
 			local alpha = function()
 				return string.format("%x", math.floor(255 * vim.g.transparency or 0.8))
 			end

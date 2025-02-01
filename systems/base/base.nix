@@ -2,7 +2,7 @@
 # This config uses impermanence
 { pkgs, lib, config, ... }: {
 
-  imports = [ ../../webFilter.nix ];
+  imports = [ ../../modules/webFilter.nix ];
 
   nix = {
     settings = {
@@ -68,6 +68,7 @@
       # TODO: remove once home manager manages my shell
       _JAVA_AWT_WM_NONREPARENTING = 1;
       BROWSER = "firefox";
+      CLASSPATH = "/home/user/apache-jena-5.3.0/lib/";
     };
 
     systemPackages = with pkgs; [
@@ -88,10 +89,6 @@
   };
 
   programs = {
-    xonsh = {
-      enable = true;
-      config = lib.readFile ./programs.xonsh.config;
-    };
     starship.enable = true;
 
     git.enable = true;
@@ -119,7 +116,7 @@
         group = "users";
         home = "${config.mainDisk.persistentDataPath}/home/user";
         hashedPassword = "$2b$05$VhAP0kczmeqw1yXlQmvCk.5cDzmB6rnq/oFVudupkvHqrYdrGNaay";
-        shell = pkgs.xonsh;
+        shell = pkgs.bash;
         description = "The main user account";
         extraGroups = [ "wheel" "kvm" "libvirtd" ];
       };

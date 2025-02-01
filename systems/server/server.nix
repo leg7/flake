@@ -142,6 +142,8 @@
         allowed_uuids = [ "5663c899-15fe-428e-9ae0-cf903490f3bb" ];
         allowed_endpoints = [ "https://ntfy.sh" ];
       };
+      # This has to be hashed or I can't push it to git
+      # environmentFile =
     };
 
     # figure out what files are not being persisted on reboot

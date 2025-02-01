@@ -47,7 +47,7 @@ in {
               ESP = {
                 label = "${hostname}_ESP";
                 name = "${hostname}_ESP";
-                size = "500M";
+                size = "512M";
                 type = "EF00";
                 content = {
                   type = "filesystem";

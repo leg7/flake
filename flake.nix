@@ -49,7 +49,7 @@
           impermanence.nixosModules.impermanence
           disko.nixosModules.disko
           ({pkgs, config, ...}: { nixpkgs.overlays = [ overlay-unstable emacs-overlay.overlay ]; })
-          ./computers/t480.nix
+          ./hardware/t480.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -66,7 +66,7 @@
           impermanence.nixosModules.impermanence
           disko.nixosModules.disko
           ({pkgs, config, ...}: { nixpkgs.overlays = [ overlay-unstable ]; })
-          ./computers/rpi4.nix
+          ./hardware/rpi4.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

@@ -109,6 +109,8 @@
     };
   };
 
+  documentation.dev.enable = true;
+
   home-manager.users.user = {
     home = {
       packages = with pkgs; [
@@ -123,10 +125,9 @@
         heroic
 
         # Dev tools, lsps (mason doesn't work on nixos and the lsps don't work if installed directly in a devShell)
-        zed-editor
         man-pages man-pages-posix
         docker docker-compose
-        clang clang-tools gnumake gf gdb
+        clang unstable.clang-tools clang-manpages gnumake gf gdb tinycc
         zig
         swi-prolog
         python312Full python312Packages.python-lsp-server python312Packages.ipykernel
@@ -141,6 +142,8 @@
         emmet-ls
         qemu_kvm
         pandoc texliveFull
+
+        apache-jena
 
         # Interactive programs
         neomutt mutt-wizard gnupg pinentry-all pass isync notmuch lynx abook
@@ -408,6 +411,7 @@
             dpi-aware = "no";
             pad = "3x2 center";
             initial-window-size-pixels = "700x500";
+            font-size-adjustment = "1";
           };
 
           scrollback.lines = 10000;
@@ -452,8 +456,8 @@
           key-bindings = {
             scrollback-up-half-page = "Mod1+u";
             scrollback-down-half-page = "Mod1+d";
-            font-increase = "Control+Shift+k";
-            font-decrease = "Control+Shift+j";
+            font-increase = "Control+plus";
+            font-decrease = "Control+minus";
             show-urls-persistent = "Control+Shift+f";
           };
           tweak.grapheme-width-method = "double-width";

@@ -1,8 +1,8 @@
 { config, lib, pkgs, ... }: {
   imports = [
-    ./modules/mainDisk.nix
-    ./modules/secureboot.nix
-    ./modules/systems/server/server.nix
+    ../modules/mainDisk.nix
+    ../modules/secureboot.nix
+    ../systems/server/server.nix
   ];
 
   boot = {
