@@ -41,7 +41,6 @@
     sessionVariables = rec {
       PAGER = "less";
       EDITOR = "nvim";
-      TERM = "xterm256-color";
       ASAN_OPTIONS          = "halt_on_error=0";
       FZF_DEFAULT_OPTS      = "--ansi --layout reverse --color fg:-1,fg+:-1,bg:-1,bg+:-1,hl:-1,hl+:-1,query:-1,gutter:-1";
 
@@ -51,7 +50,7 @@
       XDG_STATE_HOME  = "$HOME/.local/state";
       PATH = [ "$HOME/.local/bin" ];
 
-      HISTFILE              = "${XDG_STATE_HOME}/bash/history";
+      ZDOTDIR               = "${XDG_CONFIG_HOME}/zsh";
       PASSWORD_STORE_DIR    = "${XDG_DATA_HOME}/pass";
       MBSYNCRC              = "${XDG_CONFIG_HOME}/isync/mbsyncrc";
       GNUPGHOME             = "${XDG_DATA_HOME}/gnupg";
@@ -89,6 +88,24 @@
   };
 
   programs = {
+    zsh = {
+      enable = true;
+      enableCompletion = true;
+      autosuggestions.enable = true;
+      syntaxHighlighting.enable = true;
+
+      shellAliases = {
+        l = "ls -lh --group-directories-first";
+        ll = "ls -lah --group-directories-first";
+        nr = "sudo nixos-rebuild switch --flake '.#eleum' --accept-flake-config";
+        nt = "sudo nixos-rebuild test --flake '.#eleum' --accept-flake-config";
+        g = "git";
+      };
+
+      histSize = 10000;
+      histFile = "${config.environment.sessionVariables.XDG_STATE_HOME}/zsh/history";
+    };
+
     starship.enable = true;
 
     git.enable = true;
@@ -107,6 +124,7 @@
   users = {
     mutableUsers = false;
     groups.users = {};
+    defaultUserShell = pkgs.zsh;
 
     users = {
       root.hashedPassword = "$2b$05$gMb04I4jVLgvFhM9G2Ny9emHGxhjQX1f/.0xsaLKJW1E.xijzPyLW";
@@ -115,8 +133,8 @@
         isNormalUser = true;
         group = "users";
         home = "${config.mainDisk.persistentDataPath}/home/user";
+        useDefaultShell = true;
         hashedPassword = "$2b$05$VhAP0kczmeqw1yXlQmvCk.5cDzmB6rnq/oFVudupkvHqrYdrGNaay";
-        shell = pkgs.bash;
         description = "The main user account";
         extraGroups = [ "wheel" "kvm" "libvirtd" ];
       };
