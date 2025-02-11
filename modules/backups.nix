@@ -7,10 +7,11 @@
 
   fileSystems."${config.mainDisk.persistentDataPath}/backup" = {
     device = "/dev/disk/by-label/backup";
-    fsType = "f2fs";
-    options = [ "noauto" "compress_algorithm=zstd" "compress_chksum" "atgc" "gc_merge" "lazytime" ];
+    fsType = "ext4";
+    options = [ "defaults" ];
   };
 
+  # Make sure your disk is big enough to store the backups
   systemd = {
     services."backup" = {
 
@@ -18,8 +19,8 @@
       backupDir=${config.mainDisk.persistentDataPath}/backup
       home=${config.mainDisk.persistentDataPath}/home/user
 
-      ${pkgs.util-linux}/bin/mount "$backupDir"
-      ${pkgs.findutils}/bin/find "$backupDir" -mtime +2 -delete
+      ${pkgs.util-linux}/bin/mount -m "$backupDir"
+      ${pkgs.findutils}/bin/find "$backupDir" -mtime +5 -delete
       ${pkgs.gnutar}/bin/tar cvf "$backupDir"/"$(date +"%F_%H-%M-%S")".tar $home/books $home/documents $home/pics $home/vids $home/audio
       ${pkgs.util-linux}/bin/umount "$backupDir"
       '';
@@ -36,6 +37,7 @@
         OnCalendar = "daily";
         Persistent = true;
         unit = "backup.service";
+        AccuracySec = "10m";
       };
     };
   };
