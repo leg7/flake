@@ -78,17 +78,9 @@
       };
     };
   };
-  # For android studio
-  services.flatpak.enable = true;
 
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "user" ];
-
-  virtualisation.docker = {
-    enable = true;
-  };
-  users.extraGroups.docker.members = [ "user" ];
-  networking.firewall.allowedTCPPorts = [ 8080 ];
 
   programs.gnupg.agent.enable = true;
 
@@ -126,7 +118,6 @@
 
         # Dev tools, lsps (mason doesn't work on nixos and the lsps don't work if installed directly in a devShell)
         man-pages man-pages-posix
-        docker docker-compose
         clang unstable.clang-tools clang-manpages gnumake gf gdb tinycc
         zig
         swi-prolog
