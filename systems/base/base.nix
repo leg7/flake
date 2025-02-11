@@ -41,8 +41,12 @@
     sessionVariables = rec {
       PAGER = "less";
       EDITOR = "nvim";
+      BROWSER = "firefox";
+
       ASAN_OPTIONS          = "halt_on_error=0";
       FZF_DEFAULT_OPTS      = "--ansi --layout reverse --color fg:-1,fg+:-1,bg:-1,bg+:-1,hl:-1,hl+:-1,query:-1,gutter:-1";
+      STARSHIP_LOG          = "error"; # workaround for nixos incorrectly generating the starship config and starship warning about it (24.11)
+      _JAVA_AWT_WM_NONREPARENTING = 1; # belongs more in DE file because this option is for java AWT to work in WMs
 
       XDG_CACHE_HOME  = "$HOME/.local/cache";
       XDG_CONFIG_HOME = "$HOME/.config";
@@ -60,14 +64,10 @@
       CUDA_CACHE_PATH       = "${XDG_CACHE_HOME}/nv";
       WINEPREFIX            = "${XDG_DATA_HOME}/wine";
       CARGO_HOME            = "${XDG_DATA_HOME}/cargo";
-      # ANDROID_USER_HOME     = "${XDG_DATA_HOME}/android";
-      # GRADLE_USER_HOME      = "${XDG_DATA_HOME}/gradle";
-      # _JAVA_OPTIONS         = "-Djava.util.prefs.userRoot=${XDG_CONFIG_HOME}/java";
-
-      # TODO: remove once home manager manages my shell
-      _JAVA_AWT_WM_NONREPARENTING = 1;
-      BROWSER = "firefox";
-      CLASSPATH = "/home/user/apache-jena-5.3.0/lib/";
+      ANDROID_USER_HOME     = "${XDG_DATA_HOME}/android";
+      GRADLE_USER_HOME      = "${XDG_DATA_HOME}/gradle";
+      LEIN_HOME             = "${XDG_DATA_HOME}/lein";
+      _JAVA_OPTIONS         = "-Djava.util.prefs.userRoot=${XDG_CONFIG_HOME}/java";
     };
 
     systemPackages = with pkgs; [
