@@ -15,7 +15,7 @@
     fontconfig.defaultFonts = {
       serif = [ "Noto Serif" ];
       sansSerif = [ "Noto Sans" ];
-      monospace = [ "Iosevka Nerd Font" "Symbols Nerd Font" ];
+      monospace = [ "Red Hat Mono" "Symbols Nerd Font" ];
       emoji = [ "Noto Color Emoji" ];
     };
   };
@@ -398,7 +398,7 @@
             app-id = "foot";
             title = "foot";
             locked-title = "no";
-            font = "monospace:size=12";
+            font = "monospace:size=13";
             dpi-aware = "no";
             pad = "3x2 center";
             initial-window-size-pixels = "700x500";
