@@ -173,17 +173,16 @@
         xwayland # for some reason hyprland won't pull in xwayland automatically anymore?
       ];
 
-      # This has no effect because home manager is not managing my shell yet
-      sessionVariables = {
-        _JAVA_AWT_WM_NONREPARENTING = 1;
-        BROWSER = "firefox";
-      };
-
       preferXdgDirectories = true;
     };
 
     xdg = {
       enable = true;
+
+      cacheHome  = config.environment.sessionVariables.XDG_CACHE_HOME;
+      configHome = config.environment.sessionVariables.XDG_CONFIG_HOME;
+      dataHome   = config.environment.sessionVariables.XDG_DATA_HOME;
+      stateHome  = config.environment.sessionVariables.XDG_STATE_HOME;
 
       configFile."all" = {
         source = ./xdg.configFile.all;
@@ -197,6 +196,8 @@
         target = "./";
       };
 
+      # TODO: Add ~/.local/bin scripts
+
       # TODO
       # desktopEntries = {
       #
@@ -206,22 +207,22 @@
       mimeApps = {
         enable = true;
         defaultApplications = {
-            "text/x-shellscript"       = ["text.desktop"];
-            "x-scheme-handler/magnet"  = ["torrent.desktop"];
-            "application/x-bittorrent" = ["torrent.desktop"];
-            "x-scheme-handler/mailto"  = ["mail.desktop"];
-            "text/plain"               = ["text.desktop"];
-            "application/postscript"   = ["pdf.desktop"];
-            "application/pdf"          = ["pdf.desktop"];
-            "application/epub+zip"     = ["pdf.desktop"];
-            "image/png"                = ["img.desktop"];
-            "image/jpeg"               = ["img.desktop"];
-            "image/gif"                = ["img.desktop"];
-            "application/rss+xml"      = ["rss.desktop"];
-            "video/x-matroska"         = ["video.desktop"];
-            "video/mp4"                = ["video.desktop"];
-            "x-scheme-handler/lbry"    = ["lbry.desktop"];
-            "inode/directory"          = ["file.desktop"];
+          "text/x-shellscript"       = ["text.desktop"];
+          "x-scheme-handler/magnet"  = ["torrent.desktop"];
+          "application/x-bittorrent" = ["torrent.desktop"];
+          "x-scheme-handler/mailto"  = ["mail.desktop"];
+          "text/plain"               = ["text.desktop"];
+          "application/postscript"   = ["pdf.desktop"];
+          "application/pdf"          = ["pdf.desktop"];
+          "application/epub+zip"     = ["pdf.desktop"];
+          "image/png"                = ["img.desktop"];
+          "image/jpeg"               = ["img.desktop"];
+          "image/gif"                = ["img.desktop"];
+          "application/rss+xml"      = ["rss.desktop"];
+          "video/x-matroska"         = ["video.desktop"];
+          "video/mp4"                = ["video.desktop"];
+          "x-scheme-handler/lbry"    = ["lbry.desktop"];
+          "inode/directory"          = ["file.desktop"];
         };
       };
 

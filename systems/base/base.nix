@@ -39,20 +39,20 @@
     };
 
     sessionVariables = rec {
+      # CLI env
       PAGER = "less";
       EDITOR = "nvim";
-      BROWSER = "firefox";
 
       ASAN_OPTIONS          = "halt_on_error=0";
       FZF_DEFAULT_OPTS      = "--ansi --layout reverse --color fg:-1,fg+:-1,bg:-1,bg+:-1,hl:-1,hl+:-1,query:-1,gutter:-1";
       STARSHIP_LOG          = "error"; # workaround for nixos incorrectly generating the starship config and starship warning about it (24.11)
-      _JAVA_AWT_WM_NONREPARENTING = 1; # belongs more in DE file because this option is for java AWT to work in WMs
 
-      XDG_CACHE_HOME  = "$HOME/.local/cache";
-      XDG_CONFIG_HOME = "$HOME/.config";
-      XDG_DATA_HOME   = "$HOME/.local/share";
-      XDG_STATE_HOME  = "$HOME/.local/state";
-      PATH = [ "$HOME/.local/bin" ];
+      # Make programs use xdg dirs by default
+      XDG_CACHE_HOME  = config.users.users.user.home + "/.local/cache";
+      XDG_CONFIG_HOME = config.users.users.user.home + "/.config";
+      XDG_DATA_HOME   = config.users.users.user.home + "/.local/share";
+      XDG_STATE_HOME  = config.users.users.user.home + "/.local/state";
+      PATH = [ (config.users.users.user.home + "/.local/bin") ];
 
       ZDOTDIR               = "${XDG_CONFIG_HOME}/zsh";
       PASSWORD_STORE_DIR    = "${XDG_DATA_HOME}/pass";
@@ -68,6 +68,10 @@
       GRADLE_USER_HOME      = "${XDG_DATA_HOME}/gradle";
       LEIN_HOME             = "${XDG_DATA_HOME}/lein";
       _JAVA_OPTIONS         = "-Djava.util.prefs.userRoot=${XDG_CONFIG_HOME}/java";
+
+      # DE env
+      _JAVA_AWT_WM_NONREPARENTING = 1;
+      BROWSER = "firefox";
     };
 
     systemPackages = with pkgs; [
@@ -116,10 +120,7 @@
     };
   };
 
-  home-manager.users.user = {
-    home.stateVersion = config.system.stateVersion;
-  };
-
+  home-manager.users.user.home.stateVersion = config.system.stateVersion;
 
   users = {
     mutableUsers = false;
