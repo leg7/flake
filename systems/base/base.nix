@@ -84,6 +84,7 @@
       shellcheck
       zellij
       starship
+      any-nix-shell
       file
       nix-tree
     ];
@@ -99,8 +100,8 @@
       syntaxHighlighting.enable = true;
 
       shellAliases = {
-        l = "ls -lh --group-directories-first";
-        ll = "ls -lah --group-directories-first";
+        l = "ls -lhv --group-directories-first";
+        ll = "ls -lAhv --group-directories-first";
         nr = "sudo nixos-rebuild switch --flake '.#eleum' --accept-flake-config";
         nt = "sudo nixos-rebuild test --flake '.#eleum' --accept-flake-config";
         g = "git";
