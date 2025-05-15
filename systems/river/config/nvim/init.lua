@@ -679,6 +679,8 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 
 -- Indentation --
 
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
 vim.opt.expandtab = false
 vim.opt.smartindent = true
 
@@ -706,7 +708,7 @@ vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter'}, {
 
 vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter'}, {
 	desc = 'Set indentation settings for web stuff',
-	pattern = { '*.html', '*.css', '*.nix' },
+	pattern = { '*.html', '*.css', '*.nix', '*.jsp', '*.xml' },
 	callback = function()
 		vim.expandtab = false
 		vim.opt.tabstop = 2
