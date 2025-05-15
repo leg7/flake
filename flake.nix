@@ -23,18 +23,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    emacs-overlay = {
-      url = "github:nix-community/emacs-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      # inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, disko, nixos-hardware, lanzaboote, impermanence, emacs-overlay, ... }:
+  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, disko, nixos-hardware, lanzaboote, impermanence, zen-browser, ... }:
   let
     overlay-unstable = final: prev: {
       unstable = import inputs.nixpkgs-unstable {
@@ -57,7 +57,7 @@
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
           disko.nixosModules.disko
-          ({pkgs, config, ...}: { nixpkgs.overlays = [ overlay-unstable emacs-overlay.overlay ]; })
+          ({pkgs, config, ...}: { nixpkgs.overlays = [ overlay-unstable ]; })
           ./hardware/t480.nix
           home-manager.nixosModules.home-manager
           {

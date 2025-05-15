@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, lib, config, inputs, ... }: {
   imports = [ ../base/base.nix ];
   nixpkgs.config.allowUnfree = true;
 
@@ -155,7 +155,7 @@
         unstable.logseq
 
         # Wayland wm "deps"
-        unstable.rivercarro
+        inputs.zen-browser.packages."${system}".twilight rivercarro
         yambar
         fuzzel
         appimage-run
@@ -309,34 +309,6 @@
     };
 
     programs = {
-      firefox = {
-        enable = true;
-        policies = {
-          DownloadDirectory = "\${home}";
-          AppAutoUpdate = false;
-          AutofillAddressEnabled = false;
-          AutofillCreditCardEnabled = false;
-          Behavior = "reject-tracker-and-partition-foreign";
-          SanitizeOnShutdown = {
-            Cache = true;
-            Cookies = true;
-            History = true;
-            Sessions = true;
-            SiteSettings = true;
-            OfflineApps = true;
-          };
-          DisableFirefoxAccounts = true;
-          DisableFirefoxStudies = true;
-          DisableFormHistory = true;
-          DisableMasterPasswordCreation = true;
-          DisablePocket = true;
-          DisableTelemetry = true;
-          EnableTrackingProtection = true;
-          OfferToSaveLogins = false;
-          PasswordManagerEnabled = false;
-        };
-      };
-
       java = {
         enable = true;
         package = pkgs.jdk21;
