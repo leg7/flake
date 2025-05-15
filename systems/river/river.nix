@@ -54,7 +54,9 @@
 
   programs.river.enable = true;
   services.seatd.enable = true;
-  users.users.user.extraGroups = [ "seat" ];
+  programs.adb.enable = true; # For connecting android devices
+  users.users.user.extraGroups = [ "seat" "adbusers" ];
+
   services.ratbagd.enable = true; # for Piper (configuring mice)
 
   # for gnome calendar to work
