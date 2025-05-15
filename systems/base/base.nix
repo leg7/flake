@@ -235,7 +235,12 @@
       killUnconfinedConfinables = true;
     };
 
-    sudo.enable = true;
+    sudo = {
+      enable = true;
+      extraConfig = ''
+      Defaults timestamp_timeout=60
+      '';
+    };
 
     # Required to run chrome
     chromiumSuidSandbox.enable = true;
