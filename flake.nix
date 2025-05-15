@@ -37,12 +37,21 @@
   outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, disko, nixos-hardware, lanzaboote, impermanence, emacs-overlay, ... }:
   let
     overlay-unstable = final: prev: {
-      unstable = nixpkgs-unstable.legacyPackages.${prev.system};
-    };
-  in {
+      unstable = import inputs.nixpkgs-unstable {
+        system = final.system;
+        config = {
+            allowUnfree = true;
+            permittedInsecurePackages = [
+              "electron-27.3.11" # For logseq
+              "freeimage-3.18.0-unstable-2024-04-18" # For emulationstation-de
+            ];
+        };
+      };
+    }; in {
     nixosConfigurations = {
       eleum = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
 
         modules = [
           lanzaboote.nixosModules.lanzaboote

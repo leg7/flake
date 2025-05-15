@@ -115,6 +115,7 @@
         openmw
         wineWowPackages.waylandFull winetricks
         heroic
+        # unstable.emulationstation-de # Currently broken
 
         # Dev tools, lsps (mason doesn't work on nixos and the lsps don't work if installed directly in a devShell)
         man-pages man-pages-posix
@@ -151,6 +152,7 @@
         vial
         diskonaut
         neovide tree-sitter
+        unstable.logseq
 
         # Wayland wm "deps"
         unstable.rivercarro
