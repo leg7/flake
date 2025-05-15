@@ -417,7 +417,7 @@
           scrollback.lines = 10000;
 
           colors = {
-            alpha = "0.93";
+            alpha = "0.91";
             background = "101623";
             foreground = "FF99BB";
             # black, red, green, yellow, blue, magenta, cyan, white
