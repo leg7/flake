@@ -91,14 +91,25 @@
       enable = true;
       gamescopeSession.enable = true;
     };
+
     gamemode.enable = true;
+    gamescope.enable = true;
   };
+
   nixpkgs.config.packageOverrides = pkgs: {
     steam = pkgs.steam.override {
       extraPkgs = pkgs: with pkgs; [
         pango
         libthai
         harfbuzz
+      ];
+    };
+
+    heroic = pkgs.heroic.override {
+      extraPkgs = pkgs: with pkgs; [
+        gamescope
+        gamemode
+        mangohud
       ];
     };
   };
