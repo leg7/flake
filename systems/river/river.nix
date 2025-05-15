@@ -55,6 +55,7 @@
   programs.river.enable = true;
   services.seatd.enable = true;
   users.users.user.extraGroups = [ "seat" ];
+  services.ratbagd.enable = true; # for Piper (configuring mice)
 
   # for gnome calendar to work
   programs.dconf.enable = true;
@@ -152,6 +153,7 @@
         diskonaut
         neovide tree-sitter
         unstable.logseq
+        piper
 
         # Wayland wm "deps"
         inputs.zen-browser.packages."${system}".twilight rivercarro
