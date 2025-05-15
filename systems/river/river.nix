@@ -174,6 +174,23 @@
       ];
 
       preferXdgDirectories = true;
+
+      pointerCursor = {
+        name = "Banana";
+        size = 32;
+        package = pkgs.banana-cursor;
+        x11.enable = true;
+        gtk.enable = true;
+      };
+    };
+
+    gtk = {
+      enable = true;
+      cursorTheme = {
+        name = "Banana";
+        size = 32;
+        package = pkgs.banana-cursor;
+      };
     };
 
     xdg = {
