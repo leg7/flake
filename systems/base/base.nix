@@ -75,6 +75,7 @@
     };
 
     systemPackages = with pkgs; [
+      fd
       tealdeer
       xdg-utils xdg-user-dirs xdg-ninja
       p7zip unzip
@@ -82,7 +83,6 @@
       tree
       bottom
       shellcheck
-      zellij
       starship
       any-nix-shell
       file
