@@ -116,6 +116,7 @@
 
   documentation.dev.enable = true;
 
+  programs.nix-ld.enable = true;
   home-manager.users.user = {
     home = {
       packages = with pkgs; [
