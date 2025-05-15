@@ -52,6 +52,13 @@
     bluetooth.enable = true;
     opentabletdriver.enable = true;
 
+    graphics = {
+      enable = true;
+      extraPackages = with pkgs; [
+        intel-media-driver
+      ];
+    };
+
     nvidia = {
       open = false;
       package = config.boot.kernelPackages.nvidiaPackages.stable;
@@ -63,13 +70,6 @@
         intelBusId = "PCI:0:2:0";
       };
     };
-
-    # opengl = {
-    #   driSupport = true;
-    #   driSupport32Bit = true;
-    #   enable = true;
-    #   extraPackages = with pkgs; [ intel-media-driver ];
-    # };
   };
 
   # this is required to be able to use ethernet thourgh thunderbolt and though the rj45 port
