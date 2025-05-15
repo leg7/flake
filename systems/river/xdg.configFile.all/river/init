@@ -36,3 +36,4 @@ logseq &
 yambar-reload &
 kanshi &
 qbittorrent &
+nix-shell -p logseq --run 'setsid logseq > /dev/null 2> /dev/null &' &
