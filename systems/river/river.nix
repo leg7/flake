@@ -107,7 +107,6 @@
     home = {
       packages = with pkgs; [
         # Gaming
-        haskellPackages.Allure
         wootility
         osu-lazer
         prismlauncher glfw-wayland-minecraft
@@ -119,12 +118,11 @@
 
         # Dev tools, lsps (mason doesn't work on nixos and the lsps don't work if installed directly in a devShell)
         man-pages man-pages-posix
-        clang unstable.clang-tools clang-manpages gnumake gf gdb tinycc
-        zig
-        swi-prolog
-        python312Full python312Packages.python-lsp-server python312Packages.ipykernel
-        ocaml ocamlPackages.merlin opam
-        haskell-language-server ghc
+        pandoc
+        # LSPs
+        llvmPackages_19.clang-tools
+        python312Packages.python-lsp-server
+        haskell-language-server
         asm-lsp
         nixd
         lua-language-server
@@ -132,36 +130,40 @@
         rust-analyzer
         nodePackages.bash-language-server
         emmet-ls
-        qemu_kvm
-        pandoc texliveFull
-
-        apache-jena
+        android-file-transfer
 
         # Interactive programs
         neomutt mutt-wizard gnupg pinentry-all pass isync notmuch lynx abook
-        ardour gxplugins-lv2 guitarix gmetronome
-        libreoffice
-        ncmpcpp mpc-cli helvum pulsemixer pamixer easyeffects # pamixer required for eww
+
+        gxplugins-lv2 guitarix
+        gmetronome
+
+        ncmpcpp mpc-cli
+        helvum
+        pulsemixer
+        easyeffects
+
         imv
         nemo
         signal-desktop
         gnome-calendar
-        unstable.halloy
-        unstable.qbittorrent
+        halloy
+        qbittorrent
         qalculate-gtk
         vial
         diskonaut
         neovide tree-sitter
+        taskwarrior3 vit
         unstable.logseq
         piper
 
         # Wayland wm "deps"
         inputs.zen-browser.packages."${system}".twilight rivercarro
-        yambar
+        yambar pamixer
         fuzzel
         appimage-run
         ffmpeg yt-dlp-light
-        comixcursors adwaita-icon-theme
+        adwaita-icon-theme
         wl-clipboard
         lswt xorg.xlsclients
         brightnessctl wlsunset
@@ -170,10 +172,9 @@
         libnotify
         qrencode
         swaybg
-        socat
-        jq
         grim slurp satty wl-color-picker # for screenshots
-        xwayland # for some reason hyprland won't pull in xwayland automatically anymore?
+        xwayland
+        jq # for scripts
       ];
 
       preferXdgDirectories = true;
