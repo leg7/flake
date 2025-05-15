@@ -52,7 +52,7 @@
       XDG_CONFIG_HOME = config.users.users.user.home + "/.config";
       XDG_DATA_HOME   = config.users.users.user.home + "/.local/share";
       XDG_STATE_HOME  = config.users.users.user.home + "/.local/state";
-      PATH = [ (config.users.users.user.home + "/.local/bin") ];
+      PATH = [ (config.users.users.user.home + "/.local/bin") "${XDG_DATA_HOME}/npm/bin" ];
 
       ZDOTDIR               = "${XDG_CONFIG_HOME}/zsh";
       PASSWORD_STORE_DIR    = "${XDG_DATA_HOME}/pass";
