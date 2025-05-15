@@ -1,6 +1,5 @@
 { pkgs, lib, config, inputs, ... }: {
   imports = [ ../base/base.nix ];
-  nixpkgs.config.allowUnfree = true;
 
   fonts = {
     enableDefaultPackages = true;
