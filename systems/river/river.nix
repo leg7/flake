@@ -393,7 +393,8 @@
 
           sub-auto = "fuzzy";
           sub-bold = "yes";
-          hwdec = "vaapi";
+          hwdec = "auto";
+          vo = "gpu-next";
           audio-channels = "stereo";
         };
       };
