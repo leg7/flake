@@ -117,6 +117,8 @@
   documentation.dev.enable = true;
 
   programs.nix-ld.enable = true;
+
+  home-manager.backupFileExtension = "backup5";
   home-manager.users.user = {
     home = {
       packages = with pkgs; [
