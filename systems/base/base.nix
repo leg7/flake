@@ -105,6 +105,11 @@
         nr = "sudo nixos-rebuild switch --flake '.#eleum' --accept-flake-config";
         nt = "sudo nixos-rebuild test --flake '.#eleum' --accept-flake-config";
         g = "git";
+        gd = "git diff";
+        gds = "git diff --staged";
+        gc = "git commit";
+        gca = "git commit --amend";
+        gs = "git status";
       };
 
       histSize = 10000;
