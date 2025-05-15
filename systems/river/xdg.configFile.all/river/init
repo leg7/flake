@@ -11,7 +11,6 @@ export XDG_SESSION_DESKTOP=sway
 # export QT_QPA_PLATFORM="wayland;xcb"
 # export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 # export QT_QPA_PLATFORMTHEME=qt5ct
-# export _JAVA_AWT_WM_NONREPARENTING=1
 
 export GTK_THEME=Adwaita
 
@@ -36,4 +35,4 @@ easyeffects --gapplication-service &
 logseq &
 yambar-reload &
 kanshi &
-nvim --headless --listen "$NVIM_SERVER" &
+qbittorrent &

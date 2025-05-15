@@ -53,6 +53,8 @@ riverctl rule-add -app-id "steam_app*" fullscreen
 riverctl rule-add -app-id "Logseq" tags $((1 << 5))
 riverctl rule-add -app-id "Logseq" fullscreen
 
+riverctl rule-add -app-id "*qbittorrent*" tags $((1 << 3))
+
 riverctl rule-add -title "pulsemixer" float
 riverctl rule-add -title "emoji-picker" float
 riverctl rule-add -title "satty" fullscreen
