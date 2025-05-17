@@ -84,7 +84,6 @@
       bottom
       shellcheck
       starship
-      any-nix-shell
       file
       nix-tree
       clang
@@ -96,6 +95,7 @@
   programs = {
     zsh = {
       enable = true;
+      enableGlobalCompInit = true;
       enableCompletion = true;
       autosuggestions.enable = true;
       syntaxHighlighting.enable = true;
@@ -116,6 +116,37 @@
 
       histSize = 10000;
       histFile = "${config.environment.sessionVariables.XDG_STATE_HOME}/zsh/history";
+
+      interactiveShellInit = ''
+        bindkey -v
+        bindkey -v '^?' backward-delete-char
+
+        fcd()
+        {
+          source fuzzy-change-directory
+          zle reset-prompt
+        }
+        zle -N fcd
+        bindkey '^w' fcd
+
+        fuzzy-copy-path_widget() fuzzy-copy-path
+        zle -N fuzzy-copy-path_widget
+        bindkey '^p' fuzzy-copy-path_widget
+
+        fuzzy-xdg-open_widget() fuzzy-xdg-open
+        zle -N fuzzy-xdg-open_widget
+        bindkey '^f' fuzzy-xdg-open_widget
+
+        fuzzy-copy-history_widget() fuzzy-copy-history
+        zle -N fuzzy-copy-history_widget
+        bindkey '^h' fuzzy-copy-history_widget
+      '';
+
+      loginShellInit = ''
+        if [ "$TTY" = "/dev/tty1" ]; then
+                river
+        fi
+      '';
     };
 
     starship.enable = true;

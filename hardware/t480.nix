@@ -10,7 +10,7 @@
     name = "/dev/nvme1n1";
     sizes = {
       swap = "20G";
-      nix = "80G";
+      nix = "100G";
     };
   };
 
