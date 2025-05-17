@@ -8,7 +8,8 @@
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji
-      nerdfonts
+      # nerd-fonts.NerdFontsSymbolsOnly # This will be how to do it in release 25
+      (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
     ];
 
     fontconfig.defaultFonts = {
