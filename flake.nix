@@ -84,6 +84,24 @@
         ];
       };
 
+      heide = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs ; };
+
+        modules = [
+          lanzaboote.nixosModules.lanzaboote
+          impermanence.nixosModules.impermanence
+          disko.nixosModules.disko
+          ({pkgs, config, ...}: { nixpkgs.overlays = [ overlay-unstable ]; })
+          ./hardware/dan.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
+        ];
+      };
+
       # x200 = nixpkgs.lib.nixosSystem {
       #   system = "x86_64-linux";
       #   modules = [
