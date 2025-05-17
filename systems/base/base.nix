@@ -87,6 +87,7 @@
       any-nix-shell
       file
       nix-tree
+      clang
     ];
 
     binsh = "${pkgs.dash}/bin/dash";
