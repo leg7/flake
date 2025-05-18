@@ -6,7 +6,7 @@ if [ "$1" = "secureboot" ]; then
 	mkdir -p /mnt/persistent/etc/secureboot
 	cp -r /etc/secureboot /mnt/persistent/etc/
 	cp -r /etc/secureboot /mnt/etc/
-	nixos-install --no-root-passwd --flake /home/nixos/flake#"$2" --cores 0 --root /mnt --accept-flake-config
+	nixos-install --no-root-passwd --flake /home/nixos/flake#"$2" --cores 0 --root /mnt
 elif [ "$1" = "rpi4-firmware" ]; then
 	cd /mnt/boot || exit
 	nix-shell -p wget --run 'wget https://github.com/pftf/RPi4/releases/download/v1.37/RPi4_UEFI_Firmware_v1.37.zip'
