@@ -1,4 +1,6 @@
-{ lib, pkgs, config, ... }: {
+{ lib, pkgs, config, ... }:
+let domain = "leonardgomez.com";
+in {
   imports = [ ../base/base.nix ];
 
   networking.wireless.iwd.enable = lib.mkForce false;
@@ -24,14 +26,14 @@
     defaults.email = "leonard.gomez@protonmail.com";
     defaults.webroot = "/var/lib/acme/acme-challenge";
     certs = {
-      "leonardgomez.xyz".extraDomainNames = [
-        "leonardgomez.xyz"
-        "www.leonardgomez.xyz"
-        "git.leonardgomez.xyz"
-        "vaultwarden.leonardgomez.xyz"
-        "mollysocket.leonardgomez.xyz"
-        "radicale.leonardgomez.xyz"
-        "mail.leonardgomez.xyz"
+      "${domain}".extraDomainNames = [
+        "${domain}"
+        "www.${domain}"
+        "git.${domain}"
+        "vaultwarden.${domain}"
+        "mollysocket.${domain}"
+        "radicale.${domain}"
+        "mail.${domain}"
       ];
     };
   };
@@ -120,7 +122,7 @@
         difficulty = 3;
         gamemode = 0;
         max-players = 10;
-        motd = "leonardgomez.xyz minecraft server";
+        motd = "${domain} minecraft server";
         white-list = true;
         enable-rcon = false;
         enforce-secure-profile = false;
@@ -150,7 +152,7 @@
     vaultwarden = {
       enable = true;
       config = {
-        DOMAIN = "https://vaultwarden.leonardgomez.xyz";
+        DOMAIN = "https://vaultwarden.${domain}";
         SIGNUPS_ALLOWED = false;
         ROCKET_ADDRESS = "127.0.0.1";
         ROCKET_PORT = 8222;
@@ -166,19 +168,19 @@
       recommendedTlsSettings = true;
 
 
-      virtualHosts."www.leonardgomez.xyz" = {
+      virtualHosts."www.${domain}" = {
         addSSL = true;
         enableACME = true;
-        root = "/var/www/www.leonardgomez.xyz/public";
+        root = "/var/www/www.${domain}/public";
       };
 
-      virtualHosts."leonardgomez.xyz" = {
+      virtualHosts."${domain}" = {
         addSSL = true;
         enableACME = true;
-        globalRedirect = "www.leonardgomez.xyz";
+        globalRedirect = "www.${domain}";
       };
 
-      virtualHosts."vaultwarden.leonardgomez.xyz" = {
+      virtualHosts."vaultwarden.${domain}" = {
         addSSL = true;
         enableACME = true;
         locations."/" = {
@@ -186,7 +188,7 @@
         };
       };
 
-      virtualHosts."mollysocket.leonardgomez.xyz" = {
+      virtualHosts."mollysocket.${domain}" = {
         addSSL = true;
         enableACME = true;
         locations."/" = {
@@ -194,7 +196,7 @@
         };
       };
 
-      virtualHosts."radicale.leonardgomez.xyz" = {
+      virtualHosts."radicale.${domain}" = {
         addSSL = true;
         enableACME = true;
         locations."/" = {
