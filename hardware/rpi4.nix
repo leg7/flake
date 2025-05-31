@@ -21,7 +21,7 @@
         ssh = {
           enable = true;
           port = 727;
-          authorizedKeys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIwo3QjEcW8fsvqIwPi53Riuum1G/6h06E3kmVcTfHV4 user@eleum" ];
+          authorizedKeys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAGW96bkirUSW7oZXCJzgfg7P/FD5NBBtk+ze3CdA7Jm user@eleum" ];
           hostKeys = [ "/etc/ssh/ssh_host_rsa_key" ];
         };
       };
@@ -38,7 +38,7 @@
   };
 
   users.users.user.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIwo3QjEcW8fsvqIwPi53Riuum1G/6h06E3kmVcTfHV4 user@eleum"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAGW96bkirUSW7oZXCJzgfg7P/FD5NBBtk+ze3CdA7Jm user@eleum"
   ];
 
   system.stateVersion = "24.11";
