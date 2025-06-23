@@ -63,6 +63,7 @@
   # for gnome calendar to work
   programs.dconf.enable = true;
   services.gnome.evolution-data-server.enable = true;
+  services.gnome.gnome-keyring.enable = true;
 
   # Get fast kvm qemu virtual machines
   programs.virt-manager.enable = true;
