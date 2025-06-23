@@ -233,7 +233,7 @@ require('lazy').setup({
 				highlight = { enable = true },
 
 				indent = {
-					disable = { 'bash', 'nix', 'haskell' },
+					disable = { 'c', 'cpp', 'haskell' },
 					enable = true,
 				},
 
@@ -378,7 +378,7 @@ require('lazy').setup({
 	{
 		-- 'rmagatti/auto-session',
 		-- I'm using this fork because the guy fixed my issue with oil and terminal restore
-		'cameronr/auto-session',
+		'rmagatti/auto-session',
 		dependencies = { 'ibhagwan/fzf-lua' },
 		lazy = false,
 
@@ -422,7 +422,7 @@ require('lazy').setup({
 		'folke/zen-mode.nvim',
 		opts = {},
 		keys = {
-			{ '<leader>z', mode = 'n', function() require('zen-mode').toggle({window = {width = 120}, plugins = {options = {laststatus = 3}} }) end},
+			{ '<leader>z', mode = 'n', function() require('zen-mode').toggle({window = {width = 150} }) end},
 		},
 	},
 	{
@@ -524,10 +524,11 @@ require('lazy').setup({
 	},
 	{ 'rktjmp/lush.nvim', lazy = false, },
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000, lazy = false },
+	{ "jameswalls/naysayer.nvim", priority = 1000, lazy = false },
 	{
 		dir = '~/.config/nvim/lush-template',
 		config = function()
-			vim.cmd('colorscheme lush_template')
+			vim.cmd('colorscheme naysayer')
 		end,
 		dependencies = 'rktjmp/lush.nvim',
 		priority = 1000,
@@ -678,11 +679,16 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 })
 
 -- Indentation --
+-- Let tree sitter handle indentation except for when it doesn't work
+
+vim.opt.smartindent = false
+vim.opt.autoindent = false
+vim.opt.cindent = false
 
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
+
 vim.opt.expandtab = false
-vim.opt.smartindent = true
 
 vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter'}, {
 	desc = 'Set indentation settings for haskell',
@@ -697,22 +703,11 @@ vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter'}, {
 
 vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter'}, {
 	desc = 'Set indentation settings for curly brace languages',
-	pattern = { '*.c','*.cc','*.cpp','*.h','*.hh','*.hpp','*.lua','*.js','*.php','*.sh','.y','.yy','.l','.ll' },
+	pattern = { '*.c','*.cc','*.cpp','*.h','*.hh','*.hpp', '.y','.yy','.l','.ll' },
 	callback = function()
 		vim.opt.expandtab = false
+		vim.opt.cinoptions = ':0l1b1(0'
 		vim.opt.cindent = true
-		vim.opt.tabstop = 4
-		vim.opt.shiftwidth = 4
-	end,
-})
-
-vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter'}, {
-	desc = 'Set indentation settings for web stuff',
-	pattern = { '*.html', '*.css', '*.nix', '*.jsp', '*.xml' },
-	callback = function()
-		vim.expandtab = false
-		vim.opt.tabstop = 2
-		vim.opt.shiftwidth = 2
 	end,
 })
 
@@ -728,17 +723,18 @@ vim.api.nvim_create_autocmd("UIEnter", {
 	callback = function()
 		if vim.g.neovide then
 			vim.opt.lazyredraw = false
-			vim.o.guifont = "monospace:h14"
-			-- vim.g.neovide_cursor_vfx_mode = "pixiedust"
-			vim.g.neovide_transparency = 0.96
-			vim.g.transparency = vim.g.neovide_transparency
+			vim.o.guifont = "monospace:h14:#e-subpixelantialias:#h-full"
+			vim.o.linespace = 2
+			vim.g.neovide_cursor_vfx_mode = "pixiedust"
+			vim.g.neovide_opacity = 0.92
+			vim.g.transparency = vim.g.neovide_opacity
 			vim.g.neovide_floating_blur_amount_x = 0
 			vim.g.neovide_floating_blur_amount_y = 0
 			vim.g.neovide_floating_shadow = false
 
-			vim.keymap.set({ "n", "v" }, "<C-+>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
-			vim.keymap.set({ "n", "v" }, "<C-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
-			vim.keymap.set({ "n" , "v" }, "<C-0>", ":lua vim.g.neovide_scale_factor = 1<CR>")
+			vim.keymap.set({ "n", "v" }, "<leader>w", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
+			vim.keymap.set({ "n", "v" }, "<leader>q", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
+			vim.keymap.set({ "n" , "v" }, "<leader>c", ":lua vim.g.neovide_scale_factor = 1<CR>")
 
 			local alpha = function()
 				return string.format("%x", math.floor(255 * vim.g.transparency or 0.8))
@@ -755,7 +751,7 @@ vim.keymap.set('n', 'Q', '<nop>')
 -- vim.keymap.set('n', '<esc>', '<cmd>noh<cr>', { noremap = true }) -- Disabled because I breaks smart_splits resize mode
 vim.keymap.set('n', '<backspace>', '<cmd>noh<cr>', { noremap = true }) -- Disabled because I breaks smart_splits resize mode
 vim.keymap.set('n', '<leader>x', '<cmd>!chmod +x %<cr>')
-vim.keymap.set( 't', '<esc>', '<c-\\><c-n>')
+vim.keymap.set('t', '<esc>', '<c-\\><c-n>')
 
 -- copy pasta
 vim.keymap.set({'x', 'n'}, '<leader>y', '"+y', { silent = true, noremap = true })
@@ -768,8 +764,6 @@ vim.keymap.set('n', '<c-w>', ':w<cr>')
 -- Center cursor
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
-vim.keymap.set('n', 'J', 'mzJ`z')
-vim.keymap.set('i', '<esc>', '<esc>l')
 
 -- close/open
 vim.keymap.set('n', '<c-x>', ':close<cr>') -- X out of here
