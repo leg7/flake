@@ -24,6 +24,7 @@
 
   system.stateVersion = "24.11";
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.rocmSupport = true;
   time.timeZone = "Europe/Paris";
 
   boot = {
@@ -70,6 +71,9 @@
   };
 
   services = {
+    ollama.enable = true;
+    nextjs-ollama-llm-ui.enable = true;
+
     xserver.videoDrivers = [ "amdgpu" ];
     fstrim.enable = true;
     fwupd.enable = true;
