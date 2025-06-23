@@ -20,55 +20,6 @@ bar:
   trackpad-sensitivity: 40
 
   left:
-    - script:
-        path: ~/.local/bin/battery
-        args:
-          - "-y"
-        poll-interval: 5000
-        content:
-          map:
-            default:
-              ramp:
-                tag: capacity
-                items:
-                  - string: {text: "󰂎 {capacity}%"}
-                  - string: {text: "󰁺 {capacity}%"}
-                  - string: {text: "󰁼 {capacity}%"}
-                  - string: {text: "󰁽 {capacity}%"}
-                  - string: {text: "󰁾 {capacity}%"}
-                  - string: {text: "󰁿 {capacity}%"}
-                  - string: {text: "󰂀 {capacity}%"}
-                  - string: {text: "󰂁 {capacity}%"}
-                  - string: {text: "󰂂 {capacity}%"}
-                  - string: {text: "󰁹 {capacity}%"}
-
-            conditions:
-              charging:
-                ramp:
-                  foreground: *yellow
-                  tag: capacity
-                  items:
-                    - string: {text: "󰢜 {capacity}%"}
-                    - string: {text: "󰂆 {capacity}%"}
-                    - string: {text: "󰂇 {capacity}%"}
-                    - string: {text: "󰂈 {capacity}%"}
-                    - string: {text: "󰢝 {capacity}%"}
-                    - string: {text: "󰂉 {capacity}%"}
-                    - string: {text: "󰢞 {capacity}%"}
-                    - string: {text: "󰂊 {capacity}%"}
-                    - string: {text: "󰂋 {capacity}%"}
-                    - string: {text: "󰂅 {capacity}%"}
-
-    - backlight:
-        name: intel_backlight
-        content:
-          string:
-            text: "󰛨 {percent}%"
-            on-click:
-              wheel-up: "brightnessctl s 2%+"
-              wheel-down: "brightnessctl s 2%-"
-
-    # do volume and battery
     - pipewire:
         content:
           map:
@@ -197,7 +148,7 @@ bar:
     - clock:
         date-format: "%a %d/%m/%Y"
         content:
-          - string: { text: " {date}", right-margin: *margin-side }
+          - string: { text: " {date}", right-margin: *margin-side, on-click: sh -c "riverctl set-focused-tags $((1 << 5)) && setsid -f gnome-calendar" }
           - string: { text: "󱑃 {time}", left-margin: *margin-side }
 
     - label:
