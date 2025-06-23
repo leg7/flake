@@ -50,6 +50,8 @@
       }
       '';
     };
+
+    flatpak.enable = true; # For unleashed recompiled
   };
 
   programs.river.enable = true;
