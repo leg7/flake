@@ -46,6 +46,7 @@
 
   hardware = {
     cpu.amd.updateMicrocode = true;
+    amdgpu.amdvlk.enable = true;
     enableAllFirmware = true;
     bluetooth.enable = true;
     opentabletdriver.enable = true;
