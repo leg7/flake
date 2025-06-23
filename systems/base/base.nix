@@ -41,6 +41,7 @@
     sessionVariables = rec {
       # CLI env
       PAGER = "less";
+      LESS="R"; # Less default options (inhibits git from calling less with -F and -R)
       EDITOR = "nvim";
 
       ASAN_OPTIONS          = "halt_on_error=0";
@@ -54,7 +55,6 @@
       XDG_STATE_HOME  = config.users.users.user.home + "/.local/state";
       PATH = [ (config.users.users.user.home + "/.local/bin") "${XDG_DATA_HOME}/npm/bin" ];
 
-      ZDOTDIR               = "${XDG_CONFIG_HOME}/zsh";
       PASSWORD_STORE_DIR    = "${XDG_DATA_HOME}/pass";
       MBSYNCRC              = "${XDG_CONFIG_HOME}/isync/mbsyncrc";
       GNUPGHOME             = "${XDG_DATA_HOME}/gnupg";
@@ -76,6 +76,7 @@
 
     systemPackages = with pkgs; [
       fd
+      ripgrep
       tealdeer
       xdg-utils xdg-user-dirs xdg-ninja
       p7zip unzip
@@ -93,57 +94,41 @@
   };
 
   programs = {
-    zsh = {
-      enable = true;
-      enableGlobalCompInit = true;
-      enableCompletion = true;
-      autosuggestions.enable = true;
-      syntaxHighlighting.enable = true;
-
-      shellAliases = {
-        l = "ls -lhv --group-directories-first";
-        ll = "ls -lAhv --group-directories-first";
-        nr = "sudo nixos-rebuild switch --flake '.#eleum' --accept-flake-config";
-        nt = "sudo nixos-rebuild test --flake '.#eleum' --accept-flake-config";
-        g = "git";
-        gd = "git diff";
-        gds = "git diff --staged";
-        gc = "git commit";
-        gca = "git commit --amend";
-        gs = "git status";
-        gl = "git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)' --all";
-      };
-
-      histSize = 10000;
-      histFile = "${config.environment.sessionVariables.XDG_STATE_HOME}/zsh/history";
+    bash = {
+      completion.enable = true;
 
       interactiveShellInit = ''
-        bindkey -v
-        bindkey -v '^?' backward-delete-char
+        stty -ixon
 
-        fcd()
-        {
-          source fuzzy-change-directory
-          zle reset-prompt
-        }
-        zle -N fcd
-        bindkey '^w' fcd
+        set -o vi
 
-        fuzzy-copy-path_widget() fuzzy-copy-path
-        zle -N fuzzy-copy-path_widget
-        bindkey '^p' fuzzy-copy-path_widget
+        bind '"\C-w":"source fuzzy-change-directory\n"'
+        bind '"\C-p":"fuzzy-copy-path\n"'
+        bind '"\C-f":"fuzzy-xdg-open\n"'
+        bind '"\C-h":"fuzzy-copy-history\n"'
+        bind '"\C-l":"ls -lhv --group-directories-first --color=always\n"'
+        bind '"\C-s":"setsid -f footclient\n"'
+        bind '"\C-t":"task"'
 
-        fuzzy-xdg-open_widget() fuzzy-xdg-open
-        zle -N fuzzy-xdg-open_widget
-        bindkey '^f' fuzzy-xdg-open_widget
+        alias t="task"
 
-        fuzzy-copy-history_widget() fuzzy-copy-history
-        zle -N fuzzy-copy-history_widget
-        bindkey '^h' fuzzy-copy-history_widget
+        alias l="ls -lhv --group-directories-first"
+        alias ll="ls -lAhv --group-directories-first"
+
+        alias nr="sudo nixos-rebuild switch --flake \".#$(hostname)\" --accept-flake-config"
+        alias nt="sudo nixos-rebuild test --flake \".#$(hostname)\" --accept-flake-config"
+
+        alias g="git"
+        alias gd="git diff"
+        alias gds="git diff --staged"
+        alias gc="git commit"
+        alias gca="git commit --amend"
+        alias gs="git status"
+        alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)' --all"
       '';
 
       loginShellInit = ''
-        if [ "$TTY" = "/dev/tty1" ]; then
+        if [ "$(tty)" = "/dev/tty1" ]; then
                 river
         fi
       '';
@@ -155,7 +140,6 @@
 
     fzf = {
       fuzzyCompletion = true;
-      keybindings = true;
     };
   };
 
@@ -164,7 +148,7 @@
   users = {
     mutableUsers = false;
     groups.users = {};
-    defaultUserShell = pkgs.zsh;
+    defaultUserShell = pkgs.bash;
 
     users = {
       root.hashedPassword = "$2b$05$gMb04I4jVLgvFhM9G2Ny9emHGxhjQX1f/.0xsaLKJW1E.xijzPyLW";
@@ -274,20 +258,14 @@
   };
 
   boot = {
-    kernelPackages = lib.mkOverride 950 pkgs.linuxPackages_hardened;
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
     kernelParams = [
-      # Slab/slub sanity checks, redzoning, and poisoning
-      "slub_debug=FZP"
+      "slub_debug=FZP" # Slab/slub sanity checks, redzoning, and poisoning
+      "page_poison=1" # Overwrite free'd memory
+      "page_alloc.shuffle=1" # Enable page allocator randomization
 
-      # Overwrite free'd memory
-      "page_poison=1"
-
-      # Enable page allocator randomization
-      "page_alloc.shuffle=1"
-
-      # Go into s3 sleep, not actually hardening
-      "mem_sleep_default=deep"
+      "mem_sleep_default=deep" # Go into s3 sleep, not actually hardening
     ];
 
     blacklistedKernelModules = [
@@ -322,15 +300,11 @@
       # Restrict ptrace() usage to processes with a pre-defined relationship
       # (e.g., parent/child)
       "kernel.yama.ptrace_scope" = lib.mkOverride 500 1;
+      "kernel.perf_event_paranoid" = lib.mkOverride 500 1; # Needed for debugging with rr
 
-      # Hide kptrs even for processes with CAP_SYSLOG
-      "kernel.kptr_restrict" = lib.mkOverride 500 2;
-
-      # Disable bpf() JIT (to eliminate spray attacks)
-      "net.core.bpf_jit_enable" = false;
-
-      # Disable ftrace debugging
-      "kernel.ftrace_enabled" = false;
+      "kernel.kptr_restrict" = lib.mkOverride 500 2;       # Hide kptrs even for processes with CAP_SYSLOG
+      "net.core.bpf_jit_enable" = false;                   # Disable bpf() JIT (to eliminate spray attacks)
+      "kernel.ftrace_enabled" = false;                     # Disable ftrace debugging
 
       # Enable strict reverse path filtering (that is, do not attempt to route
       # packets that "obviously" do not belong to the iface's network; dropped

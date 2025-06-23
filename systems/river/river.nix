@@ -8,8 +8,7 @@
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji
-      # nerd-fonts.NerdFontsSymbolsOnly # This will be how to do it in release 25
-      (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
+      nerd-fonts.symbols-only
     ];
 
     fontconfig.defaultFonts = {
@@ -168,7 +167,7 @@
         qbittorrent
         qalculate-gtk
         vial
-        diskonaut
+        qdirstat
         neovide tree-sitter
         taskwarrior3 vit
         unstable.logseq
@@ -339,7 +338,7 @@
           wlrobs
           obs-gstreamer
           obs-vaapi
-          obs-nvfbc
+          # obs-nvfbc
           obs-vkcapture
         ];
       };
@@ -494,7 +493,6 @@
   systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;
 
   # These settings cause firefox to crash or not open so we revert them
-  boot.kernelPackages = lib.mkOverride 50 pkgs.linuxPackages;
   environment.memoryAllocator.provider = lib.mkOverride 50 "libc";
 
   # This is to hotplug devices
