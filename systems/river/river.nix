@@ -70,6 +70,7 @@
     enable = true;
     qemu = {
       package = pkgs.qemu_kvm;
+      vhostUserPackages = with pkgs; [ virtiofsd ];
       runAsRoot = true;
       swtpm.enable = true;
       ovmf = {
@@ -81,9 +82,7 @@
       };
     };
   };
-
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "user" ];
+  networking.firewall.trustedInterfaces = [ "virbr0" ];
 
   programs.gnupg.agent.enable = true;
 

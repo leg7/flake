@@ -181,11 +181,7 @@
     };
   };
 
-  systemd.network.enable = true;
   networking = {
-    dhcpcd.enable = false;
-    useNetworkd = true;
-
     # I haven't reseached IPv6 security & privacy implications so I disable it
     enableIPv6 = false;
 
@@ -199,10 +195,8 @@
       enable = true;
       settings = {
         General = {
-          EnableNetworkConfiguration = true; # Use systemd instead of dhcpcd
           AddressRandomization = "network";
         };
-        Network.NameResolvingService = "systemd";
       };
     };
   };
