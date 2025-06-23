@@ -177,6 +177,9 @@
 
         # Wayland wm "deps"
         rivercarro
+        sent
+        groff
+        imagemagick
         librewolf-bin
         yambar pamixer
         fuzzel
