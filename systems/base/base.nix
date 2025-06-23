@@ -71,7 +71,7 @@
 
       # DE env
       _JAVA_AWT_WM_NONREPARENTING = 1;
-      BROWSER = "zen";
+      BROWSER = "librewolf";
     };
 
     systemPackages = with pkgs; [

@@ -174,7 +174,8 @@
         piper
 
         # Wayland wm "deps"
-        inputs.zen-browser.packages."${system}".twilight rivercarro
+        rivercarro
+        librewolf-bin
         yambar pamixer
         fuzzel
         appimage-run
