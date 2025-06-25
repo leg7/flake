@@ -108,7 +108,7 @@
         bind '"\C-h":"fuzzy-copy-history\n"'
         bind '"\C-l":"ls -lhv --group-directories-first --color=always\n"'
         bind '"\C-s":"setsid -f footclient\n"'
-        bind '"\C-t":"task"'
+        bind '"\C-t":"task\n"'
 
         alias t="task"
 
