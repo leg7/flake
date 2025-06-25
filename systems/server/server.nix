@@ -161,12 +161,18 @@ in {
       environmentFile = ./services.vaultwarden.environmentFile;
     };
 
+    taskchampion-sync-server = {
+      enable = true;
+      allowClientIds = [
+        "67d56027-6600-4939-aba8-8177f94db79f" # Dan
+      ];
+    };
+
     nginx = {
       enable = true;
       package = pkgs.nginxStable.override { openssl = pkgs.libressl; };
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
-
 
       virtualHosts."www.${domain}" = {
         addSSL = true;
@@ -209,6 +215,13 @@ in {
         };
       };
 
+      virtualHosts."taskchampion.${domain}" = {
+        addSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.taskchampion-sync-server.port}";
+        };
+      };
     };
   };
 }
