@@ -165,6 +165,7 @@ in {
       enable = true;
       allowClientIds = [
         "67d56027-6600-4939-aba8-8177f94db79f" # Dan
+        "53ea54ee-8f19-46b9-ae5a-706766eba4d2" # T480
       ];
     };
 
