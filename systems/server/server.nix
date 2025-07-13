@@ -164,8 +164,7 @@ in {
     taskchampion-sync-server = {
       enable = true;
       allowClientIds = [
-        "67d56027-6600-4939-aba8-8177f94db79f" # Dan
-        "53ea54ee-8f19-46b9-ae5a-706766eba4d2" # T480
+        "ab537ada-34dc-4138-992a-57c2a0d0207d" # Personal
       ];
     };
 
