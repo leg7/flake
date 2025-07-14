@@ -150,6 +150,7 @@ require('lazy').setup({
 			lspconfig.nixd.setup({})
 			lspconfig.lua_ls.setup({})
 			lspconfig.emmet_ls.setup({})
+			lspconfig.ts_ls.setup({})
 			lspconfig.rust_analyzer.setup({})
 			lspconfig.jdtls.setup({})
 			lspconfig.pylsp.setup({})
@@ -163,7 +164,7 @@ require('lazy').setup({
 			'c', 'cpp',
 			'nix',
 			'lua',
-			'html', 'js', 'php',
+			'html', 'javascript', 'php',
 			'rust',
 			'java',
 			'python',

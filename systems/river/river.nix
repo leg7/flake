@@ -137,6 +137,8 @@
         # Dev tools, lsps (mason doesn't work on nixos and the lsps don't work if installed directly in a devShell)
         man-pages man-pages-posix
         pandoc
+        android-file-transfer
+        raylib
         # LSPs
         llvmPackages_19.clang-tools
         python312Packages.python-lsp-server
@@ -148,7 +150,7 @@
         rust-analyzer
         nodePackages.bash-language-server
         emmet-ls
-        android-file-transfer
+        typescript-language-server
 
         # Interactive programs
         neomutt mutt-wizard gnupg pinentry-all pass isync notmuch lynx abook
