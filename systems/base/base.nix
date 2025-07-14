@@ -115,8 +115,8 @@
         alias l="ls -lhv --group-directories-first"
         alias ll="ls -lAhv --group-directories-first"
 
-        alias nr="sudo nixos-rebuild switch --flake \".#$(hostname)\" --accept-flake-config"
-        alias nt="sudo nixos-rebuild test --flake \".#$(hostname)\" --accept-flake-config"
+        alias nr="doas nixos-rebuild switch --flake \".#$(hostname)\" --accept-flake-config"
+        alias nt="doas nixos-rebuild test --flake \".#$(hostname)\" --accept-flake-config"
 
         alias g="git"
         alias gd="git diff"
@@ -232,6 +232,16 @@
 
   nix.settings.allowed-users = [ "@wheel" ];
   security = {
+    doas = {
+      enable = true;
+      extraRules = [{
+        users = [ "user" ];
+        keepEnv = true;
+        persist = true;
+      }];
+    };
+    sudo.enable = false;
+
     lockKernelModules = lib.mkDefault true; # This is anoying for dynamic systems like a laptop you dock, turn it off if some of your devices don't connect
     protectKernelImage = true;
     forcePageTableIsolation = true;
@@ -244,13 +254,6 @@
     apparmor = {
       enable = true;
       killUnconfinedConfinables = true;
-    };
-
-    sudo = {
-      enable = true;
-      extraConfig = ''
-      Defaults timestamp_timeout=60
-      '';
     };
 
     # Required to run chrome
