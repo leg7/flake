@@ -64,7 +64,7 @@
   # this is required to be able to use ethernet thourgh thunderbolt and though the rj45 port
   systemd.network = {
     networks."10-wired" = {
-      matchConfig.Type = "ether";
+      matchConfig.Type = "eno1";
       networkConfig.DHCP = "ipv4";
       dhcpV4Config = { UseDomains = true; };
       linkConfig.RequiredForOnline = "no";

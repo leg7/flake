@@ -64,7 +64,7 @@ bar:
               right: "antenna -t wifi"
 
             conditions:
-              (name == "enp9s0u2u1u2" || name == "enp0s31f6") && state == "up":
+              name == "eno1" && state == "up":
                 string: {text: 󰈀}
               name == "wlan0":
                 map:
