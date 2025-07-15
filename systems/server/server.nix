@@ -13,7 +13,6 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
-    zola
     neovim
   ];
 
@@ -38,56 +37,23 @@ in {
     };
   };
 
-  # services.stalwart-mail = {
-  #   enable = true;
-  #   package = pkgs.stalwart-mail;
-  #   settings = {
-  #     certificate."leonardgomez" = {
-  #       cert = "%{file:/var/lib/acme/mail.leonardgomez.xyz/fullchain.pem}%";
-  #       private-key = "%{file:/var/lib/acme/mail.leonardgomez.xyz/key.pem}%";
-  #     };
-  #
-  #     server = {
-  #       hostname = "mail.leonardgomez.xyz";
-  #       tls = {
-  #         certificate = "leonardgomez";
-  #         enable = true;
-  #         implicit = false;
-  #       };
-  #       listener = {
-  #         "smtp-submission" = {
-  #           bind = [ "[::]:587" ];
-  #           protocol = "smtp";
-  #         };
-  #         "imap" = {
-  #           bind = [ "[::]:143" ];
-  #           protocol = "imap";
-  #         };
-  #       };
-  #     };
-  #
-  #     session = {
-  #       rcpt.directory = "in-memory";
-  #       auth = {
-  #         mechanisms = [ "PLAIN" ];
-  #         directory = "in-memory";
-  #       };
-  #     };
-  #
-  #     jmap.directory = "in-memory";
-  #     queue.outbound.next-hop = [ "local" ];
-  #     directory."in-memory" = {
-  #       type = "memory";
-  #       users = [
-  #         {
-  #           name = "contact";
-  #           secret = "foobar";
-  #           email = [ "contact@leonardgomez.xyz" ];
-  #         }
-  #       ];
-  #     };
-  #   };
-  # };
+  mailserver = {
+    enable = true;
+    fqdn = "mail.${domain}";
+    domains = [ "${domain}" ];
+
+    # A list of all login accounts. To create the password hashes, use
+    # nix-shell -p mkpasswd --run 'mkpasswd -sm bcrypt'
+    loginAccounts = {
+      "contact@${domain}" = {
+        hashedPassword = "$2b$05$XLPfw9lueUXBgVZTdlBe9u/H3Nf1D3LspJGevCUwK75W9WTYGTF3S";
+      };
+    };
+
+    # Use Let's Encrypt certificates. Note that this needs to set up a stripped
+    # down nginx and opens port 80.
+    certificateScheme = "acme-nginx";
+  };
 
   services = {
     # kavita.enable = true;
@@ -177,7 +143,7 @@ in {
       virtualHosts."www.${domain}" = {
         addSSL = true;
         enableACME = true;
-        root = "/var/www/www.${domain}/public";
+        root = "/var/www/${domain}";
       };
 
       virtualHosts."${domain}" = {

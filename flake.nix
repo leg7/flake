@@ -10,7 +10,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
     impermanence.url = "github:nix-community/impermanence";
 
     disko = {
@@ -27,9 +29,14 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixos-mailserver = {
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, disko, nixos-hardware, lanzaboote, impermanence, ... }:
+  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, disko, nixos-hardware, lanzaboote, impermanence, nixos-mailserver, ... }:
   let
     overlay-unstable = final: prev: {
       unstable = import inputs.nixpkgs-unstable {
@@ -68,6 +75,7 @@
           nixos-hardware.nixosModules.raspberry-pi-4
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
+          nixos-mailserver.nixosModules.mailserver
           disko.nixosModules.disko
           ({pkgs, config, ...}: { nixpkgs.overlays = [ overlay-unstable ]; })
           ./hardware/rpi4.nix
