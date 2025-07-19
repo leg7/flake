@@ -15,6 +15,8 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,7 +38,7 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, disko, nixos-hardware, lanzaboote, impermanence, nixos-mailserver, ... }:
+  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, disko, nixos-hardware, lanzaboote, impermanence, nixos-mailserver, nix-minecraft, ... }:
   let
     overlay-unstable = final: prev: {
       unstable = import inputs.nixpkgs-unstable {
@@ -76,8 +78,9 @@
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
           nixos-mailserver.nixosModules.mailserver
+          nix-minecraft.nixosModules.minecraft-servers
           disko.nixosModules.disko
-          ({pkgs, config, ...}: { nixpkgs.overlays = [ overlay-unstable ]; })
+          ({pkgs, config, ...}: { nixpkgs.overlays = [ overlay-unstable nix-minecraft.overlay ]; })
           ./hardware/rpi4.nix
           home-manager.nixosModules.home-manager
           {
