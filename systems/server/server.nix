@@ -92,9 +92,12 @@ in {
         white-list = true;
         enable-rcon = false;
         enforce-secure-profile = false;
+
+        view-distance = 6;
+        entity-activation-range = 32;
       };
 
-      jvmOpts = "-Xms1G -Xmx1G";
+      jvmOpts = "-Xms2048M -Xmx2048M -XX:+UseG1GC -XX:ParallelGCThreads=4";
 
       whitelist = {
         Finxert = "88637aa6-6d7c-49b0-b6b0-d72dde73b45f";
