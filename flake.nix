@@ -11,6 +11,11 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     impermanence.url = "github:nix-community/impermanence";
@@ -38,7 +43,7 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, disko, nixos-hardware, lanzaboote, impermanence, nixos-mailserver, nix-minecraft, ... }:
+  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, disko, nixos-hardware, lanzaboote, impermanence, nixos-mailserver, nix-minecraft, sops-nix, ... }:
   let
     overlay-unstable = final: prev: {
       unstable = import inputs.nixpkgs-unstable {
@@ -58,6 +63,7 @@
         specialArgs = { inherit inputs; };
 
         modules = [
+          sops-nix.nixosModules.sops
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
           disko.nixosModules.disko
@@ -74,6 +80,7 @@
       majula = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
         modules = [
+          sops-nix.nixosModules.sops
           nixos-hardware.nixosModules.raspberry-pi-4
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
@@ -95,6 +102,7 @@
         specialArgs = { inherit inputs ; };
 
         modules = [
+          sops-nix.nixosModules.sops
           lanzaboote.nixosModules.lanzaboote
           impermanence.nixosModules.impermanence
           disko.nixosModules.disko

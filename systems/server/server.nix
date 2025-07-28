@@ -56,6 +56,21 @@ in {
     certificateScheme = "acme-nginx";
   };
 
+  # --- Mollysocket
+  sops.secrets.mollysocket = {
+    format = "dotenv";
+    sopsFile = ./sops.secrets.mollysocket.sopsFile.env;
+    restartUnits = [ "mollysocket.service" ];
+  };
+  services.mollysocket = {
+    enable = true;
+    settings = {
+      allowed_uuids = [ "5663c899-15fe-428e-9ae0-cf903490f3bb" ];
+      allowed_endpoints = [ "https://ntfy.sh" ];
+    };
+    environmentFile = config.sops.secrets.mollysocket.path;
+  };
+
   services = {
     # kavita.enable = true;
     # TODO: Use nix secrets
@@ -173,16 +188,6 @@ in {
           };
         };
       };
-    };
-
-    mollysocket = {
-      enable = true;
-      settings = {
-        allowed_uuids = [ "5663c899-15fe-428e-9ae0-cf903490f3bb" ];
-        allowed_endpoints = [ "https://ntfy.sh" ];
-      };
-      # This has to be hashed or I can't push it to git
-      # environmentFile =
     };
 
     # figure out what files are not being persisted on reboot
