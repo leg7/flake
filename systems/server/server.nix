@@ -32,6 +32,7 @@ in {
         "git.${domain}"
         "vaultwarden.${domain}"
         "mollysocket.${domain}"
+        "ntfy.${domain}"
         "radicale.${domain}"
         "mail.${domain}"
       ];
@@ -66,9 +67,28 @@ in {
     enable = true;
     settings = {
       allowed_uuids = [ "5663c899-15fe-428e-9ae0-cf903490f3bb" ];
-      allowed_endpoints = [ "https://ntfy.sh" ];
+      allowed_endpoints = [ "https://ntfy.${domain}" ];
     };
     environmentFile = config.sops.secrets.mollysocket.path;
+  };
+
+  # --- Ntfy
+  sops.secrets.ntfy-sh-web-push-private-key = {
+    sopsFile = ./sops.secrets.ntfy-sh-web-push-private-key.sopsFile.txt;
+    restartUnits = [ "ntfy-sh.service" ];
+  };
+  services.ntfy-sh = {
+    enable = true;
+    settings = {
+      base-url = "https://ntfy.leonardgomez.com";
+      cache-duration = "72h";
+      auth-default-access = "deny-all";
+      behind-proxy = true;
+      web-push-public-key = "BMc6iA6SrsI5sC0u4zHx8l9vVmRbQM-2NPF7QD8cwF6H4hs_HpfA0U8xvXjh7zacH04epzaL0iAe39XEZWTIHrY";
+      web-push-private-key = config.sops.secrets.ntfy-sh-web-push-private-key;
+      web-push-file = "/var/lib/ntfy-sh/webpush.db"; # or similar
+      web-push-email-address = "leonard.gomez@protonmail.com";
+    };
   };
 
   services = {
@@ -241,6 +261,15 @@ in {
         enableACME = true;
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString config.services.mollysocket.settings.port}";
+        };
+      };
+
+      virtualHosts."ntfy.${domain}" = {
+        addSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://${toString config.services.ntfy-sh.settings.listen-http}";
+          proxyWebsockets = true;
         };
       };
 

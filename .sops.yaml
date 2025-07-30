@@ -3,7 +3,7 @@ keys:
   - &admin_heide age1tzf2z49wtmnfnde3fvlkpdv2t9gu98z3aj85cxtqcqhfym9a83ns3w2pfs
   - &server_majula age1u3sxvwg04yj9s6qvtl4xask9qq5y6zp7yqlsn8ldpkx2xzhyvywqad5t7v
 creation_rules:
-  - path_regex: (sops\.secrets\.[^/]+\.sopsFile|sops\.defaultSopsFile)\.(yaml|json|env|ini)$
+  - path_regex: (sops\.secrets\.[^/]+\.sopsFile|sops\.defaultSopsFile)\.(yaml|json|env|ini|txt)$
     key_groups:
     - age:
         - *admin_eleum
