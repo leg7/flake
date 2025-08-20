@@ -7,7 +7,7 @@
   ];
 
   mainDisk = {
-    name = "/dev/nvme1n1";
+    name = "/dev/nvme0n1";
     sizes = {
       swap = "20G";
       nix = "100G";
