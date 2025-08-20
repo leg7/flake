@@ -15,10 +15,8 @@ with lib;
 
       lanzaboote = {
         enable = true;
-        pkiBundle = "${config.mainDisk.persistentDataPath}/etc/secureboot";
+        pkiBundle = "/var/lib/sbctl";
       };
     };
-
-    environment.persistence."${config.mainDisk.persistentDataPath}".directories = [ "/etc/secureboot" ];
   };
 }
