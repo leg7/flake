@@ -1,0 +1,58 @@
+#!/bin/sh
+# This is a wrapper for rfkill to update the wifi and bluetooth eww widgets
+
+usage()
+{
+	printf "$(basename "$0") [option] [argument]
+
+	Options:
+	 -t Toggles the antenna \$2 on/off
+	 -d Disconnects the antenna \$2
+	 -c Connects the antenna \$2
+	 -s Get the status of antenna \$2, possible values are 'on','off'
+	 -y Output bluetooth antenna status as a tag for yambar
+	 -h Show this help message\n"
+}
+
+bad_option()
+{
+	echo "Bad Option $1"
+	usage
+	exit 1
+}
+
+# Return the status of antenna "$1"
+antenna_status()
+{
+	status="$(rfkill -J -o TYPE,SOFT,HARD | jq '(.rfkilldevices[] | select(.type == "'"$1"'" and (.soft == "unblocked" and .hard == "unblocked"))) | length > 0')"
+
+	if [ "$status" ]; then
+		echo on
+	else
+		echo off
+	fi
+}
+
+bluetooth_status_yambar()
+{
+	status="$(rfkill -J -o TYPE,SOFT,HARD | jq '(.rfkilldevices[] | select(.type == "bluetooth" and (.soft == "unblocked" and .hard == "unblocked"))) | length > 0')"
+
+	if [ "$status" ]; then
+		echo "bluetooth|bool|true"
+	else
+		echo "bluetooth|bool|false"
+	fi
+	echo ""
+}
+
+while getopts y:t:d:c:u:s:h option; do
+	case $option in
+		t) rfkill toggle "$OPTARG";;
+		d) rfkill block "$OPTARG";;
+		c) rfkill unblock "$OPTARG";;
+		s) antenna_status "$OPTARG";;
+		y) bluetooth_status_yambar "$OPTARG";;
+		h) usage;;
+		*) bad_option "$option";;
+	esac
+done

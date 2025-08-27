@@ -1,0 +1,2 @@
+#!/bin/sh
+grim -g "$(slurp -oc '#ff0000ff')" - | satty --filename - --copy-command wl-copy --fullscreen --early-exit --output-filename ~/satty-"$(date '+%Y%m%d-%H:%M:%S')".png --font-family 'monospaced'

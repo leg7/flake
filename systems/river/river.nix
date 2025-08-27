@@ -201,8 +201,6 @@
         jq # for scripts
       ];
 
-      preferXdgDirectories = true;
-
       pointerCursor = {
         name = "Banana";
         size = 32;
@@ -222,13 +220,6 @@
     };
 
     xdg = {
-      enable = true;
-
-      cacheHome  = config.environment.sessionVariables.XDG_CACHE_HOME;
-      configHome = config.environment.sessionVariables.XDG_CONFIG_HOME;
-      dataHome   = config.environment.sessionVariables.XDG_DATA_HOME;
-      stateHome  = config.environment.sessionVariables.XDG_STATE_HOME;
-
       configFile."all" = {
         source = ./xdg.configFile.all;
         recursive = true;
@@ -240,8 +231,6 @@
         recursive = true;
         target = "./";
       };
-
-      # TODO: Add ~/.local/bin scripts
 
       # TODO
       # desktopEntries = {
@@ -472,20 +461,6 @@
           };
           tweak.grapheme-width-method = "double-width";
         };
-      };
-
-      neovim = {
-        enable = true;
-        defaultEditor = true;
-        extraLuaConfig = builtins.readFile ./config/nvim/init.lua;
-      };
-
-      git = {
-        enable = true;
-        userEmail = "dev@leonardgomez.xyz";
-        userName = "leg7";
-        extraConfig.init.defaultBranch = "main";
-        extraConfig.push.autoSetupRemote = "true";
       };
     };
 

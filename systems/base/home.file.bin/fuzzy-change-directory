@@ -1,0 +1,9 @@
+#!/bin/sh
+# This script lets you pick a directory in the tree of your working directory and cds to it
+# Source this script when calling it for the directory change to happen like so `. fuzzy-change-directory`
+
+target_dir="$(fd -t d | fzf)"
+target_dir="$(readlink -f "$target_dir" | tr -d '\r\n')"
+cd "$target_dir" || exit
+
+

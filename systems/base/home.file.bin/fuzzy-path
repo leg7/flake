@@ -1,0 +1,5 @@
+#!/bin/sh
+
+target="$(fd | fzf)"
+target="$(readlink -f "$target" | tr -d '\n\r')"
+echo $target

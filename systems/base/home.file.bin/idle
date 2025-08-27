@@ -1,0 +1,24 @@
+#!/bin/sh
+
+name="$(wlr-randr --json | jq ".[] | select(.make == \"$make\") | .name")"
+
+pkill swayidle
+
+if [ "$1" = "--docked" ]; then
+	make="Samsung Electric Company"
+	timeout=1800
+
+	swayidle -w timeout "$timeout" "wlr-randr --output $name --off" resume "wlr-randr --output $name --on"
+else
+	make="BOE"
+	timeout1=600
+	timeout2=$((timeout1 + 60))
+	timeout3=$((timeout2 + 60))
+
+	swayidle -w \
+		timeout "$timeout1" "wlr-randr --output $name --off" resume "wlr-randr --output $name --on" \
+		timeout "$timeout2" 'swaylock -f' \
+		timeout "$timeout3" 'systemctl suspend' \
+		before-sleep 'swaylock -f'
+fi
+

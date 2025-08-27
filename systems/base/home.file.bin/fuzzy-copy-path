@@ -1,0 +1,3 @@
+#!/bin/sh
+
+fuzzy-path | tr -d '\n\r' | wl-copy

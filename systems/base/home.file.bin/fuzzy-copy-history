@@ -1,0 +1,4 @@
+#!/bin/sh
+
+hist=/persistent/home/user/.bash_history # because $HISTFILE is only available in interactive shells
+tac "$hist" | cut -c '16-' | awk '!seen[$0]++' | fzf | wl-copy

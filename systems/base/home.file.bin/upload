@@ -1,0 +1,5 @@
+#!/bin/sh
+
+for f in "$@"; do
+	curl -F "file=@$f" https://0x0.st
+done

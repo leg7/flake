@@ -108,6 +108,44 @@
     binsh = "${pkgs.dash}/bin/dash";
   };
 
+  home-manager.users.user = {
+    home = {
+      preferXdgDirectories = true;
+
+      file."bin" = {
+        enable = true;
+        recursive = true;
+        source = ./home.file.bin;
+        target = (config.users.users.user.home + "/.local/bin/");
+      };
+    };
+
+    xdg = {
+      enable = true;
+
+      cacheHome  = config.environment.sessionVariables.XDG_CACHE_HOME;
+      configHome = config.environment.sessionVariables.XDG_CONFIG_HOME;
+      dataHome   = config.environment.sessionVariables.XDG_DATA_HOME;
+      stateHome  = config.environment.sessionVariables.XDG_STATE_HOME;
+    };
+
+    programs = {
+      neovim = {
+        enable = true;
+        defaultEditor = true;
+        extraLuaConfig = builtins.readFile ./config/nvim/init.lua;
+      };
+
+      git = {
+        enable = true;
+        userEmail = "dev@leonardgomez.xyz";
+        userName = "leg7";
+        extraConfig.init.defaultBranch = "main";
+        extraConfig.push.autoSetupRemote = "true";
+      };
+    };
+  };
+
   programs = {
     bash = {
       completion.enable = true;
