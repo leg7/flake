@@ -19,6 +19,7 @@ in {
 
   environment.persistence."${config.mainDisk.persistentDataPath}".files = [
     "/etc/radicale/users"
+    "/srv"
   ];
 
   security.acme = {
