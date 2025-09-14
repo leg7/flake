@@ -145,6 +145,8 @@ in {
             chauvy = "87a47880-bf37-4fa0-a4ad-c94ed2059561";
             ac0oustik = "f9560c8c-850c-4a47-b658-84fee5b32c64";
             zogo29 = "d6b95a11-82f4-406b-9f0a-e0661f1b5403";
+            Papchy = "c0a50c7f-bac9-4c42-8717-ed5dfa3cfe68";
+            TheO0o_ = "969e4664-8493-4938-9cae-fb9846654d8f";
           };
 
           symlinks = {
